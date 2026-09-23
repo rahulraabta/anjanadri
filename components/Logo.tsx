@@ -9,6 +9,7 @@ interface LogoProps {
   showTagline?: boolean;
   href?: string;
   light?: boolean;
+  layout?: "horizontal" | "stacked";
 }
 
 export default function Logo({
@@ -17,51 +18,94 @@ export default function Logo({
   showTagline = true,
   href = "/",
   light = false,
+  layout = "horizontal",
 }: LogoProps) {
   const sizeMap = {
-    sm: { img: 36, primary: "text-lg", secondary: "text-[9px]" },
-    md: { img: 48, primary: "text-2xl", secondary: "text-[10px]" },
-    lg: { img: 72, primary: "text-4xl", secondary: "text-xs" },
-    xl: { img: 120, primary: "text-6xl", secondary: "text-sm" },
+    sm: {
+      img: 44,
+      title: "text-xl sm:text-2xl",
+      descriptor: "text-[10px]",
+      tagline: "text-[10px]",
+    },
+    md: {
+      img: 56,
+      title: "text-2xl sm:text-3xl",
+      descriptor: "text-[11px] sm:text-xs",
+      tagline: "text-xs",
+    },
+    lg: {
+      img: 72,
+      title: "text-3xl sm:text-4xl",
+      descriptor: "text-xs sm:text-sm",
+      tagline: "text-sm",
+    },
+    xl: {
+      img: 96,
+      title: "text-4xl sm:text-6xl",
+      descriptor: "text-sm sm:text-base",
+      tagline: "text-base",
+    },
   };
 
-  const { img, primary, secondary } = sizeMap[size];
-  const isCompact = size === "sm";
+  const { img, title, descriptor, tagline } = sizeMap[size];
 
   const content = (
-    <div className={`inline-flex flex-col items-center group cursor-pointer transition-transform duration-300 hover:scale-[1.02] ${className}`}>
-      <div className="relative flex items-center justify-center mb-1.5">
+    <div
+      className={`group inline-flex items-center cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
+        layout === "stacked" ? "flex-col text-center" : "flex-row gap-3.5 sm:gap-4 text-left"
+      } ${className}`}
+    >
+      {/* Brand Icon Emblem */}
+      <div className="relative flex-shrink-0 flex items-center justify-center">
         <div
-          className={`relative rounded-full p-1 transition-all duration-300 ${
-            light ? "bg-white/10" : "bg-transparent"
+          className={`relative rounded-2xl p-1.5 transition-all duration-300 ${
+            light
+              ? "bg-white/10 ring-1 ring-white/20 shadow-md"
+              : "bg-[#F7F3EB] border border-[#EDE5D8] shadow-[0_4px_16px_rgba(74,46,27,0.06)] group-hover:border-[#B85D3B]/40 group-hover:shadow-[0_8px_20px_rgba(184,93,59,0.12)]"
           }`}
           style={{ width: img, height: img }}
         >
           <Image
             src="/logo.png"
-            alt="Anjanadri"
+            alt="Anjanadri Logo"
             width={img}
             height={img}
-            className={`w-full h-full object-contain ${light ? "brightness-0 invert drop-shadow-[0_2px_8px_rgba(255,255,255,0.3)]" : ""}`}
+            className={`w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 ${
+              light ? "brightness-0 invert drop-shadow-[0_2px_8px_rgba(255,255,255,0.4)]" : ""
+            }`}
             priority
           />
         </div>
       </div>
-      <div className="flex flex-col items-center text-center">
+
+      {/* Typography Hierarchy */}
+      <div className={`flex flex-col ${layout === "stacked" ? "items-center mt-2" : "items-start justify-center"}`}>
+        {/* Primary Hero Brand Name */}
         <span
-          className={`font-heading font-semibold leading-none select-none tracking-tight ${primary} ${
+          className={`font-heading font-bold leading-tight select-none tracking-tight ${title} ${
             light ? "text-[#FDFBF7]" : "text-[#4A2E1B]"
           }`}
         >
           Anjanadri
         </span>
-        {!isCompact && showTagline && (
+
+        {/* Secondary Category Descriptor */}
+        <span
+          className={`font-heading uppercase tracking-[0.22em] font-semibold select-none mt-0.5 ${descriptor} ${
+            light ? "text-[#D48060]" : "text-[#B85D3B]"
+          }`}
+        >
+          Dehydrated Fruits &amp; Vegetables
+        </span>
+
+        {/* Refined Tagline */}
+        {showTagline && (
           <span
-            className={`mt-1 uppercase tracking-[0.25em] font-medium leading-none select-none hidden sm:block ${secondary} ${
-              light ? "text-[#D48060]/80" : "text-[#8C7A6B]/70"
+            className={`font-serif italic font-normal tracking-wide select-none mt-0.5 ${tagline} ${
+              light ? "text-[#EDE5D8]/80" : "text-[#6E7D60]"
             }`}
           >
-            Dehydrated Fruits &amp; Vegetables
+            Nature&apos;s Crunch, Preserved.
           </span>
         )}
       </div>
@@ -70,7 +114,7 @@ export default function Logo({
 
   if (href) {
     return (
-      <Link href={href} aria-label="Anjanadri Homepage" className="inline-block">
+      <Link href={href} aria-label="Anjanadri - Nature's Crunch, Preserved" className="inline-block">
         {content}
       </Link>
     );
@@ -78,3 +122,4 @@ export default function Logo({
 
   return content;
 }
+

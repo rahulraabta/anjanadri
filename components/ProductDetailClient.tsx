@@ -8,16 +8,21 @@ import { Star, ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
+import NutritionalInsights from "@/components/NutritionalInsights";
+import FrequentlyBoughtTogether from "@/components/FrequentlyBoughtTogether";
 
 interface ProductDetailClientProps {
   product: Product;
   relatedProducts: Product[];
+  allProducts?: Product[];
 }
 
 export default function ProductDetailClient({
   product,
   relatedProducts,
+  allProducts = [],
 }: ProductDetailClientProps) {
+
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [selectedImage, setSelectedImage] = useState(0);
@@ -106,43 +111,8 @@ export default function ProductDetailClient({
               ))}
             </div>
 
-            {/* Nutritional Facts Card */}
-            <div className="mt-8 rounded-[2rem] border border-[#EDE5D8] bg-[#F7F3EB] p-8 shadow-sm">
-              <div className="flex items-center justify-between border-b border-[#EDE5D8] pb-4">
-                <div>
-                  <h3 className="font-heading text-2xl font-bold text-[#4A2E1B]">
-                    Nutritional Vitality
-                  </h3>
-                  <p className="text-xs text-[#8C7A6B]">Per standard serving ({product.weight})</p>
-                </div>
-                <span className="rounded-full bg-[#6E7D60]/15 px-3 py-1 text-xs font-semibold text-[#6E7D60]">
-                  Unadulterated Whole Food
-                </span>
-              </div>
-
-              <div className="mt-6 grid grid-cols-2 gap-4 sm:grid-cols-4">
-                <div className="rounded-2xl border border-[#EDE5D8] bg-[#FDFBF7] p-4 text-center">
-                  <span className="text-xs text-[#8C7A6B]">Energy</span>
-                  <p className="font-heading text-xl font-bold text-[#4A2E1B] mt-1">95 kcal</p>
-                </div>
-                <div className="rounded-2xl border border-[#EDE5D8] bg-[#FDFBF7] p-4 text-center">
-                  <span className="text-xs text-[#8C7A6B]">Dietary Fiber</span>
-                  <p className="font-heading text-xl font-bold text-[#4A2E1B] mt-1">4.2 g</p>
-                </div>
-                <div className="rounded-2xl border border-[#EDE5D8] bg-[#FDFBF7] p-4 text-center">
-                  <span className="text-xs text-[#8C7A6B]">Added Sugars</span>
-                  <p className="font-heading text-xl font-bold text-[#6E7D60] mt-1">0.0 g</p>
-                </div>
-                <div className="rounded-2xl border border-[#EDE5D8] bg-[#FDFBF7] p-4 text-center">
-                  <span className="text-xs text-[#8C7A6B]">Active Vit C</span>
-                  <p className="font-heading text-xl font-bold text-[#B85D3B] mt-1">35% DV</p>
-                </div>
-              </div>
-
-              <p className="mt-4 text-xs leading-relaxed text-[#8C7A6B]">
-                * Our low-temperature 48-hour slow dehydration locks in natural enzymes, cellular moisture, and micronutrients without thermal degradation.
-              </p>
-            </div>
+            {/* Intelligent Health Insights */}
+            <NutritionalInsights product={product} />
           </div>
 
           {/* Right Column: Details, Purchasing & Benefits */}
@@ -282,9 +252,16 @@ export default function ProductDetailClient({
           </div>
         </div>
 
+        {/* Frequently Bought Together Bundle Engine */}
+        <FrequentlyBoughtTogether
+          currentProduct={product}
+          allProducts={allProducts.length > 0 ? allProducts : relatedProducts}
+        />
+
         {/* Related Products Section */}
         {relatedProducts.length > 0 && (
-          <div className="mt-24 border-t border-[#EDE5D8] pt-16">
+          <div className="mt-20 border-t border-[#EDE5D8] pt-16">
+
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
               <div>
                 <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#B85D3B]">

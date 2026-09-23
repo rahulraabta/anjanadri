@@ -12,21 +12,30 @@ export async function GET() {
       ORDER BY id ASC;
     `;
 
-    const mappedProducts: Product[] = rows.map((r: any) => ({
-      id: r.id,
-      name: r.name,
-      description: r.description,
-      shortDescription: r.short_description || r.description.slice(0, 80) + "...",
-      price: parseFloat(r.price),
-      originalPrice: r.original_price ? parseFloat(r.original_price) : undefined,
-      category: r.category,
-      image: r.image_url,
-      rating: parseFloat(r.rating) || 5.0,
-      reviewCount: r.review_count || 120,
-      inStock: (r.stock ?? 1) > 0,
-      weight: r.weight || "2.5 oz (70g)",
-      tags: Array.isArray(r.tags) ? r.tags : ["100% Natural", "No Preservatives"],
-    }));
+    const mappedProducts: Product[] = rows.map((r: any) => {
+      const fallback = fallbackProducts.find((p) => p.id === r.id);
+      const stockNum = r.stock !== undefined && r.stock !== null ? parseInt(r.stock) : (fallback?.stock ?? 15);
+      return {
+        id: r.id,
+        name: r.name,
+        description: r.description,
+        shortDescription: r.short_description || r.description.slice(0, 80) + "...",
+        price: parseFloat(r.price),
+        originalPrice: r.original_price ? parseFloat(r.original_price) : undefined,
+        category: r.category,
+        image: r.image_url,
+        rating: parseFloat(r.rating) || 5.0,
+        reviewCount: r.review_count || 120,
+        inStock: stockNum > 0,
+        stock: stockNum,
+        weight: r.weight || "2.5 oz (70g)",
+        tags: Array.isArray(r.tags) ? r.tags : (fallback?.tags || ["100% Natural", "No Preservatives"]),
+        flavorProfile: fallback?.flavorProfile,
+        snackOccasion: fallback?.snackOccasion,
+        complementaryIds: fallback?.complementaryIds,
+        nutrients: fallback?.nutrients,
+      };
+    });
 
     return NextResponse.json({ products: mappedProducts, source: "neon" });
   } catch (err: any) {
@@ -34,3 +43,4 @@ export async function GET() {
     return NextResponse.json({ products: fallbackProducts, source: "fallback" });
   }
 }
+

@@ -1,3 +1,10 @@
+export interface NutrientInsight {
+  name: string;
+  amount: string;
+  benefit: string;
+  description: string;
+}
+
 export interface Product {
   id: string;
   name: string;
@@ -10,8 +17,13 @@ export interface Product {
   rating: number;
   reviewCount: number;
   inStock: boolean;
+  stock?: number;
   weight: string;
   tags: string[];
+  flavorProfile?: "Sweet" | "Savory" | "Tangy" | "Earthy";
+  snackOccasion?: "Healthy Snack" | "Party Mix" | "Workout Fuel" | "Dessert";
+  complementaryIds?: string[];
+  nutrients?: NutrientInsight[];
 }
 
 export const products: Product[] = [
@@ -25,10 +37,40 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?w=800&q=80",
     category: "Fruit Chips",
     rating: 4.9,
-    reviewCount: 234,
+    reviewCount: 320,
     inStock: true,
+    stock: 28,
     weight: "2.5 oz (70g)",
     tags: ["Vegan", "Gluten-Free", "No Added Sugar", "Keto-Friendly"],
+    flavorProfile: "Sweet",
+    snackOccasion: "Healthy Snack",
+    complementaryIds: ["mixed-berry-medley", "strawberry-chips", "coconut-chips"],
+    nutrients: [
+      {
+        name: "Dietary Fiber",
+        amount: "4.5g",
+        benefit: "Gut Microbiome & Fullness",
+        description: "Intact pectin fibers slow glucose absorption and nurture beneficial gut flora.",
+      },
+      {
+        name: "Active Vitamin C",
+        amount: "35% DV",
+        benefit: "Immunity & Collagen",
+        description: "Preserved by 42°C low-heat drying to protect sensitive ascorbic acid bonds.",
+      },
+      {
+        name: "Natural Quercetin",
+        amount: "18mg",
+        benefit: "Antioxidant Defense",
+        description: "Bioflavonoid found in red apple peel that reduces cellular oxidative stress.",
+      },
+      {
+        name: "Added Sugars",
+        amount: "0.0g",
+        benefit: "Zero Energy Crashes",
+        description: "Only whole-fruit fructose stabilized by cellular matrix. No refined sugar.",
+      },
+    ],
   },
   {
     id: "beetroot-crisps",
@@ -41,8 +83,38 @@ export const products: Product[] = [
     rating: 4.7,
     reviewCount: 189,
     inStock: true,
+    stock: 6, // Low stock
     weight: "2 oz (56g)",
     tags: ["Vegan", "Gluten-Free", "Paleo", "Non-GMO"],
+    flavorProfile: "Earthy",
+    snackOccasion: "Party Mix",
+    complementaryIds: ["kale-chips", "zucchini-chips", "carrot-chips"],
+    nutrients: [
+      {
+        name: "Dietary Nitrates",
+        amount: "210mg",
+        benefit: "Cardiovascular Stamina",
+        description: "Converts to nitric oxide to enhance vasodilation, blood flow, and exercise endurance.",
+      },
+      {
+        name: "Betalain Pigments",
+        amount: "45mg",
+        benefit: "Cellular Detoxification",
+        description: "Potent phytonutrients that support liver phase-II metabolic detox pathways.",
+      },
+      {
+        name: "Folate (B9)",
+        amount: "20% DV",
+        benefit: "DNA Synthesis & Repair",
+        description: "Vital micronutrient for red blood cell formation and healthy cell division.",
+      },
+      {
+        name: "Potassium",
+        amount: "340mg",
+        benefit: "Electrolyte Equilibrium",
+        description: "Balances intracellular sodium and promotes healthy muscular contractions.",
+      },
+    ],
   },
   {
     id: "mango-slices",
@@ -53,11 +125,41 @@ export const products: Product[] = [
     shortDescription: "Chewy, tropical Ataulfo mangoes—nature's candy.",
     image: "https://images.unsplash.com/photo-1553279768-865429fa0078?w=800&q=80",
     category: "Dried Fruit",
-    rating: 4.8,
-    reviewCount: 312,
+    rating: 4.9,
+    reviewCount: 412,
     inStock: true,
+    stock: 45,
     weight: "3 oz (85g)",
     tags: ["Organic", "Vegan", "Gluten-Free", "No Added Sugar"],
+    flavorProfile: "Sweet",
+    snackOccasion: "Workout Fuel",
+    complementaryIds: ["pineapple-rings", "coconut-chips", "crispy-apple-chips"],
+    nutrients: [
+      {
+        name: "Vitamin A (Beta-Carotene)",
+        amount: "45% DV",
+        benefit: "Vision & Skin Health",
+        description: "Vital for retinal photoreceptor function and skin barrier regeneration.",
+      },
+      {
+        name: "Mangiferin",
+        amount: "28mg",
+        benefit: "Super-Antioxidant",
+        description: "Unique mango polyphenol that shields cells against systemic inflammatory cascades.",
+      },
+      {
+        name: "Digestive Enzymes",
+        amount: "Active",
+        benefit: "Optimal Digestion",
+        description: "Natural amylases that break down starches gently without digestive discomfort.",
+      },
+      {
+        name: "Dietary Fiber",
+        amount: "3.8g",
+        benefit: "Sustained Natural Energy",
+        description: "Delivers smooth, long-burning fuel for active workouts and busy afternoons.",
+      },
+    ],
   },
   {
     id: "kale-chips",
@@ -67,11 +169,41 @@ export const products: Product[] = [
     shortDescription: "Smoky, spicy kale with a cheesy nutritional yeast finish.",
     image: "https://images.unsplash.com/photo-1576045057995-568f588f82fb?w=800&q=80",
     category: "Vegetable Chips",
-    rating: 4.6,
-    reviewCount: 156,
+    rating: 4.8,
+    reviewCount: 256,
     inStock: true,
+    stock: 8, // Low stock
     weight: "2 oz (56g)",
     tags: ["Vegan", "Gluten-Free", "Keto-Friendly", "High Protein"],
+    flavorProfile: "Savory",
+    snackOccasion: "Party Mix",
+    complementaryIds: ["beetroot-crisps", "zucchini-chips", "sweet-potato-chips"],
+    nutrients: [
+      {
+        name: "Vitamin K1",
+        amount: "180% DV",
+        benefit: "Bone Density & Coagulation",
+        description: "Crucial co-factor for osteocalcin activation and arterial flexibility.",
+      },
+      {
+        name: "Plant Iron",
+        amount: "15% DV",
+        benefit: "Oxygen Transport",
+        description: "Non-heme mineral iron naturally paired with vitamin C for superior uptake.",
+      },
+      {
+        name: "Capsaicin (from Cayenne)",
+        amount: "Active",
+        benefit: "Thermogenic Metabolism",
+        description: "Stimulates mild thermogenesis and activates endorphin reward pathways.",
+      },
+      {
+        name: "B-Complex (Yeast)",
+        amount: "40% DV",
+        benefit: "Neurological Energy",
+        description: "Full spectrum of energizing B-vitamins for cellular ATP production.",
+      },
+    ],
   },
   {
     id: "strawberry-chips",
@@ -82,10 +214,40 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=800&q=80",
     category: "Freeze-Dried Fruit",
     rating: 4.9,
-    reviewCount: 278,
+    reviewCount: 298,
     inStock: true,
+    stock: 19,
     weight: "1.2 oz (34g)",
     tags: ["Vegan", "Gluten-Free", "Raw", "No Added Sugar"],
+    flavorProfile: "Tangy",
+    snackOccasion: "Dessert",
+    complementaryIds: ["mixed-berry-medley", "coconut-chips", "crispy-apple-chips"],
+    nutrients: [
+      {
+        name: "Anthocyanins",
+        amount: "65mg",
+        benefit: "Cognitive Focus & Microcirculation",
+        description: "Potent deep-red polyphenols proven to sharpen mental clarity and capillary resilience.",
+      },
+      {
+        name: "Ellagic Acid",
+        amount: "32mg",
+        benefit: "Cellular Longevity",
+        description: "Protects mitochondrial DNA from free radicals produced during everyday stress.",
+      },
+      {
+        name: "Active Vitamin C",
+        amount: "80% DV",
+        benefit: "Immunity Shield",
+        description: "Concentrated freeze-drying prevents oxidation, ensuring clinical bioavailability.",
+      },
+      {
+        name: "Manganese",
+        amount: "25% DV",
+        benefit: "Connective Tissue Health",
+        description: "Key trace mineral necessary for collagen synthesis and antioxidant defense.",
+      },
+    ],
   },
   {
     id: "sweet-potato-chips",
@@ -98,8 +260,38 @@ export const products: Product[] = [
     rating: 4.8,
     reviewCount: 203,
     inStock: true,
+    stock: 34,
     weight: "2.5 oz (70g)",
     tags: ["Vegan", "Gluten-Free", "Paleo", "Non-GMO"],
+    flavorProfile: "Savory",
+    snackOccasion: "Healthy Snack",
+    complementaryIds: ["beetroot-crisps", "carrot-chips", "kale-chips"],
+    nutrients: [
+      {
+        name: "Beta-Carotene",
+        amount: "120% DV",
+        benefit: "Cellular Renewal",
+        description: "Naturally converted into active retinol for radiant complexion and immune defense.",
+      },
+      {
+        name: "Avocado Oil Healthy Fats",
+        amount: "4.5g",
+        benefit: "Lipid Absorption",
+        description: "Monounsaturated oleic acid maximizes fat-soluble carotenoid assimilation.",
+      },
+      {
+        name: "Pink Himalayan Minerals",
+        amount: "84 trace ions",
+        benefit: "Cellular Hydration",
+        description: "Unrefined mineral salt providing gentle cellular conductivity without bloat.",
+      },
+      {
+        name: "Complex Resistant Starch",
+        amount: "3.2g",
+        benefit: "Slow-Burning Satiety",
+        description: "Slow-digesting carbohydrate matrix that curtails afternoon food cravings.",
+      },
+    ],
   },
   {
     id: "pineapple-rings",
@@ -112,8 +304,38 @@ export const products: Product[] = [
     rating: 4.7,
     reviewCount: 167,
     inStock: true,
+    stock: 5, // Low stock
     weight: "3 oz (85g)",
     tags: ["Vegan", "Gluten-Free", "No Added Sugar", "Non-GMO"],
+    flavorProfile: "Tangy",
+    snackOccasion: "Workout Fuel",
+    complementaryIds: ["mango-slices", "coconut-chips", "strawberry-chips"],
+    nutrients: [
+      {
+        name: "Active Bromelain",
+        amount: "450 GDU",
+        benefit: "Joint Mobility & Protein Breakdown",
+        description: "Proteolytic enzyme complex that mitigates post-workout soreness and muscle tightness.",
+      },
+      {
+        name: "Ascorbic Acid",
+        amount: "55% DV",
+        benefit: "Tissue Regeneration",
+        description: "High natural vitamin C concentration essential for healing and cellular vitality.",
+      },
+      {
+        name: "Copper",
+        amount: "18% DV",
+        benefit: "Energy Metabloism",
+        description: "Facilitates iron uptake and supports ATP synthesis inside cellular mitochondria.",
+      },
+      {
+        name: "Organic Acids",
+        amount: "Natural citric/malic",
+        benefit: "Alkalizing Digestion",
+        description: "Stimulates saliva and digestive secretion for refreshing stomach equilibrium.",
+      },
+    ],
   },
   {
     id: "zucchini-chips",
@@ -123,11 +345,41 @@ export const products: Product[] = [
     shortDescription: "Savory zucchini with Italian herbs & roasted garlic.",
     image: "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80",
     category: "Vegetable Chips",
-    rating: 4.5,
+    rating: 4.6,
     reviewCount: 134,
     inStock: true,
+    stock: 14,
     weight: "2 oz (56g)",
     tags: ["Vegan", "Gluten-Free", "Keto-Friendly", "Low Calorie"],
+    flavorProfile: "Savory",
+    snackOccasion: "Party Mix",
+    complementaryIds: ["kale-chips", "beetroot-crisps", "sweet-potato-chips"],
+    nutrients: [
+      {
+        name: "Lutein & Zeaxanthin",
+        amount: "1.8mg",
+        benefit: "Blue Light Screen Defense",
+        description: "Carotenoids deposited directly in the ocular macula to filter digital screen strain.",
+      },
+      {
+        name: "Allicin (Garlic Extract)",
+        amount: "Bioactive",
+        benefit: "Cardiovascular Support",
+        description: "Sulfur phytonutrient known for supporting healthy vascular tone and immunity.",
+      },
+      {
+        name: "Net Carbohydrates",
+        amount: "< 3g per pack",
+        benefit: "Strict Ketogenic Snack",
+        description: "Ultra-low glycemic load makes it safe for diabetic and ketogenic nutrition.",
+      },
+      {
+        name: "Magnesium",
+        amount: "12% DV",
+        benefit: "Nerve System Relaxation",
+        description: "Encourages muscular de-tensioning and healthy parasympathetic rest.",
+      },
+    ],
   },
   {
     id: "mixed-berry-medley",
@@ -139,10 +391,40 @@ export const products: Product[] = [
     image: "https://images.unsplash.com/photo-1519996529931-28324d5a630e?w=800&q=80",
     category: "Freeze-Dried Fruit",
     rating: 4.9,
-    reviewCount: 345,
+    reviewCount: 385,
     inStock: true,
+    stock: 22,
     weight: "1.5 oz (42g)",
     tags: ["Vegan", "Gluten-Free", "Raw", "No Added Sugar", "Antioxidant-Rich"],
+    flavorProfile: "Tangy",
+    snackOccasion: "Dessert",
+    complementaryIds: ["strawberry-chips", "crispy-apple-chips", "coconut-chips"],
+    nutrients: [
+      {
+        name: "Total Polyphenols",
+        amount: "125mg ORAC",
+        benefit: "Universal Anti-Aging",
+        description: "Synergistic quad-berry complex neutralizing broad-spectrum reactive oxygen species.",
+      },
+      {
+        name: "Resveratrol & Pterostilbene",
+        amount: "Active",
+        benefit: "Longevity Gene Activation",
+        description: "Sirtuin gene activators associated with metabolic health and cellular regeneration.",
+      },
+      {
+        name: "Dietary Insoluble Fiber",
+        amount: "5.1g",
+        benefit: "Digestive Regularity",
+        description: "Whole-seed berry fiber provides natural gentle bulk and clean digestive transit.",
+      },
+      {
+        name: "Zero Added Sugars",
+        amount: "0.0g",
+        benefit: "Clean Berry Purity",
+        description: "Sweetness comes exclusively from sunshine and natural plant ripening.",
+      },
+    ],
   },
   {
     id: "carrot-chips",
@@ -155,8 +437,38 @@ export const products: Product[] = [
     rating: 4.6,
     reviewCount: 145,
     inStock: true,
+    stock: 12,
     weight: "2.5 oz (70g)",
     tags: ["Vegan", "Gluten-Free", "Paleo", "Non-GMO"],
+    flavorProfile: "Earthy",
+    snackOccasion: "Healthy Snack",
+    complementaryIds: ["sweet-potato-chips", "beetroot-crisps", "kale-chips"],
+    nutrients: [
+      {
+        name: "Alpha & Beta Carotene",
+        amount: "95% DV",
+        benefit: "Immune Barrier Defense",
+        description: "Reinforces epithelial tissue lining in respiratory and gastrointestinal tracts.",
+      },
+      {
+        name: "MCTs (from Coconut Oil)",
+        amount: "3.5g",
+        benefit: "Rapid Clean Ketones",
+        description: "Medium-chain triglycerides metabolized directly by liver for quick mental alertness.",
+      },
+      {
+        name: "Flaky Sea Salt",
+        amount: "Maldon crystals",
+        benefit: "Trace Mineral Balance",
+        description: "Hand-harvested sea minerals enhancing savory depth without bitter industrial additives.",
+      },
+      {
+        name: "Prebiotic Fiber",
+        amount: "3.0g",
+        benefit: "Friendly Bacteria Fuel",
+        description: "Nourishes bifidobacteria populations inside the large intestine.",
+      },
+    ],
   },
   {
     id: "coconut-chips",
@@ -169,8 +481,38 @@ export const products: Product[] = [
     rating: 4.8,
     reviewCount: 221,
     inStock: true,
+    stock: 31,
     weight: "2.5 oz (70g)",
     tags: ["Vegan", "Gluten-Free", "Keto-Friendly", "Paleo"],
+    flavorProfile: "Sweet",
+    snackOccasion: "Healthy Snack",
+    complementaryIds: ["mango-slices", "pineapple-rings", "crispy-apple-chips"],
+    nutrients: [
+      {
+        name: "Lauric Acid",
+        amount: "2.8g",
+        benefit: "Antimicrobial & Immune Support",
+        description: "Healthy fatty acid that converts to monolaurin, combating unwanted microbes.",
+      },
+      {
+        name: "Medium Chain Triglycerides",
+        amount: "5.2g",
+        benefit: "Ketogenic Satiety",
+        description: "Bypasses digestive storage to deliver instant sustained endurance.",
+      },
+      {
+        name: "Plant Manganese",
+        amount: "30% DV",
+        benefit: "Enzyme Catalysis",
+        description: "Essential mineral cofactor for superoxide dismutase, an internal antioxidant enzyme.",
+      },
+      {
+        name: "Dietary Fiber",
+        amount: "4.0g",
+        benefit: "Blood Sugar Harmony",
+        description: "Combines with healthy plant lipids to blunt insulin spikes.",
+      },
+    ],
   },
   {
     id: "tomato-crisps",
@@ -183,7 +525,37 @@ export const products: Product[] = [
     rating: 4.7,
     reviewCount: 178,
     inStock: false,
+    stock: 0, // Sold out
     weight: "1.8 oz (50g)",
     tags: ["Vegan", "Gluten-Free", "Paleo", "Umami-Rich"],
+    flavorProfile: "Savory",
+    snackOccasion: "Party Mix",
+    complementaryIds: ["zucchini-chips", "kale-chips", "beetroot-crisps"],
+    nutrients: [
+      {
+        name: "Concentrated Lycopene",
+        amount: "24mg",
+        benefit: "Prostate & Cardiovascular Health",
+        description: "Heat-activated lycopene bioavailability is 4x higher than fresh raw tomatoes.",
+      },
+      {
+        name: "EVOO Polyphenols",
+        amount: "Extra Virgin",
+        benefit: "Arterial Endothelium Protection",
+        description: "Contains oleocanthal and hydroxytyrosol for cardiovascular defense.",
+      },
+      {
+        name: "Natural Glutamates",
+        amount: "Rich Umami",
+        benefit: "Savory Satiation",
+        description: "Naturally occurring savory amino acids satisfy umami cravings without artificial MSG.",
+      },
+      {
+        name: "Potassium",
+        amount: "390mg",
+        benefit: "Blood Pressure Support",
+        description: "Assists the body in maintaining optimal cardiovascular fluid dynamics.",
+      },
+    ],
   },
 ];

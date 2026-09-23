@@ -6,11 +6,12 @@ import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, CheckCircle2, Sparkles
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
+import { products as fallbackProducts } from "@/data/products";
 
 const FREE_SHIPPING_THRESHOLD = 35;
 
 export default function CartDrawer() {
-  const { cart, isCartOpen, closeCart, updateQuantity, removeFromCart, clearCart, subtotal, totalItems } = useCart();
+  const { cart, isCartOpen, closeCart, addToCart, updateQuantity, removeFromCart, clearCart, subtotal, totalItems } = useCart();
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
   const [userEmail, setUserEmail] = useState("");
@@ -251,7 +252,68 @@ export default function CartDrawer() {
                   ))}
                 </ul>
               )}
+
+              {/* Frequently Bought Together / Smart Cart Recommendations */}
+              {!orderSuccess && cart.length > 0 && (
+                <div className="mt-6 border-t border-[#EDE5D8] pt-5">
+                  <div className="flex items-center gap-1.5 text-xs font-semibold text-[#4A2E1B] mb-3">
+                    <Sparkles className="h-3.5 w-3.5 text-[#B85D3B]" />
+                    <span>Frequently Paired With Your Basket</span>
+                  </div>
+
+                  <div className="space-y-2.5">
+                    {(() => {
+                      const cartIds = cart.map((c) => c.product.id);
+                      // Collect complementary IDs from products in cart, or fallback to items not in cart
+                      const potentialComplements = cart.flatMap((c) => c.product.complementaryIds || []);
+                      const suggestions = fallbackProducts
+                        .filter((p) => !cartIds.includes(p.id) && p.inStock)
+                        .sort((a, b) => {
+                          const aScore = potentialComplements.includes(a.id) ? 2 : 0;
+                          const bScore = potentialComplements.includes(b.id) ? 2 : 0;
+                          return bScore - aScore;
+                        })
+                        .slice(0, 2);
+
+                      return suggestions.map((sug) => (
+                        <div
+                          key={sug.id}
+                          className="flex items-center justify-between gap-3 rounded-2xl border border-[#EDE5D8] bg-[#F7F3EB]/60 p-2.5 transition-all hover:bg-[#F7F3EB]"
+                        >
+                          <div className="flex items-center gap-2.5">
+                            <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl bg-white">
+                              <Image
+                                src={sug.image}
+                                alt={sug.name}
+                                fill
+                                sizes="48px"
+                                className="object-cover"
+                              />
+                            </div>
+                            <div className="text-left">
+                              <p className="text-xs font-bold text-[#4A2E1B] line-clamp-1">
+                                {sug.name}
+                              </p>
+                              <p className="text-[11px] font-semibold text-[#B85D3B]">
+                                ${sug.price.toFixed(2)}
+                              </p>
+                            </div>
+                          </div>
+
+                          <button
+                            onClick={() => addToCart(sug, 1)}
+                            className="inline-flex items-center gap-1 rounded-full border border-[#B85D3B]/40 bg-[#FDFBF7] px-3 py-1.5 text-[11px] font-bold text-[#B85D3B] transition-all hover:bg-[#B85D3B] hover:text-white shadow-xs"
+                          >
+                            <Plus className="h-3 w-3" /> Add
+                          </button>
+                        </div>
+                      ));
+                    })()}
+                  </div>
+                </div>
+              )}
             </div>
+
 
             {/* Footer / Checkout */}
             {!orderSuccess && cart.length > 0 && (

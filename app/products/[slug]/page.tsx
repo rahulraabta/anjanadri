@@ -10,82 +10,51 @@ interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-async function getProduct(slug: string): Promise<Product | null> {
+async function getAllProducts(): Promise<Product[]> {
   try {
     const sql = getDb();
     const rows = await sql`
       SELECT id, name, description, short_description, price, original_price, 
              category, image_url, stock, rating, review_count, weight, tags
       FROM products
-      WHERE id = ${slug}
-      LIMIT 1;
+      ORDER BY id ASC;
     `;
-
     if (rows.length > 0) {
-      const r = rows[0];
-      return {
-        id: r.id,
-        name: r.name,
-        description: r.description,
-        shortDescription: r.short_description || r.description.slice(0, 80) + "...",
-        price: parseFloat(r.price),
-        originalPrice: r.original_price ? parseFloat(r.original_price) : undefined,
-        category: r.category,
-        image: r.image_url,
-        rating: parseFloat(r.rating) || 5.0,
-        reviewCount: r.review_count || 120,
-        inStock: (r.stock ?? 1) > 0,
-        weight: r.weight || "2.5 oz (70g)",
-        tags: Array.isArray(r.tags) ? r.tags : ["100% Natural", "No Preservatives"],
-      };
+      return rows.map((r: any) => {
+        const fallback = fallbackProducts.find((p) => p.id === r.id);
+        const stockNum = r.stock !== undefined && r.stock !== null ? parseInt(r.stock) : (fallback?.stock ?? 15);
+        return {
+          id: r.id,
+          name: r.name,
+          description: r.description,
+          shortDescription: r.short_description || r.description.slice(0, 80) + "...",
+          price: parseFloat(r.price),
+          originalPrice: r.original_price ? parseFloat(r.original_price) : undefined,
+          category: r.category,
+          image: r.image_url,
+          rating: parseFloat(r.rating) || 5.0,
+          reviewCount: r.review_count || 120,
+          inStock: stockNum > 0,
+          stock: stockNum,
+          weight: r.weight || "2.5 oz (70g)",
+          tags: Array.isArray(r.tags) ? r.tags : (fallback?.tags || ["100% Natural"]),
+          flavorProfile: fallback?.flavorProfile,
+          snackOccasion: fallback?.snackOccasion,
+          complementaryIds: fallback?.complementaryIds,
+          nutrients: fallback?.nutrients,
+        };
+      });
     }
   } catch (err) {
-    console.error("Neon fetch error for slug", slug, err);
-  }
-
-  const fallback = fallbackProducts.find((p) => p.id === slug);
-  return fallback || null;
-}
-
-async function getRelatedProducts(currentId: string, category: string): Promise<Product[]> {
-  try {
-    const sql = getDb();
-    const rows = await sql`
-      SELECT id, name, description, short_description, price, original_price, 
-             category, image_url, stock, rating, review_count, weight, tags
-      FROM products
-      WHERE id != ${currentId} AND category = ${category}
-      LIMIT 3;
-    `;
-    if (rows.length > 0) {
-      return rows.map((r: any) => ({
-        id: r.id,
-        name: r.name,
-        description: r.description,
-        shortDescription: r.short_description || r.description.slice(0, 80) + "...",
-        price: parseFloat(r.price),
-        originalPrice: r.original_price ? parseFloat(r.original_price) : undefined,
-        category: r.category,
-        image: r.image_url,
-        rating: parseFloat(r.rating) || 5.0,
-        reviewCount: r.review_count || 120,
-        inStock: (r.stock ?? 1) > 0,
-        weight: r.weight || "2.5 oz (70g)",
-        tags: Array.isArray(r.tags) ? r.tags : ["100% Natural"],
-      }));
-    }
-  } catch (e) {
     // fallback
   }
-
-  return fallbackProducts
-    .filter((p) => p.id !== currentId && p.category === category)
-    .slice(0, 3);
+  return fallbackProducts;
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const all = await getAllProducts();
+  const product = all.find((p) => p.id === slug);
 
   if (!product) {
     return {
@@ -101,13 +70,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const product = await getProduct(slug);
+  const allProducts = await getAllProducts();
+  const product = allProducts.find((p) => p.id === slug);
 
   if (!product) {
     notFound();
   }
 
-  const related = await getRelatedProducts(product.id, product.category);
+  const related = allProducts
+    .filter((p) => p.id !== product.id && p.category === product.category)
+    .slice(0, 3);
 
   const jsonLd = {
     "@context": "https://schema.org",
@@ -136,9 +108,10 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }} />
       <Navbar />
       <main className="flex-1">
-        <ProductDetailClient product={product} relatedProducts={related} />
+        <ProductDetailClient product={product} relatedProducts={related} allProducts={allProducts} />
       </main>
       <Footer />
     </>
   );
 }
+

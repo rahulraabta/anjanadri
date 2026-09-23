@@ -1,7 +1,8 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, ShoppingBag, Eye } from "lucide-react";
+import { Star, ShoppingBag, Eye, Check, Flame, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/data/products";
@@ -14,13 +15,26 @@ interface ProductCardProps {
 
 export default function ProductCard({ product, index }: ProductCardProps) {
   const { addToCart } = useCart();
+  const [justAdded, setJustAdded] = useState(false);
 
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
 
-  const isBestSeller = product.reviewCount >= 250;
-  const isLowStock = product.inStock && product.reviewCount >= 200 && !isBestSeller;
+  // Dynamic computation based on Neon database stock and rating fields
+  const stockCount = product.stock !== undefined ? product.stock : 15;
+  const isSoldOut = !product.inStock || stockCount <= 0;
+  const isLowStock = !isSoldOut && stockCount > 0 && stockCount <= 10;
+  const isBestSeller = product.rating >= 4.8 && product.reviewCount >= 200;
+
+  // Simulated active viewers based on review count
+  const viewers = 8 + (product.reviewCount % 12);
+
+  const handleAdd = () => {
+    addToCart(product, 1);
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 1800);
+  };
 
   return (
     <motion.article
@@ -28,11 +42,12 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{
-        duration: 0.8,
-        delay: (index % 4) * 0.08,
-        ease: [0.16, 1, 0.3, 1],
+        type: "spring",
+        stiffness: 110,
+        damping: 18,
+        delay: (index % 4) * 0.07,
       }}
-      className="group flex flex-col overflow-hidden rounded-[2rem] border border-[#EDE5D8] bg-[#FDFBF7] shadow-[0_4px_24px_rgba(74,46,27,0.04)] transition-all duration-400 hover:-translate-y-1.5 hover:border-[#6E7D60]/30 hover:shadow-[0_20px_40px_-15px_rgba(74,46,27,0.12)]"
+      className="group flex flex-col overflow-hidden rounded-[2.25rem] border border-[#EDE5D8] bg-[#FDFBF7] shadow-[0_4px_24px_rgba(74,46,27,0.04)] transition-all duration-400 hover:-translate-y-1.5 hover:border-[#B85D3B]/30 hover:shadow-[0_20px_45px_-12px_rgba(74,46,27,0.12)]"
     >
       {/* Product Image Box */}
       <div className="relative aspect-[4/3] overflow-hidden bg-[#F7F3EB]">
@@ -47,32 +62,41 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           />
         </Link>
 
-        {/* Badges */}
-        <div className="absolute left-4 top-4 flex flex-col gap-1.5 pointer-events-none">
+        {/* Dynamic Badges Container */}
+        <div className="absolute left-4 top-4 flex flex-col gap-1.5 pointer-events-none z-10">
           {discount && (
-            <span className="rounded-full bg-[#B85D3B] px-3 py-1 text-[11px] font-semibold tracking-wide text-white shadow-sm">
+            <span className="rounded-full bg-[#B85D3B] px-3 py-1 text-[11px] font-bold tracking-wide text-white shadow-sm">
               Save {discount}%
             </span>
           )}
-          {!product.inStock && (
-            <span className="rounded-full bg-[#4A2E1B]/90 px-3 py-1 text-[11px] font-medium text-[#FDFBF7] backdrop-blur-sm">
+          {isSoldOut ? (
+            <span className="rounded-full bg-[#4A2E1B]/95 px-3 py-1 text-[11px] font-semibold text-[#FDFBF7] backdrop-blur-sm shadow-sm">
               Sold Out
             </span>
-          )}
-          {isBestSeller && (
-            <span className="rounded-full bg-[#6E7D60] px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
-              ⭐ Best Seller
+          ) : isLowStock ? (
+            <span className="rounded-full bg-[#D48060] px-3 py-1 text-[11px] font-bold text-white shadow-sm flex items-center gap-1">
+              <Flame className="h-3 w-3" />
+              Only {stockCount} Left!
             </span>
-          )}
-          {isLowStock && (
-            <span className="rounded-full bg-[#D48060] px-3 py-1 text-[11px] font-semibold text-white shadow-sm">
-              Low Stock
+          ) : isBestSeller ? (
+            <span className="rounded-full bg-[#6E7D60] px-3 py-1 text-[11px] font-bold text-white shadow-sm flex items-center gap-1">
+              <Sparkles className="h-3 w-3" />
+              Best Seller
             </span>
-          )}
+          ) : null}
         </div>
 
-        {/* Quick View / Add to Cart Floating Button */}
-        <div className="absolute bottom-4 right-4 flex items-center gap-2">
+        {/* Live Viewer Tag */}
+        {!isSoldOut && (
+          <div className="absolute top-4 right-4 pointer-events-none opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+            <span className="rounded-full bg-black/60 px-2.5 py-1 text-[10px] font-medium text-white backdrop-blur-md">
+              👁️ {viewers} viewing
+            </span>
+          </div>
+        )}
+
+        {/* Quick View / Add to Cart Floating Buttons */}
+        <div className="absolute bottom-4 right-4 flex items-center gap-2 z-10">
           <Link
             href={`/products/${product.id}`}
             aria-label={`View ${product.name} details`}
@@ -82,12 +106,20 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           </Link>
 
           <button
-            onClick={() => addToCart(product)}
+            onClick={handleAdd}
             aria-label={`Add ${product.name} to cart`}
-            disabled={!product.inStock}
-            className="flex h-11 w-11 translate-y-2 items-center justify-center rounded-full bg-[#4A2E1B] text-[#FDFBF7] opacity-0 shadow-md transition-all duration-300 hover:bg-[#B85D3B] group-hover:translate-y-0 group-hover:opacity-100 disabled:cursor-not-allowed disabled:opacity-0"
+            disabled={isSoldOut}
+            className={`flex h-11 w-11 translate-y-2 items-center justify-center rounded-full text-[#FDFBF7] shadow-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 disabled:cursor-not-allowed disabled:opacity-0 ${
+              justAdded
+                ? "bg-[#6E7D60] opacity-100 translate-y-0"
+                : "bg-[#4A2E1B] opacity-0 hover:bg-[#B85D3B]"
+            }`}
           >
-            <ShoppingBag className="h-4.5 w-4.5" strokeWidth={1.8} />
+            {justAdded ? (
+              <Check className="h-5 w-5 stroke-[2.5]" />
+            ) : (
+              <ShoppingBag className="h-4.5 w-4.5" strokeWidth={1.8} />
+            )}
           </button>
         </div>
       </div>
@@ -95,13 +127,13 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       {/* Card Body */}
       <div className="flex flex-1 flex-col p-6">
         <div className="flex items-center justify-between gap-2">
-          <span className="text-xs font-semibold uppercase tracking-[0.14em] text-[#6E7D60]">
+          <span className="text-xs font-semibold uppercase tracking-[0.16em] text-[#6E7D60]">
             {product.category}
           </span>
-          <span className="text-xs text-[#8C7A6B]">{product.weight}</span>
+          <span className="text-xs text-[#8C7A6B] font-medium">{product.weight}</span>
         </div>
 
-        <h3 className="font-heading mt-2.5 text-xl font-semibold leading-snug text-[#4A2E1B] transition-colors group-hover:text-[#B85D3B]">
+        <h3 className="font-heading mt-2 text-xl font-bold leading-snug text-[#4A2E1B] transition-colors group-hover:text-[#B85D3B]">
           <Link href={`/products/${product.id}`}>
             {product.name}
           </Link>
@@ -121,8 +153,11 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               />
             ))}
           </div>
+          <span className="text-xs font-semibold text-[#4A2E1B]">
+            {product.rating}
+          </span>
           <span className="text-xs text-[#8C7A6B]">
-            {product.rating} ({product.reviewCount})
+            ({product.reviewCount})
           </span>
         </div>
 
@@ -156,14 +191,21 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           </div>
 
           <button
-            onClick={() => addToCart(product)}
-            disabled={!product.inStock}
-            className="rounded-full bg-[#4A2E1B] px-5 py-2.5 text-xs font-semibold text-[#FDFBF7] shadow-sm transition-all duration-300 hover:bg-[#B85D3B] disabled:cursor-not-allowed disabled:bg-[#EDE5D8] disabled:text-[#8C7A6B]"
+            onClick={handleAdd}
+            disabled={isSoldOut}
+            className={`rounded-full px-5 py-2.5 text-xs font-semibold transition-all duration-300 shadow-sm ${
+              isSoldOut
+                ? "cursor-not-allowed bg-[#EDE5D8] text-[#8C7A6B]"
+                : justAdded
+                ? "bg-[#6E7D60] text-white"
+                : "bg-[#4A2E1B] text-[#FDFBF7] hover:bg-[#B85D3B]"
+            }`}
           >
-            {product.inStock ? "Add to Cart" : "Sold Out"}
+            {isSoldOut ? "Sold Out" : justAdded ? "Added!" : "Add to Cart"}
           </button>
         </div>
       </div>
     </motion.article>
   );
 }
+
