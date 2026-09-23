@@ -38,8 +38,8 @@ export default function Hero() {
         className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(184,93,59,0.06),rgba(253,251,247,0))]"
       />
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 py-12 sm:py-16 lg:py-20 lg:px-8">
-        <div className="grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+<div className="relative mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:py-20 lg:px-8">
+        <div className="grid items-center gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-14">
           {/* Left Column: Brand Billboard Statement */}
           <div className="relative z-10 lg:col-span-7 flex flex-col items-start">
             {/* Category / Heritage Pill */}

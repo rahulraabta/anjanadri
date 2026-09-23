@@ -100,7 +100,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           <Link
             href={`/products/${product.id}`}
             aria-label={`View ${product.name} details`}
-            className="flex h-11 w-11 translate-y-2 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#FDFBF7] text-[#4A2E1B] opacity-0 shadow-md transition-all duration-300 hover:bg-[#4A2E1B] hover:text-[#FDFBF7] group-hover:translate-y-0 group-hover:opacity-100"
+            className="flex min-h-12 min-w-12 translate-y-2 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#FDFBF7] text-[#4A2E1B] opacity-0 shadow-md transition-all duration-300 hover:bg-[#4A2E1B] hover:text-[#FDFBF7] group-hover:translate-y-0 group-hover:opacity-100"
           >
             <Eye className="h-4.5 w-4.5" strokeWidth={1.8} />
           </Link>
@@ -109,7 +109,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
             onClick={handleAdd}
             aria-label={`Add ${product.name} to cart`}
             disabled={isSoldOut}
-            className={`flex h-11 w-11 translate-y-2 items-center justify-center rounded-full text-[#FDFBF7] shadow-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 disabled:cursor-not-allowed disabled:opacity-0 ${
+            className={`flex min-h-12 min-w-12 translate-y-2 items-center justify-center rounded-full text-[#FDFBF7] shadow-md transition-all duration-300 group-hover:translate-y-0 group-hover:opacity-100 disabled:cursor-not-allowed disabled:opacity-0 ${
               justAdded
                 ? "bg-[#6E7D60] opacity-100 translate-y-0"
                 : "bg-[#4A2E1B] opacity-0 hover:bg-[#B85D3B]"
@@ -193,7 +193,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           <button
             onClick={handleAdd}
             disabled={isSoldOut}
-            className={`rounded-full px-5 py-2.5 text-xs font-semibold transition-all duration-300 shadow-sm ${
+            className={`min-h-12 rounded-full px-5 py-3 text-sm font-semibold transition-all duration-300 shadow-sm ${
               isSoldOut
                 ? "cursor-not-allowed bg-[#EDE5D8] text-[#8C7A6B]"
                 : justAdded

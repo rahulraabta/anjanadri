@@ -101,7 +101,7 @@ export default function CartDrawer() {
               </div>
               <button
                 onClick={closeCart}
-                className="flex h-9 w-9 items-center justify-center rounded-full text-[#8C7A6B] transition-colors hover:bg-[#EDE5D8] hover:text-[#4A2E1B]"
+                className="flex min-h-12 min-w-12 items-center justify-center rounded-full text-[#8C7A6B] transition-colors hover:bg-[#EDE5D8] hover:text-[#4A2E1B]"
                 aria-label="Close basket"
               >
                 <X className="h-5 w-5" />
@@ -340,14 +340,14 @@ export default function CartDrawer() {
                       value={userEmail}
                       onChange={(e) => setUserEmail(e.target.value)}
                       placeholder="Enter email for receipt"
-                      className="w-full rounded-xl border border-[#EDE5D8] bg-[#FDFBF7] px-3.5 py-2.5 text-xs text-[#4A2E1B] placeholder:text-[#8C7A6B] focus:border-[#4A2E1B] focus:outline-none"
+                      className="w-full rounded-xl border border-[#EDE5D8] bg-[#FDFBF7] px-4 py-3 text-base text-[#4A2E1B] placeholder:text-[#8C7A6B] focus:border-[#4A2E1B] focus:outline-none"
                     />
                   </div>
 
                   <button
                     type="submit"
                     disabled={isCheckingOut}
-                    className="flex w-full items-center justify-center gap-2 rounded-full bg-[#4A2E1B] py-3.5 text-sm font-semibold text-[#FDFBF7] shadow-lg transition-all duration-300 hover:bg-[#B85D3B] disabled:opacity-70"
+                    className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#4A2E1B] py-3.5 text-base font-semibold text-[#FDFBF7] shadow-lg transition-all duration-300 hover:bg-[#B85D3B] disabled:opacity-70"
                   >
                     {isCheckingOut ? (
                       <>

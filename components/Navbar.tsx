@@ -55,10 +55,11 @@ export default function Navbar() {
         </div>
       </div>
 
-      <nav className="mx-auto flex h-24 max-w-7xl items-center justify-between px-6 lg:h-28 lg:px-8">
+<nav className="mx-auto flex min-h-[64px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:min-h-[112px] lg:px-8">
         {/* Brand Logo - Billboard Presentation */}
         <div className="flex items-center py-2">
-          <Logo size="md" showTagline={true} />
+          <Logo size="sm" showTagline={false} className="lg:hidden" />
+          <Logo size="md" showTagline={true} className="hidden lg:block" />
         </div>
 
         {/* Desktop Navigation Links */}
@@ -91,10 +92,10 @@ export default function Navbar() {
             <span>Taste Quiz</span>
           </Link>
 
-          <Link
+<Link
             href="/account"
             aria-label="Your account"
-            className="hidden sm:flex h-11 w-11 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] shadow-xs transition-all duration-300 hover:border-[#4A2E1B] hover:bg-[#4A2E1B] hover:text-[#FDFBF7]"
+            className="hidden sm:flex min-h-12 min-w-12 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] shadow-xs transition-all duration-300 hover:border-[#4A2E1B] hover:bg-[#4A2E1B] hover:text-[#FDFBF7]"
           >
             <User className="h-[18px] w-[18px]" strokeWidth={1.8} />
           </Link>
@@ -102,7 +103,7 @@ export default function Navbar() {
           <button
             onClick={openCart}
             aria-label="Open cart"
-            className="group relative flex h-11 w-11 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] shadow-xs transition-all duration-300 hover:border-[#4A2E1B] hover:bg-[#4A2E1B] hover:text-[#FDFBF7]"
+            className="group relative flex min-h-12 min-w-12 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] shadow-xs transition-all duration-300 hover:border-[#4A2E1B] hover:bg-[#4A2E1B] hover:text-[#FDFBF7]"
           >
             <ShoppingBag className="h-[18px] w-[18px] transition-transform duration-300 group-hover:scale-110" strokeWidth={1.8} />
             {totalItems > 0 && (
@@ -115,7 +116,7 @@ export default function Navbar() {
           <button
             aria-label="Toggle navigation menu"
             onClick={() => setIsOpen(!isOpen)}
-            className="flex h-11 w-11 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] transition-colors hover:bg-[#EDE5D8] lg:hidden"
+            className="flex min-h-12 min-w-12 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] transition-colors hover:bg-[#EDE5D8] lg:hidden"
           >
             {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>

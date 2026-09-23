@@ -3,8 +3,21 @@ import { getDb } from "@/lib/db";
 
 export async function POST(request: Request) {
   try {
+    const contentType = request.headers.get("content-type") || "";
+    if (!contentType.includes("application/json")) {
+      return NextResponse.json({ success: false, error: "Content-Type must be application/json" }, { status: 415 });
+    }
+
     const body = await request.json();
     const { userEmail = "guest@example.com", items = [], totalAmount = 0 } = body;
+
+    if (!Array.isArray(items) || items.length === 0) {
+      return NextResponse.json({ success: false, error: "Cart is empty" }, { status: 400 });
+    }
+
+    if (items.length > 50) {
+      return NextResponse.json({ success: false, error: "Maximum 50 items per order" }, { status: 400 });
+    }
 
     const orderId = `ORD-${Date.now().toString(36).toUpperCase()}-${Math.random().toString(36).substring(2, 6).toUpperCase()}`;
 
