@@ -1,5 +1,3 @@
-export const runtime = 'edge';
-
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { products as fallbackProducts, type Product } from "@/data/products";
