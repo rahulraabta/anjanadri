@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { ShoppingBag, Menu, X, User, Sparkles, Compass } from "lucide-react";
 import Link from "next/link";
+import Image from "next/image";
 import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
 
@@ -52,12 +53,51 @@ export default function Navbar() {
         </div>
       </div>
 
-<nav className="mx-auto flex min-h-[64px] max-w-7xl items-center justify-between px-4 sm:px-6 lg:min-h-[112px] lg:px-8">
-        {/* Brand Logo - Billboard Presentation */}
-        <div className="flex items-center py-2">
-          <Logo size="sm" showTagline={false} className="lg:hidden" />
-          <Logo size="md" showTagline={true} className="hidden lg:block" />
-        </div>
+        <nav className="mx-auto flex flex-col lg:flex-row min-h-[64px] max-w-7xl items-center justify-between px-4 py-3 sm:px-6 lg:min-h-[112px] lg:px-8 lg:py-0 gap-4 lg:gap-0">
+          
+          {/* Mobile Top Actions (Hamburger & Cart) */}
+          <div className="flex w-full items-center justify-between lg:hidden">
+            <button
+              aria-label="Toggle navigation menu"
+              onClick={() => setIsOpen(!isOpen)}
+              className="flex min-h-12 min-w-12 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] transition-colors hover:bg-[#EDE5D8]"
+            >
+              {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
+            </button>
+            <button
+              onClick={openCart}
+              aria-label="Open cart"
+              className="relative flex min-h-12 min-w-12 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] shadow-xs transition-all duration-300 hover:border-[#4A2E1B] hover:bg-[#4A2E1B] hover:text-[#FDFBF7]"
+            >
+              <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.8} />
+              {totalItems > 0 && (
+                <span className="absolute -right-1 -top-1 flex h-5 w-5 items-center justify-center rounded-full bg-[#B85D3B] text-[11px] font-bold text-white shadow-sm ring-2 ring-[#FDFBF7]">
+                  {totalItems}
+                </span>
+              )}
+            </button>
+          </div>
+
+          {/* Brand Logo - Billboard Presentation */}
+          <div className="flex flex-col items-center lg:py-2 lg:flex-row lg:items-center">
+            {/* Mobile Single Stacked Logo */}
+            <Link href="/" className="flex flex-col items-center gap-2 lg:hidden text-center group">
+              <div className="w-16 h-16 sm:w-20 sm:h-20 rounded-full bg-white shadow-[0_4px_16px_rgba(46,125,50,0.12)] p-1 flex items-center justify-center transition-transform duration-300 group-hover:scale-105 group-hover:border-[#F57C00]/50 group-hover:shadow-[0_8px_20px_rgba(245,124,0,0.18)]">
+                <Image src="/logo.png" alt="Anjanadri Logo" width={80} height={80} className="w-full h-full object-contain rounded-full" priority />
+              </div>
+              <div className="flex flex-col items-center">
+                <span className="font-[family-name:var(--font-playfair)] text-2xl sm:text-3xl font-extrabold tracking-tight text-[#2E7D32]">
+                  Anjanadri
+                </span>
+                <span className="text-[9px] sm:text-[10px] font-bold uppercase tracking-[0.2em] text-[#F57C00] mt-0.5">
+                  Dehydrated Fruits &amp; Vegetables
+                </span>
+              </div>
+            </Link>
+
+            {/* Desktop Logo */}
+            <Logo size="md" showTagline={true} className="hidden lg:block" />
+          </div>
 
         {/* Desktop Navigation Links */}
         <ul className="hidden items-center gap-1.5 xl:gap-2 lg:flex">
@@ -80,7 +120,7 @@ export default function Navbar() {
         </ul>
 
         {/* Right Actions: Quiz CTA, Cart & Mobile Menu */}
-        <div className="flex items-center gap-3">
+        <div className="hidden lg:flex items-center gap-3">
           <Link
             href="/#quiz"
             className="hidden sm:inline-flex items-center gap-2 rounded-full border border-[#B85D3B]/30 bg-[#B85D3B]/10 px-4 py-2.5 text-xs font-semibold text-[#B85D3B] transition-all duration-300 hover:bg-[#B85D3B] hover:text-white"
@@ -108,14 +148,6 @@ export default function Navbar() {
                 {totalItems}
               </span>
             )}
-          </button>
-
-          <button
-            aria-label="Toggle navigation menu"
-            onClick={() => setIsOpen(!isOpen)}
-            className="flex min-h-12 min-w-12 items-center justify-center rounded-full border border-[#EDE5D8] bg-[#F7F3EB] text-[#4A2E1B] transition-colors hover:bg-[#EDE5D8] lg:hidden"
-          >
-            {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
           </button>
         </div>
       </nav>
