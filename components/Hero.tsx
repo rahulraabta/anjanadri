@@ -1,271 +1,136 @@
 "use client";
 
+import { useState } from "react";
 import { motion } from "framer-motion";
-import { ArrowRight, Star, ShieldCheck, Sparkles, Compass, CheckCircle2, Flame } from "lucide-react";
+import { ShoppingBag, Check, Star, Leaf, Sun, ShieldCheck } from "lucide-react";
 import Image from "next/image";
-import Link from "next/link";
-import Logo from "./Logo";
-
-// Buttery spring animations as per agent rules
-const springFadeUp = {
-  hidden: { opacity: 0, y: 32 },
-  visible: (i: number) => ({
-    opacity: 1,
-    y: 0,
-    transition: {
-      type: "spring" as const,
-      stiffness: 110,
-      damping: 18,
-      delay: i * 0.12,
-    },
-  }),
-};
+import { useCart } from "@/context/CartContext";
+import { products } from "@/data/products";
 
 export default function Hero() {
+  const { addToCart } = useCart();
+  const [justAdded, setJustAdded] = useState(false);
+
+  const stickyBanana =
+    products.find((p) => p.isBestSeller === true) ??
+    products.find((p) => p.id === "sticky-banana") ??
+    products[0];
+
+  const handleAdd = () => {
+    if (!stickyBanana) return;
+    addToCart(stickyBanana, 1);
+    setJustAdded(true);
+    setTimeout(() => setJustAdded(false), 1800);
+  };
+
   return (
-    <section className="relative min-h-[75vh] lg:min-h-[82vh] overflow-hidden bg-[#FDFBF7] flex items-center border-b border-[#EDE5D8]">
-      {/* Background warm atmospheric radial glow & organic shapes */}
+    <section className="relative overflow-hidden bg-[#FFF8E7]">
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-32 -top-24 h-[650px] w-[650px] rounded-full bg-[#B85D3B]/8 blur-3xl"
+        className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full bg-[#FFC107]/15 blur-3xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -bottom-36 -left-28 h-[600px] w-[600px] rounded-full bg-[#6E7D60]/10 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_80%_80%_at_50%_-20%,rgba(184,93,59,0.06),rgba(253,251,247,0))]"
+        className="pointer-events-none absolute -bottom-28 -left-24 h-[380px] w-[380px] rounded-full bg-[#2E7D32]/10 blur-3xl"
       />
 
-<div className="relative mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:py-20 lg:px-8">
-        <div className="grid items-center gap-8 sm:gap-12 lg:grid-cols-12 lg:gap-14">
-          {/* Left Column: Brand Billboard Statement */}
-          <div className="relative z-10 lg:col-span-7 flex flex-col items-start">
-            {/* Category / Heritage Pill */}
-            <motion.div
-              custom={0}
-              variants={springFadeUp}
-              initial="hidden"
-              animate="visible"
-              className="inline-flex items-center gap-2.5 rounded-full border border-[#B85D3B]/25 bg-[#F7F3EB] px-4 py-1.5 shadow-xs"
-            >
-              <Sparkles className="h-3.5 w-3.5 text-[#B85D3B]" />
-              <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#B85D3B]">
-                Small-Batch Artisanal Pantry
-              </span>
-              <span className="hidden sm:inline text-xs text-[#8C7A6B]">&bull;</span>
-              <span className="hidden sm:inline text-xs font-medium text-[#6E7D60]">
-                100% Pure Harvest
-              </span>
-            </motion.div>
-
-            {/* Massive Brand Billboard Headline */}
-            <motion.div
-              custom={1}
-              variants={springFadeUp}
-              initial="hidden"
-              animate="visible"
-              className="mt-6"
-            >
-              <h1 className="font-heading font-extrabold tracking-tight text-[#4A2E1B] leading-[0.98] text-5xl sm:text-7xl lg:text-[5.5rem] xl:text-[6rem]">
-                Anjanadri
-              </h1>
-              <p className="font-heading italic font-semibold text-[#B85D3B] text-2xl sm:text-3xl lg:text-4xl mt-2 tracking-tight">
-                Dehydrated Fruits &amp; Vegetables
-              </p>
-            </motion.div>
-
-            {/* Value Proposition & Editorial Hook */}
-            <motion.div
-              custom={2}
-              variants={springFadeUp}
-              initial="hidden"
-              animate="visible"
-              className="mt-5"
-            >
-              <p className="font-heading text-xl sm:text-2xl font-medium text-[#4A2E1B] tracking-tight">
-                Nature&apos;s Crunch, Preserved.
-              </p>
-              <p className="mt-3 max-w-xl text-base sm:text-lg leading-relaxed text-[#6B584C]">
-                Hand-selected whole fruits and crisp garden vegetables, gently slow-dried at
-                42&deg;C for 48 hours. Zero additives, zero sulfites, zero added sugars—capturing
-                97% of natural vitamins and an unforgettable artisanal snap.
-              </p>
-            </motion.div>
-
-            {/* Action Buttons: High-Contrast Shop Now & Intelligent Quiz */}
-            <motion.div
-              custom={3}
-              variants={springFadeUp}
-              initial="hidden"
-              animate="visible"
-              className="mt-8 flex flex-wrap items-center gap-4 w-full sm:w-auto"
-            >
-              {/* High-contrast Shop Now Button */}
-              <a
-                href="#shop"
-                className="group relative inline-flex items-center justify-center gap-3 rounded-full bg-[#B85D3B] px-8 py-4 text-base font-bold text-white shadow-[0_12px_28px_-6px_rgba(184,93,59,0.45)] transition-all duration-300 hover:-translate-y-1 hover:bg-[#A34E2F] hover:shadow-[0_18px_36px_-6px_rgba(184,93,59,0.55)] focus:ring-4 focus:ring-[#B85D3B]/25 active:translate-y-0"
-              >
-                <span>Shop The Pantry</span>
-                <ArrowRight className="h-5 w-5 transition-transform duration-300 group-hover:translate-x-1.5" />
-              </a>
-
-              {/* Intelligent Flavor Quiz Shortcut */}
-              <a
-                href="#quiz"
-                className="group inline-flex items-center justify-center gap-2.5 rounded-full border-2 border-[#4A2E1B] bg-transparent px-7 py-4 text-base font-bold text-[#4A2E1B] transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#4A2E1B] hover:text-[#FDFBF7] shadow-xs"
-              >
-                <Compass className="h-5 w-5 text-[#B85D3B] group-hover:text-[#FDFBF7] transition-colors" />
-                <span>Find Your Crunch Quiz</span>
-              </a>
-            </motion.div>
-
-            {/* Key Trust Signals */}
-            <motion.div
-              custom={4}
-              variants={springFadeUp}
-              initial="hidden"
-              animate="visible"
-              className="mt-8 flex flex-wrap items-center gap-y-2 gap-x-5 text-xs font-semibold text-[#6E7D60]"
-            >
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4 text-[#6E7D60]" />
-                Zero Added Sugars
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4 text-[#6E7D60]" />
-                Non-GMO &amp; 100% Vegan
-              </span>
-              <span className="flex items-center gap-1.5">
-                <CheckCircle2 className="h-4 w-4 text-[#6E7D60]" />
-                Free Shipping over $35
-              </span>
-            </motion.div>
-
-            {/* Social Proof Bar */}
-            <motion.div
-              custom={5}
-              variants={springFadeUp}
-              initial="hidden"
-              animate="visible"
-              className="mt-8 flex items-center gap-4 border-t border-[#EDE5D8] pt-6 w-full"
-            >
-              <div className="flex -space-x-2.5">
-                {[
-                  "1534528741775-53994a69daeb",
-                  "1507003211169-0a1dd7228f2d",
-                  "1494790108377-be9c29b29330",
-                  "1544005313-94ddf0286df2",
-                ].map((imgId, i) => (
-                  <div
-                    key={i}
-                    className="h-10 w-10 overflow-hidden rounded-full border-2 border-[#FDFBF7] bg-[#EDE5D8] shadow-xs"
-                  >
-                    <Image
-                      src={`https://images.unsplash.com/photo-${imgId}?w=80&h=80&fit=crop&q=80`}
-                      alt="Verified Customer"
-                      width={40}
-                      height={40}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                ))}
-              </div>
-              <div>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star
-                      key={i}
-                      className="h-4 w-4 fill-[#B85D3B] text-[#B85D3B]"
-                    />
-                  ))}
-                  <span className="ml-1 text-xs font-bold text-[#4A2E1B]">4.9 / 5</span>
-                </div>
-                <p className="mt-0.5 text-xs text-[#8C7A6B]">
-                  Loved by <strong className="font-semibold text-[#4A2E1B]">12,000+</strong> healthy snackers worldwide
-                </p>
-              </div>
-            </motion.div>
-          </div>
-
-          {/* Right Column: Immersive Full-Bleed Artisanal Composition */}
+      <div className="relative mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+        <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
+          {/* Product Image — first on mobile, right on desktop */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95, y: 20 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{
-              type: "spring",
-              stiffness: 90,
-              damping: 20,
-              delay: 0.25,
-            }}
-            className="relative lg:col-span-5"
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            className="relative order-1 lg:order-2"
           >
-            {/* Visual Frame */}
-            <div className="relative aspect-[4/5] sm:aspect-[1/1] lg:aspect-[4/5] overflow-hidden rounded-[2.75rem] border border-[#EDE5D8] bg-[#F7F3EB] p-3 shadow-[0_30px_70px_-20px_rgba(74,46,27,0.18)]">
-              <div className="relative h-full w-full overflow-hidden rounded-[2.25rem]">
+            <div className="relative aspect-square overflow-hidden rounded-[2rem] border border-[#F0E2C4] bg-white p-3 shadow-[0_24px_60px_-20px_rgba(62,39,35,0.25)]">
+              <div className="relative flex h-full w-full items-center justify-center overflow-hidden rounded-[1.5rem] bg-white">
                 <Image
-                  src="https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=1000&q=85"
-                  alt="Artisanal dehydrated fruit & vegetable harvest"
-                  fill
-                  sizes="(max-width: 1024px) 100vw, 45vw"
-                  className="object-cover transition-transform duration-1000 ease-out hover:scale-105"
+                  src={stickyBanana.image}
+                  alt={`Anjanadri ${stickyBanana.name} — sun-dried banana`}
+                  width={800}
+                  height={800}
+                  quality={100}
+                  sizes="(max-width: 1024px) 100vw, 50vw"
+                  className="object-contain"
                   priority
                 />
-                {/* Semi-transparent warm editorial gradient overlay */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#4A2E1B]/75 via-[#4A2E1B]/20 to-transparent" />
-
-                {/* Inner caption over image */}
-                <div className="absolute bottom-6 left-6 right-6 text-white">
-                  <span className="inline-block rounded-full bg-[#B85D3B] px-3 py-1 text-[11px] font-bold uppercase tracking-wider">
-                    Peak Ripeness Harvest
-                  </span>
-                  <p className="font-heading mt-2 text-2xl font-bold leading-tight">
-                    Every slice tells a farm-fresh story.
-                  </p>
-                  <p className="mt-1 text-xs text-white/80">
-                    Naturally sweet &bull; No added sugars or preservatives
-                  </p>
-                </div>
               </div>
 
-              {/* Floating Badge: 48h Low Temp */}
-              <motion.div
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.6, type: "spring", stiffness: 120 }}
-                className="absolute left-6 top-8 rounded-2xl border border-white/60 bg-[#FDFBF7]/95 p-4 shadow-[0_15px_35px_rgba(74,46,27,0.15)] backdrop-blur-md"
-              >
-                <div className="flex items-center gap-3">
-                  <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-[#6E7D60]/15 text-[#6E7D60]">
-                    <ShieldCheck className="h-5 w-5" strokeWidth={2} />
-                  </span>
-                  <div>
-                    <p className="font-heading text-lg font-bold text-[#4A2E1B] leading-none">
-                      48-Hour
-                    </p>
-                    <p className="text-[11px] text-[#8C7A6B] mt-0.5">
-                      42°C slow dehydration
-                    </p>
-                  </div>
-                </div>
-              </motion.div>
+              <span className="absolute left-6 top-6 rounded-full bg-[#FFC107] px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-[#3E2723] shadow-md">
+                ★ Best Seller
+              </span>
 
-              {/* Floating Badge: 97% Nutrient Retention */}
-              <motion.div
-                initial={{ opacity: 0, x: 20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: 0.8, type: "spring", stiffness: 120 }}
-                className="absolute right-6 top-24 rounded-2xl bg-[#4A2E1B] px-4 py-3 text-[#FDFBF7] shadow-[0_18px_40px_-10px_rgba(74,46,27,0.45)]"
-              >
-                <div className="flex items-center gap-2">
-                  <Flame className="h-4 w-4 text-[#D48060]" />
-                  <span className="text-xs font-bold tracking-wide uppercase text-[#EDE5D8]">
-                    97% Nutrients Locked
-                  </span>
+              <div className="absolute bottom-6 right-6 rounded-2xl bg-white/95 px-4 py-2.5 shadow-lg backdrop-blur-md">
+                <p className="text-[11px] font-medium text-[#3E2723]/70">Sun-dried • No added sugar</p>
+                <div className="flex items-center gap-1">
+                  {Array.from({ length: 5 }).map((_, i) => (
+                    <Star key={i} className="h-3.5 w-3.5 fill-[#FFC107] text-[#FFC107]" />
+                  ))}
+                  <span className="ml-1 text-xs font-bold text-[#3E2723]">4.9</span>
                 </div>
-                <p className="text-[11px] text-white/70 mt-0.5">Vitamins, enzymes &amp; fiber</p>
-              </motion.div>
+              </div>
+            </div>
+          </motion.div>
+
+          {/* Text — second on mobile, left on desktop */}
+          <motion.div
+            initial={{ opacity: 0, y: 24 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ type: "spring", stiffness: 110, damping: 18, delay: 0.1 }}
+            className="order-2 flex flex-col items-start lg:order-1"
+          >
+            <span className="inline-flex items-center gap-2 rounded-full border border-[#2E7D32]/20 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#2E7D32]">
+              <Leaf className="h-3.5 w-3.5" />
+              Flagship Product
+            </span>
+
+            <h1 className="mt-4 font-sans text-4xl font-extrabold leading-tight tracking-tight text-[#2E7D32] sm:text-5xl">
+              Our Best-Selling Sticky Banana
+            </h1>
+            <p className="mt-3 font-sans text-lg font-semibold text-[#F57C00] sm:text-xl">
+              100% Natural, No Preservatives, Sun-Dried &amp; Healthy
+            </p>
+            <p className="mt-3 max-w-lg text-base leading-relaxed text-[#3E2723]/80">
+              Naturally sweet Mysore bananas, slow sun-dried to a chewy golden bite.
+              No sugar, no chemicals — just farm-fresh goodness in every pack.
+            </p>
+
+            <div className="mt-5 flex items-center gap-3">
+              <span className="font-sans text-4xl font-extrabold text-[#3E2723]">₹{stickyBanana.price}</span>
+              <span className="rounded-full bg-[#2E7D32]/10 px-3 py-1 text-xs font-bold text-[#2E7D32]">
+                200g pack
+              </span>
+            </div>
+
+            <div className="mt-6 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+              <button
+                onClick={handleAdd}
+                className={`inline-flex min-h-[48px] items-center justify-center gap-2 rounded-full px-8 py-3.5 text-base font-bold text-white shadow-[0_10px_24px_-6px_rgba(245,124,0,0.5)] transition-all hover:-translate-y-0.5 active:translate-y-0 ${
+                  justAdded ? "bg-[#2E7D32]" : "bg-[#F57C00] hover:bg-[#E65100]"
+                }`}
+              >
+                {justAdded ? <Check className="h-5 w-5" /> : <ShoppingBag className="h-5 w-5" />}
+                {justAdded ? "Added to Cart!" : "Add to Cart"}
+              </button>
+              <a
+                href="#shop"
+                className="inline-flex min-h-[48px] items-center justify-center rounded-full border-2 border-[#2E7D32] px-7 py-3.5 text-base font-bold text-[#2E7D32] transition-all hover:bg-[#2E7D32] hover:text-white"
+              >
+                Shop All 7 Items
+              </a>
+            </div>
+
+            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-[#3E2723]/70">
+              <span className="flex items-center gap-1.5">
+                <Sun className="h-4 w-4 text-[#F57C00]" /> Sun-Dried
+              </span>
+              <span className="flex items-center gap-1.5">
+                <ShieldCheck className="h-4 w-4 text-[#2E7D32]" /> No Preservatives
+              </span>
+              <span className="flex items-center gap-1.5">
+                <Leaf className="h-4 w-4 text-[#2E7D32]" /> 100% Vegan
+              </span>
             </div>
           </motion.div>
         </div>
@@ -273,4 +138,3 @@ export default function Hero() {
     </section>
   );
 }
-

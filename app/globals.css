@@ -1,31 +1,42 @@
 @import "tailwindcss";
 
 :root {
-  --background: #FDFBF7;
-  --foreground: #4A2E1B;
-  --espresso: #4A2E1B;
-  --cream: #FDFBF7;
-  --cream-soft: #F7F3EB;
-  --cream-deep: #EDE5D8;
-  --terracotta: #B85D3B;
-  --terracotta-soft: #D48060;
-  --sage: #6E7D60;
-  --sage-soft: #8B9A7D;
+  --background: #FFF8E7;
+  --foreground: #3E2723;
+  --anj-green: #2E7D32;
+  --anj-orange: #F57C00;
+  --anj-gold: #FFC107;
+  --anj-cream: #FFF8E7;
+  --anj-brown: #3E2723;
+  /* legacy aliases mapped to new brand */
+  --espresso: #3E2723;
+  --cream: #FFF8E7;
+  --cream-soft: #FFF3D6;
+  --cream-deep: #F0E2C4;
+  --terracotta: #F57C00;
+  --terracotta-soft: #FF9800;
+  --sage: #2E7D32;
+  --sage-soft: #66BB6A;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --color-espresso: #4A2E1B;
-  --color-cream: #FDFBF7;
-  --color-cream-soft: #F7F3EB;
-  --color-cream-deep: #EDE5D8;
-  --color-terracotta: #B85D3B;
-  --color-terracotta-soft: #D48060;
-  --color-sage: #6E7D60;
-  --color-sage-soft: #8B9A7D;
-  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading: var(--font-playfair), Georgia, serif;
+  --color-anj-green: #2E7D32;
+  --color-anj-orange: #F57C00;
+  --color-anj-gold: #FFC107;
+  --color-anj-cream: #FFF8E7;
+  --color-anj-brown: #3E2723;
+  --color-espresso: #3E2723;
+  --color-cream: #FFF8E7;
+  --color-cream-soft: #FFF3D6;
+  --color-cream-deep: #F0E2C4;
+  --color-terracotta: #F57C00;
+  --color-terracotta-soft: #FF9800;
+  --color-sage: #2E7D32;
+  --color-sage-soft: #66BB6A;
+  --font-sans: var(--font-poppins), var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: var(--font-poppins), var(--font-playfair), Georgia, sans-serif;
   --font-script: var(--font-great-vibes), "Great Vibes", cursive;
 }
 
@@ -44,8 +55,8 @@ body {
 }
 
 ::selection {
-  background: #B85D3B;
-  color: #FDFBF7;
+  background: #2E7D32;
+  color: #FFF8E7;
 }
 
 /* Custom smooth scrollbar for premium touch */
@@ -53,12 +64,12 @@ body {
   width: 8px;
 }
 ::-webkit-scrollbar-track {
-  background: #F7F3EB;
+  background: #FFF3D6;
 }
 ::-webkit-scrollbar-thumb {
-  background: #EDE5D8;
+  background: #F0E2C4;
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: #8C7A6B;
+  background: #F57C00;
 }

@@ -8,7 +8,7 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { products as fallbackProducts } from "@/data/products";
 
-const FREE_SHIPPING_THRESHOLD = 35;
+const FREE_SHIPPING_THRESHOLD = 499;
 
 export default function CartDrawer() {
   const { cart, isCartOpen, closeCart, addToCart, updateQuantity, removeFromCart, clearCart, subtotal, totalItems } = useCart();
@@ -113,15 +113,15 @@ export default function CartDrawer() {
               <div className="flex items-center justify-between text-xs">
                 <span className="font-medium text-[#4A2E1B]">
                   {freeShippingDiff > 0 ? (
-                    <>Add <strong className="text-[#B85D3B]">${freeShippingDiff.toFixed(2)}</strong> for free shipping</>
+                    <>Add <strong className="text-[#F57C00]">₹{freeShippingDiff.toFixed(0)}</strong> for free shipping</>
                   ) : (
-                    <span className="flex items-center gap-1.5 font-semibold text-[#6E7D60]">
+                    <span className="flex items-center gap-1.5 font-semibold text-[#2E7D32]">
                       <Sparkles className="h-3.5 w-3.5" /> You unlocked free shipping!
                     </span>
                   )}
                 </span>
                 <span className="text-[11px] font-medium text-[#8C7A6B]">
-                  ${subtotal.toFixed(2)} / ${FREE_SHIPPING_THRESHOLD}
+                  ₹{subtotal.toFixed(0)} / ₹{FREE_SHIPPING_THRESHOLD}
                 </span>
               </div>
               <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#EDE5D8]">
@@ -244,7 +244,7 @@ export default function CartDrawer() {
                             </button>
                           </div>
                           <span className="font-heading text-base font-semibold text-[#4A2E1B]">
-                            ${(product.price * quantity).toFixed(2)}
+                            ₹{(product.price * quantity).toFixed(0)}
                           </span>
                         </div>
                       </div>
@@ -294,8 +294,8 @@ export default function CartDrawer() {
                               <p className="text-xs font-bold text-[#4A2E1B] line-clamp-1">
                                 {sug.name}
                               </p>
-                              <p className="text-[11px] font-semibold text-[#B85D3B]">
-                                ${sug.price.toFixed(2)}
+                              <p className="text-[11px] font-semibold text-[#F57C00]">
+                                ₹{sug.price.toFixed(0)}
                               </p>
                             </div>
                           </div>
@@ -321,7 +321,7 @@ export default function CartDrawer() {
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-sm text-[#8C7A6B]">
                     <span>Subtotal</span>
-                    <span className="font-semibold text-[#4A2E1B]">${subtotal.toFixed(2)}</span>
+                    <span className="font-semibold text-[#4A2E1B]">₹{subtotal.toFixed(0)}</span>
                   </div>
                   <div className="flex justify-between text-xs text-[#8C7A6B]">
                     <span>Shipping</span>
@@ -329,7 +329,7 @@ export default function CartDrawer() {
                   </div>
                   <div className="flex justify-between border-t border-[#EDE5D8] pt-2 text-base font-semibold text-[#4A2E1B]">
                     <span>Estimated Total</span>
-                    <span className="font-heading text-lg">${subtotal.toFixed(2)}</span>
+                    <span className="font-heading text-lg">₹{subtotal.toFixed(0)}</span>
                   </div>
                 </div>
 
@@ -364,7 +364,7 @@ export default function CartDrawer() {
                 </form>
 
                 <p className="text-center text-[11px] text-[#8C7A6B]">
-                  🔒 Secure checkout • Free shipping over $35
+                  🔒 Secure checkout • Free shipping over ₹499
                 </p>
               </div>
             )}

@@ -8,12 +8,9 @@ import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
 
 const navLinks = [
-  { label: "Pantry Shop", href: "/#shop" },
-  { label: "Find Your Crunch", href: "/#quiz", badge: "Quiz" },
-  { label: "Build a Box", href: "/build-a-box" },
-  { label: "Our Story", href: "/#our-story" },
-  { label: "Why Dehydrated?", href: "/#why" },
-  { label: "Reviews", href: "/#reviews" },
+  { label: "Shop", href: "/#shop" },
+  { label: "Best Seller", href: "/#shop", badge: "₹190" },
+  { label: "Contact", href: "#contact" },
 ];
 
 export default function Navbar() {
@@ -34,21 +31,21 @@ export default function Navbar() {
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
       className={`sticky top-0 z-40 w-full transition-all duration-500 ${
         scrolled
-          ? "bg-[#FDFBF7]/95 shadow-[0_8px_32px_rgba(74,46,27,0.08)] backdrop-blur-xl border-b border-[#EDE5D8]"
-          : "bg-[#FDFBF7]/90 backdrop-blur-md border-b border-[#EDE5D8]/70 shadow-[0_4px_20px_rgba(74,46,27,0.03)]"
+          ? "bg-[#FFF8E7]/95 shadow-[0_8px_32px_rgba(62,39,35,0.08)] backdrop-blur-xl border-b border-[#F0E2C4]"
+          : "bg-[#FFF8E7] backdrop-blur-md border-b border-[#F0E2C4] shadow-[0_4px_20px_rgba(62,39,35,0.04)]"
       }`}
     >
       {/* Top micro-bar for brand promise banner */}
-      <div className="hidden border-b border-[#EDE5D8]/60 bg-[#F7F3EB]/80 px-6 py-1.5 text-center text-[11px] font-medium text-[#6B584C] sm:block">
+      <div className="hidden border-b border-[#F0E2C4]/60 bg-[#2E7D32] px-6 py-1.5 text-center text-[11px] font-medium text-white sm:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <span className="flex items-center gap-1.5 text-[#6E7D60]">
-            <Sparkles className="h-3 w-3 text-[#B85D3B]" />
-            Small-batch slow dehydration at 42°C &bull; 97% nutrient retention
+          <span className="flex items-center gap-1.5 text-white/90">
+            <Sparkles className="h-3 w-3 text-[#FFC107]" />
+            100% Natural • No Preservatives • Sun-Dried & Healthy
           </span>
           <div className="flex items-center gap-4">
-            <span className="text-[#8C7A6B]">Complimentary shipping on orders over $35</span>
-            <span className="text-[#EDE5D8]">&bull;</span>
-            <Link href="/#quiz" className="font-semibold text-[#B85D3B] hover:underline flex items-center gap-1">
+            <span className="text-white/80">Free shipping on orders over ₹499</span>
+            <span className="text-white/30">&bull;</span>
+            <Link href="/#quiz" className="font-semibold text-[#FFC107] hover:underline flex items-center gap-1">
               <Compass className="h-3 w-3" /> Take Flavor Quiz
             </Link>
           </div>

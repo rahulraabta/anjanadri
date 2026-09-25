@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Great_Vibes } from "next/font/google";
+import { Playfair_Display, Inter, Great_Vibes, Poppins } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
@@ -17,6 +17,13 @@ const inter = Inter({
   display: "swap",
 });
 
+const poppins = Poppins({
+  variable: "--font-poppins",
+  subsets: ["latin"],
+  weight: ["400", "500", "600", "700", "800"],
+  display: "swap",
+});
+
 const greatVibes = Great_Vibes({
   variable: "--font-great-vibes",
   subsets: ["latin"],
@@ -28,11 +35,11 @@ const BRAND = "Anjanadri Dehydrated Fruits & Vegetables";
 
 export const metadata: Metadata = {
   title: {
-    default: `${BRAND} — Nature's Crunch, Preserved`,
+    default: `${BRAND} — 100% Natural, Sun-Dried & Healthy`,
     template: `%s | ${BRAND}`,
   },
   description:
-    "Artisanal small-batch dehydrated fruits and vegetable crisps from Anjanadri. Slow-dried at low temperatures with zero additives — pure, healthy, delicious. Free shipping over $35.",
+    "Anjanadri Dehydrated Fruits & Vegetables from Mysore. 100% Natural, No Preservatives, Sun-Dried & Healthy. Sticky Banana best-seller at ₹190. Free shipping over ₹499.",
   keywords: [
     "dehydrated fruits",
     "dried vegetables",
@@ -70,9 +77,9 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable} ${greatVibes.variable} h-full antialiased`}
+      className={`${playfair.variable} ${inter.variable} ${poppins.variable} ${greatVibes.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[#FDFBF7] font-sans text-[#4A2E1B]">
+      <body className="flex min-h-full flex-col bg-[#FFF8E7] font-sans text-[#3E2723]">
         <CartProvider>
           {children}
           <CartDrawer />

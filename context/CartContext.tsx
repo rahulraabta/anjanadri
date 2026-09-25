@@ -36,44 +36,8 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       if (stored) {
         setCart(JSON.parse(stored));
       } else {
-        // Initial sample items to make the store feel warm & active
-        setCart([
-          {
-            product: {
-              id: "crispy-apple-chips",
-              name: "Crispy Apple Chips",
-              price: 8.99,
-              originalPrice: 10.99,
-              description: "Thinly sliced Honeycrisp apples, slow-dried at low temperatures.",
-              shortDescription: "Naturally sweet Honeycrisp apples, slow-dried for the perfect crunch.",
-              image: "https://images.unsplash.com/photo-1570913149827-d2ac84ab3f9a?w=800&q=80",
-              category: "Fruit Chips",
-              rating: 4.9,
-              reviewCount: 234,
-              inStock: true,
-              weight: "2.5 oz (70g)",
-              tags: ["Vegan", "Gluten-Free", "No Added Sugar"],
-            },
-            quantity: 2,
-          },
-          {
-            product: {
-              id: "mango-slices",
-              name: "Organic Mango Slices",
-              price: 11.99,
-              description: "Sun-ripened Ataulfo mangoes from organic farms in Mexico.",
-              shortDescription: "Chewy, tropical Ataulfo mangoes—nature's candy.",
-              image: "https://images.unsplash.com/photo-1601133330287-214694d47aff?w=800&q=80",
-              category: "Dried Fruit",
-              rating: 4.8,
-              reviewCount: 312,
-              inStock: true,
-              weight: "3 oz (85g)",
-              tags: ["Organic", "Vegan"],
-            },
-            quantity: 1,
-          },
-        ]);
+        // Start with an empty cart for the fresh Anjanadri store
+        setCart([]);
       }
     } catch (e) {
       console.error("Failed to read cart from localStorage", e);

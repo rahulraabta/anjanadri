@@ -116,8 +116,8 @@ export default function FrequentlyBoughtTogether({
                   <p className="mt-2 text-xs font-bold text-[#4A2E1B] max-w-[110px] text-center truncate">
                     {item.name}
                   </p>
-                  <p className="text-xs font-semibold text-[#B85D3B] mt-0.5">
-                    ${item.price.toFixed(2)}
+                  <p className="text-xs font-semibold text-[#F57C00] mt-0.5">
+                    ₹{item.price.toFixed(0)}
                   </p>
 
                   <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[#6B584C]">
@@ -152,18 +152,18 @@ export default function FrequentlyBoughtTogether({
 
           <div className="mt-1 flex items-baseline gap-2">
             <span className="font-heading text-3xl font-extrabold text-[#4A2E1B]">
-              ${finalTotal.toFixed(2)}
+              ₹{finalTotal.toFixed(0)}
             </span>
             {hasBundleDiscount && (
               <span className="text-sm text-[#8C7A6B] line-through">
-                ${rawTotal.toFixed(2)}
+                ₹{rawTotal.toFixed(0)}
               </span>
             )}
           </div>
 
           {hasBundleDiscount && (
             <p className="mt-1 text-xs font-semibold text-[#6E7D60]">
-              You save ${totalSaved.toFixed(2)} (10% off)
+              You save ₹{totalSaved.toFixed(0)} (10% off)
             </p>
           )}
 

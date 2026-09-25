@@ -145,12 +145,12 @@ export default function ProductDetailClient({
 
             {/* Price Row */}
             <div className="mt-6 flex items-baseline gap-3 border-y border-[#EDE5D8] py-4">
-              <span className="font-heading text-3xl font-bold text-[#4A2E1B]">
-                ${product.price.toFixed(2)}
+              <span className="font-heading text-3xl font-bold text-[#2E7D32]">
+                ₹{product.price.toFixed(0)}
               </span>
               {product.originalPrice && (
                 <span className="text-lg text-[#8C7A6B] line-through">
-                  ${product.originalPrice.toFixed(2)}
+                  ₹{product.originalPrice.toFixed(0)}
                 </span>
               )}
               <span className="text-xs text-[#8C7A6B]">Net Wt: {product.weight}</span>
@@ -219,7 +219,7 @@ export default function ProductDetailClient({
                 ) : (
                   <>
                     <ShoppingBag className="h-5 w-5" />
-                    {product.inStock ? `Add to Basket • $${(product.price * quantity).toFixed(2)}` : "Currently Unavailable"}
+                    {product.inStock ? `Add to Basket • ₹${(product.price * quantity).toFixed(0)}` : "Currently Unavailable"}
                   </>
                 )}
               </button>
@@ -238,7 +238,7 @@ export default function ProductDetailClient({
             <div className="mt-8 space-y-3.5 border-t border-[#EDE5D8] pt-6 text-xs text-[#8C7A6B]">
               <div className="flex items-center gap-3">
                 <Truck className="h-4 w-4 text-[#6E7D60]" />
-                <span>Complimentary carbon-neutral delivery on orders over $35</span>
+                <span>Free delivery on orders over ₹499 • Mysore</span>
               </div>
               <div className="flex items-center gap-3">
                 <ShieldCheck className="h-4 w-4 text-[#6E7D60]" />

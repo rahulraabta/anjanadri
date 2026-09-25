@@ -55,13 +55,13 @@ export default function Logo({
         layout === "stacked" ? "flex-col text-center" : "flex-row gap-3.5 sm:gap-4 text-left"
       } ${className}`}
     >
-      {/* Brand Icon Emblem */}
+      {/* Brand Icon Emblem - circular leaf/fruit */}
       <div className="relative flex-shrink-0 flex items-center justify-center">
         <div
-          className={`relative rounded-2xl p-1.5 transition-all duration-300 ${
+          className={`relative rounded-full p-1 transition-all duration-300 ${
             light
               ? "bg-white/10 ring-1 ring-white/20 shadow-md"
-              : "bg-[#F7F3EB] border border-[#EDE5D8] shadow-[0_4px_16px_rgba(74,46,27,0.06)] group-hover:border-[#B85D3B]/40 group-hover:shadow-[0_8px_20px_rgba(184,93,59,0.12)]"
+              : "bg-white border-2 border-[#2E7D32]/15 shadow-[0_4px_16px_rgba(46,125,50,0.12)] group-hover:border-[#F57C00]/50 group-hover:shadow-[0_8px_20px_rgba(245,124,0,0.18)]"
           }`}
           style={{ width: img, height: img }}
         >
@@ -70,7 +70,7 @@ export default function Logo({
             alt="Anjanadri Logo"
             width={img}
             height={img}
-            className={`w-full h-full object-contain transition-transform duration-500 group-hover:scale-105 ${
+            className={`w-full h-full object-contain rounded-full transition-transform duration-500 group-hover:scale-105 ${
               light ? "brightness-0 invert drop-shadow-[0_2px_8px_rgba(255,255,255,0.4)]" : ""
             }`}
             priority
@@ -82,8 +82,8 @@ export default function Logo({
       <div className={`flex flex-col ${layout === "stacked" ? "items-center mt-2" : "items-start justify-center"}`}>
         {/* Primary Hero Brand Name */}
         <span
-          className={`font-heading font-bold leading-tight select-none tracking-tight ${title} ${
-            light ? "text-[#FDFBF7]" : "text-[#4A2E1B]"
+          className={`font-sans font-extrabold leading-tight select-none tracking-tight ${title} ${
+            light ? "text-[#FFF8E7]" : "text-[#2E7D32]"
           }`}
         >
           Anjanadri
@@ -91,8 +91,8 @@ export default function Logo({
 
         {/* Secondary Category Descriptor */}
         <span
-          className={`font-heading uppercase tracking-[0.22em] font-semibold select-none mt-0.5 ${descriptor} ${
-            light ? "text-[#D48060]" : "text-[#B85D3B]"
+          className={`font-sans uppercase tracking-[0.18em] font-bold select-none mt-0.5 ${descriptor} ${
+            light ? "text-[#FFC107]" : "text-[#F57C00]"
           }`}
         >
           Dehydrated Fruits &amp; Vegetables
@@ -101,11 +101,11 @@ export default function Logo({
         {/* Refined Tagline */}
         {showTagline && (
           <span
-            className={`font-serif italic font-normal tracking-wide select-none mt-0.5 ${tagline} ${
-              light ? "text-[#EDE5D8]/80" : "text-[#6E7D60]"
+            className={`font-sans font-medium tracking-wide select-none mt-0.5 ${tagline} ${
+              light ? "text-[#FFF8E7]/80" : "text-[#3E2723]/70"
             }`}
           >
-            Nature&apos;s Crunch, Preserved.
+            100% Natural • No Preservatives
           </span>
         )}
       </div>
