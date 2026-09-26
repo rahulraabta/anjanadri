@@ -73,9 +73,8 @@ export default function Navbar() {
           {isOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
         </button>
 
-        {/* Exactly one logo is visible per breakpoint */}
-        <Logo size="sm" showTagline={false} className="lg:hidden" />
-        <Logo size="md" showTagline className="hidden lg:flex" />
+        {/* Single responsive logo — compact on mobile, full lockup on desktop */}
+        <Logo size="md" showTagline={true} />
 
         <ul className="hidden items-center gap-1 lg:flex">
           {categories.map((category) => (
