@@ -114,7 +114,11 @@ export default function Logo({
 
   if (href) {
     return (
-      <Link href={href} aria-label="Anjanadri - Nature's Crunch, Preserved" className="inline-block">
+      <Link
+        href={href}
+        aria-label="Anjanadri - Nature's Crunch, Preserved"
+        className={`inline-block ${className}`}
+      >
         {content}
       </Link>
     );
