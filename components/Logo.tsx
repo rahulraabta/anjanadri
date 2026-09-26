@@ -94,9 +94,11 @@ export default function Logo({
           Anjanadri
         </span>
 
-        {/* Secondary Category Descriptor */}
+        {/* Secondary Category Descriptor — brand-critical, visible on all breakpoints.
+            8px/0.12em on mobile keeps the ~30-char line ≤199px so the 393px
+            header row (48px hamburger + 44px emblem + 48px cart) never scrolls. */}
         <span
-          className={`hidden sm:block font-sans uppercase tracking-[0.18em] font-bold select-none mt-0.5 ${descriptor} ${
+          className={`block font-sans uppercase tracking-[0.12em] sm:tracking-[0.18em] font-bold select-none mt-0.5 whitespace-nowrap text-[8px] sm:text-[10px] lg:text-xs ${
             light ? "text-[#FFC107]" : "text-[#F57C00]"
           }`}
         >
