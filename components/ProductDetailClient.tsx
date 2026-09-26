@@ -25,15 +25,7 @@ export default function ProductDetailClient({
 
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
-  const [selectedImage, setSelectedImage] = useState(0);
   const [addedNotice, setAddedNotice] = useState(false);
-
-  // Curate gallery image angles for rich shopping experience
-  const galleryImages = [
-    product.image,
-    "https://images.unsplash.com/photo-1596040033229-a9821ebd058d?w=800&q=80",
-    "https://images.unsplash.com/photo-1610832958506-aa56368176cf?w=800&q=80",
-  ];
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -68,7 +60,7 @@ export default function ProductDetailClient({
             {/* Primary Main Image */}
             <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] border border-[#F0E2C4] bg-[#FFF3D6] shadow-[0_15px_40px_rgba(62,39,35,0.06)]">
               <Image
-                src={galleryImages[selectedImage] || product.image}
+                src={product.image}
                 alt={product.name}
                 fill
                 priority
@@ -86,29 +78,6 @@ export default function ProductDetailClient({
                   100% Natural Harvest
                 </span>
               </div>
-            </div>
-
-            {/* Thumbnail Navigation */}
-            <div className="flex gap-4">
-              {galleryImages.map((img, idx) => (
-                <button
-                  key={idx}
-                  onClick={() => setSelectedImage(idx)}
-                  className={`relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl border-2 transition-all ${
-                    selectedImage === idx
-                      ? "border-[#3E2723] shadow-md scale-102"
-                      : "border-[#F0E2C4] opacity-70 hover:opacity-100"
-                  }`}
-                >
-                  <Image
-                    src={img}
-                    alt={`${product.name} view ${idx + 1}`}
-                    fill
-                    sizes="96px"
-                    className="object-cover"
-                  />
-                </button>
-              ))}
             </div>
 
             {/* Intelligent Health Insights */}
