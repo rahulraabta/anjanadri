@@ -62,13 +62,13 @@ export default function ProductGrid() {
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#C2410C]">
               <Leaf className="h-3.5 w-3.5" />
-              <span>100% Natural &bull; No Preservatives &bull; Sun-Dried</span>
+              <span>100% Natural &bull; No Preservatives &bull; Dehydrated</span>
             </div>
             <h2 className="font-heading mt-2 text-3xl font-bold tracking-tight text-[#2E7D32] sm:text-4xl">
               Our Dehydrated Collection
             </h2>
             <p className="mt-2 max-w-2xl text-base text-[#3E2723]/70">
-              Farm-fresh favourites, sun-dried in Mysore. Clean, crunchy and healthy.
+              Farm-fresh favourites, dehydrated in Mysore. Clean, crunchy and healthy.
             </p>
           </div>
 

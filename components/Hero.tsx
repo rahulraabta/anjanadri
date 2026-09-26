@@ -47,7 +47,7 @@ export default function Hero() {
             <div className="relative overflow-hidden bg-white lg:rounded-[2rem] lg:border lg:border-[#F0E2C4] lg:shadow-[0_24px_60px_-20px_rgba(62,39,35,0.25)]">
               <Image
                 src={stickyBanana.image}
-                alt={`Anjanadri ${stickyBanana.name} — sun-dried banana with nuts and seeds`}
+                alt={`Anjanadri ${stickyBanana.name} — dehydrated banana with nuts and seeds`}
                 width={1600}
                 height={873}
                 quality={80}
@@ -62,7 +62,7 @@ export default function Hero() {
 
               <div className="absolute bottom-4 right-4 rounded-2xl bg-white/95 px-4 py-2.5 shadow-lg backdrop-blur-md sm:bottom-6 sm:right-6">
                 <p className="text-[11px] font-medium text-[#3E2723]/70">
-                  Sun-dried &bull; No added sugar
+                  Dehydrated &bull; No added sugar
                 </p>
                 <div className="flex items-center gap-1">
                   {Array.from({ length: 5 }).map((_, i) => (
@@ -92,10 +92,10 @@ export default function Hero() {
               Our Best-Selling Sticky Banana
             </h1>
             <p className="mt-3 text-lg font-semibold text-[#C2410C] sm:text-xl">
-              100% Natural, No Preservatives, Sun-Dried &amp; Healthy
+              100% Natural, No Preservatives, Dehydrated &amp; Healthy
             </p>
             <p className="mt-3 max-w-lg text-base leading-relaxed text-[#3E2723]/80">
-              Naturally sweet Mysore bananas, slow sun-dried to a chewy golden bite and
+              Naturally sweet Mysore bananas, slow dehydrated to a chewy golden bite and
               topped with nuts and seeds. No sugar, no chemicals — just farm-fresh
               goodness in every pack.
             </p>
@@ -137,7 +137,7 @@ export default function Hero() {
 
             <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-[#3E2723]/70">
               <span className="flex items-center gap-1.5">
-                <Sun className="h-4 w-4 text-[#F57C00]" /> Sun-Dried
+                <Sun className="h-4 w-4 text-[#F57C00]" /> Dehydrated
               </span>
               <span className="flex items-center gap-1.5">
                 <ShieldCheck className="h-4 w-4 text-[#2E7D32]" /> No Preservatives

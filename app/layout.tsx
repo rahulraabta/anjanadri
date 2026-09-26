@@ -28,11 +28,11 @@ const BRAND = "Anjanadri Dehydrated Fruits & Vegetables";
 
 export const metadata: Metadata = {
   title: {
-    default: `${BRAND} — 100% Natural, Sun-Dried & Healthy`,
+    default: `${BRAND} — 100% Natural, Dehydrated & Healthy`,
     template: `%s | ${BRAND}`,
   },
   description:
-    "Anjanadri Dehydrated Fruits & Vegetables from Mysore. 100% Natural, No Preservatives, Sun-Dried & Healthy. Sticky Banana best-seller at ₹190. Free shipping over ₹499.",
+    "Anjanadri Dehydrated Fruits & Vegetables from Mysore. 100% Natural, No Preservatives, Dehydrated & Healthy. Sticky Banana best-seller at ₹190. Free shipping over ₹499.",
   keywords: [
     "dehydrated fruits",
     "dried vegetables",

@@ -50,7 +50,7 @@ export default function Navbar() {
         <div className="mx-auto flex max-w-7xl items-center justify-between">
           <span className="flex items-center gap-1.5 text-white/90">
             <Sparkles className="h-3 w-3 text-[#FFC107]" />
-            100% Natural &bull; No Preservatives &bull; Sun-Dried &amp; Healthy
+            100% Natural &bull; No Preservatives &bull; Dehydrated &amp; Healthy
           </span>
           <div className="flex items-center gap-4">
             <span className="text-white/80">Free shipping on orders over &#8377;499</span>
