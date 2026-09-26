@@ -4,7 +4,7 @@ import { useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion } from "framer-motion";
-import { Star, ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
+import { ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
 import ProductCard from "@/components/ProductCard";
@@ -125,23 +125,11 @@ export default function ProductDetailClient({
               {product.name}
             </h1>
 
-            {/* Ratings & Reviews */}
-            <div className="mt-3 flex items-center gap-3">
-              <div className="flex gap-0.5">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`h-4 w-4 ${
-                      i < Math.round(product.rating)
-                        ? "fill-[#FFC107] text-[#C2410C]"
-                        : "fill-[#F0E2C4] text-[#F0E2C4]"
-                    }`}
-                  />
-                ))}
-              </div>
-              <span className="text-sm font-medium text-[#3E2723]">{product.rating}</span>
-              <span className="text-sm text-[#3E2723]/55">({product.reviewCount} verified reviews)</span>
-            </div>
+            {/* Product truth badge */}
+            <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#2E7D32]/10 px-3.5 py-1.5 text-sm font-bold text-[#2E7D32]">
+              <Leaf className="h-4 w-4" aria-hidden />
+              {product.benefit}
+            </p>
 
             {/* Price Row */}
             <div className="mt-6 flex items-baseline gap-3 border-y border-[#F0E2C4] py-4">

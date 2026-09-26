@@ -20,6 +20,7 @@ export async function GET(
 
     if (rows.length > 0) {
       const r = rows[0];
+      const fallback = fallbackProducts.find((p) => p.id === slug);
       const product: Product = {
         id: r.id,
         name: r.name,
@@ -34,6 +35,8 @@ export async function GET(
         inStock: (r.stock ?? 1) > 0,
         weight: r.weight || "2.5 oz (70g)",
         tags: Array.isArray(r.tags) ? r.tags : ["100% Natural", "No Preservatives"],
+        benefit: fallback?.benefit ?? "",
+        badge: fallback?.badge,
       };
       return NextResponse.json({ product, source: "neon" });
     }

@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { Star, Plus, Check } from "lucide-react";
+import { Leaf, Plus, Check } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import type { Product } from "@/data/products";
@@ -50,7 +50,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
 
         {isBestSeller && (
           <span className="absolute left-3 top-3 rounded-full bg-[#FFC107] px-3 py-1 text-[11px] font-extrabold uppercase tracking-wide text-[#3E2723] shadow-sm">
-            Best Seller
+            {product.badge ?? "Best Seller"}
           </span>
         )}
 
@@ -68,19 +68,10 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       </div>
 
       <div className="flex flex-1 flex-col p-5">
-        <div className="flex items-center gap-1">
-          {Array.from({ length: 5 }).map((_, i) => (
-            <Star
-              key={i}
-              className={`h-3.5 w-3.5 ${
-                i < Math.round(product.rating)
-                  ? "fill-[#FFC107] text-[#FFC107]"
-                  : "fill-[#F0E2C4] text-[#F0E2C4]"
-              }`}
-            />
-          ))}
-          <span className="ml-1 text-xs font-semibold text-[#3E2723]/70">{product.rating}</span>
-        </div>
+        <p className="flex items-center gap-1.5 text-xs font-bold text-[#2E7D32]">
+          <Leaf className="h-3.5 w-3.5" aria-hidden />
+          {product.benefit}
+        </p>
 
         <h3 className="font-heading mt-2 line-clamp-2 min-h-[3.5rem] text-lg font-semibold leading-snug text-[#2E7D32]">
           <Link href={`/products/${product.id}`}>{product.name}</Link>

@@ -21,6 +21,8 @@ export interface Product {
   stock?: number;
   weight: string;
   tags: string[];
+  benefit: string;
+  badge?: string;
   flavorProfile?: "Sweet" | "Savory" | "Tangy" | "Earthy";
   snackOccasion?: "Healthy Snack" | "Party Mix" | "Workout Fuel" | "Dessert";
   complementaryIds?: string[];
@@ -38,6 +40,8 @@ export const products: Product[] = [
     description:
       "Our flagship dehydrated sticky banana. Naturally sweet Mysore bananas, slow-dried to a chewy golden bite with no preservatives or added sugar.",
     shortDescription: "Flagship dehydrated sticky banana. Chewy, naturally sweet.",
+    benefit: "Slow-Dehydrated, No Sugar",
+    badge: "Best Seller",
     image: "/images/sticky-banana.jpg",
     category: "Fruits",
     rating: 4.9,
@@ -57,6 +61,7 @@ export const products: Product[] = [
     price: 160,
     description: "Sweet and tangy dehydrated mango slices made from ripe Indian mangoes.",
     shortDescription: "Sweet and tangy dehydrated mango slices.",
+    benefit: "Rich in Vitamin A",
     image: "/images/mango.jpg",
     category: "Fruits",
     rating: 4.8,
@@ -75,6 +80,7 @@ export const products: Product[] = [
     price: 150,
     description: "Classic crispy banana chips, naturally sweet and dehydrated.",
     shortDescription: "Classic crispy banana chips, naturally sweet.",
+    benefit: "Potassium Rich",
     image: "/images/banana.jpg",
     category: "Fruits",
     rating: 4.8,
@@ -93,6 +99,7 @@ export const products: Product[] = [
     price: 170,
     description: "Crisp apple rings with a hint of cinnamon, gently dehydrated.",
     shortDescription: "Crisp apple rings with a hint of cinnamon.",
+    benefit: "High in Fiber",
     image: "/images/apple.jpg",
     category: "Fruits",
     rating: 4.7,
@@ -111,6 +118,7 @@ export const products: Product[] = [
     price: 155,
     description: "Earthy and sweet carrot coins, dehydrated for a satisfying crunch.",
     shortDescription: "Earthy and sweet carrot coins.",
+    benefit: "Beta-Carotene Rich",
     image: "/images/carrot.jpg",
     category: "Vegetables",
     rating: 4.6,
@@ -129,6 +137,7 @@ export const products: Product[] = [
     price: 165,
     description: "Rich in iron, vibrant and healthy beetroot crisps.",
     shortDescription: "Rich in iron, vibrant and healthy.",
+    benefit: "Iron & Folate Rich",
     image: "/images/beetroot.jpg",
     category: "Vegetables",
     rating: 4.7,
@@ -147,6 +156,7 @@ export const products: Product[] = [
     price: 175,
     description: "Crunchy and savory okra chips, dehydrated to perfection.",
     shortDescription: "Crunchy and savory okra chips.",
+    benefit: "Fiber & Antioxidants",
     image: "/images/okra.jpg",
     category: "Vegetables",
     rating: 4.6,
@@ -165,6 +175,7 @@ export const products: Product[] = [
     price: 180,
     description: "Spicy and aromatic dehydrated chillies from Karnataka farms.",
     shortDescription: "Spicy and aromatic dehydrated chillies.",
+    benefit: "Capsaicin Rich",
     image: "/images/red-chilli.jpg",
     category: "Spices",
     rating: 4.8,

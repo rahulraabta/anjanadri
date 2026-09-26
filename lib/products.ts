@@ -32,6 +32,8 @@ export function mapProductRow(row: any, fallback?: Product): Product {
     snackOccasion: fallback?.snackOccasion,
     complementaryIds: fallback?.complementaryIds,
     nutrients: fallback?.nutrients,
+    benefit: fallback?.benefit ?? "",
+    badge: fallback?.badge,
   };
 }
 

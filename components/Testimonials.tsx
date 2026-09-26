@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, type Variants } from "framer-motion";
-import { Star, Quote } from "lucide-react";
+import { Quote } from "lucide-react";
 import Image from "next/image";
 
 const testimonials = [
@@ -116,20 +116,6 @@ export default function Testimonials() {
             >
               {/* Quote icon */}
               <Quote className="h-7 w-7 text-[#F0E2C4] mb-3" strokeWidth={1.5} />
-
-              {/* Star row */}
-              <div className="flex gap-0.5 mb-4">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star
-                    key={i}
-                    className={`h-4 w-4 ${
-                      i < t.rating
-                        ? "fill-[#FFC107] text-[#FFC107]"
-                        : "fill-[#F0E2C4] text-[#F0E2C4]"
-                    }`}
-                  />
-                ))}
-              </div>
 
               <p className="flex-1 text-sm leading-relaxed text-[#3E2723]/70">
                 &ldquo;{t.text}&rdquo;

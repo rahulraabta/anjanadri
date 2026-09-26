@@ -47,6 +47,7 @@ export default function BuildABoxPage() {
       inStock: true,
       weight: `${totalItems * 2} oz`,
       tags: ["Custom Box", "Build Your Own"],
+      benefit: "Custom curated mix",
     };
     addToCart(customProduct);
     openCart();

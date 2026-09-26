@@ -53,11 +53,6 @@ export default async function ProductDetailPage({ params }: PageProps) {
       availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
       url: `https://anjanadri.com/products/${product.id}`,
     },
-    aggregateRating: {
-      "@type": "AggregateRating",
-      ratingValue: product.rating,
-      reviewCount: product.reviewCount,
-    },
   };
 
   return (

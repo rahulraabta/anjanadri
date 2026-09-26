@@ -12,7 +12,6 @@ import {
   Heart, 
   Flame, 
   Leaf, 
-  Star 
 } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -418,11 +417,10 @@ export default function CrunchQuiz() {
                       {product.shortDescription}
                     </p>
 
-                    <div className="mt-3 flex items-center gap-1">
-                      <Star className="h-3.5 w-3.5 fill-[#FFC107] text-[#C2410C]" />
-                      <span className="text-xs font-bold text-[#3E2723]">{product.rating}</span>
-                      <span className="text-[11px] text-[#3E2723]/55">({product.reviewCount})</span>
-                    </div>
+                    <p className="mt-3 flex items-center gap-1 text-xs font-bold text-[#2E7D32]">
+                      <Leaf className="h-3.5 w-3.5" aria-hidden />
+                      {product.benefit}
+                    </p>
 
                     {/* Add to Basket Action */}
                     <div className="mt-4 flex items-center justify-between border-t border-[#F0E2C4] pt-3">

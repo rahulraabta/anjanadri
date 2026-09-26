@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion } from "framer-motion";
-import { ShoppingBag, Check, Star, Leaf, Sun, ShieldCheck } from "lucide-react";
+import { ShoppingBag, Check, Leaf, Sun, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
@@ -68,14 +68,10 @@ export default function Hero() {
                 <p className="text-[11px] font-medium text-[#3E2723]/70">
                   Dehydrated &bull; No added sugar
                 </p>
-                <div className="flex items-center gap-1">
-                  {Array.from({ length: 5 }).map((_, i) => (
-                    <Star key={i} className="h-3.5 w-3.5 fill-[#FFC107] text-[#FFC107]" />
-                  ))}
-                  <span className="ml-1 text-xs font-bold text-[#3E2723]">
-                    {stickyBanana.rating}
-                  </span>
-                </div>
+                <p className="mt-1 flex items-center gap-1 text-xs font-bold text-[#2E7D32]">
+                  <Leaf className="h-3.5 w-3.5" aria-hidden />
+                  {stickyBanana.benefit}
+                </p>
               </div>
             </div>
           </motion.div>
