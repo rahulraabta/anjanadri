@@ -91,7 +91,7 @@ export default function Logo({
 
         {/* Secondary Category Descriptor */}
         <span
-          className={`font-sans uppercase tracking-[0.18em] font-bold select-none mt-0.5 ${descriptor} ${
+          className={`hidden sm:block font-sans uppercase tracking-[0.18em] font-bold select-none mt-0.5 ${descriptor} ${
             light ? "text-[#FFC107]" : "text-[#F57C00]"
           }`}
         >
@@ -122,4 +122,3 @@ export default function Logo({
 
   return content;
 }
-

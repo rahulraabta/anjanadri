@@ -58,24 +58,24 @@ export default function FrequentlyBoughtTogether({
   if (complementary.length === 0) return null;
 
   return (
-    <div className="mt-16 rounded-[2.5rem] border border-[#EDE5D8] bg-[#F7F3EB]/80 p-6 sm:p-10 shadow-xs">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-[#EDE5D8] pb-5">
+    <div className="mt-16 rounded-[2.5rem] border border-[#F0E2C4] bg-[#FFF3D6]/80 p-6 sm:p-10 shadow-xs">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-[#F0E2C4] pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#B85D3B]/15 text-[#B85D3B]">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F57C00]/15 text-[#C2410C]">
               <Sparkles className="h-3.5 w-3.5" />
             </span>
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#B85D3B]">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C2410C]">
               Artisanal Flavor Pairing
             </span>
           </div>
-          <h3 className="font-heading mt-1 text-2xl sm:text-3xl font-bold text-[#4A2E1B]">
+          <h3 className="font-heading mt-1 text-2xl sm:text-3xl font-bold text-[#3E2723]">
             Frequently Enjoyed Together
           </h3>
         </div>
 
         {hasBundleDiscount && (
-          <span className="self-start sm:self-auto rounded-full bg-[#6E7D60] px-3.5 py-1 text-xs font-bold text-white shadow-xs">
+          <span className="self-start sm:self-auto rounded-full bg-[#2E7D32] px-3.5 py-1 text-xs font-bold text-white shadow-xs">
             Save 10% on This Bundle
           </span>
         )}
@@ -94,11 +94,11 @@ export default function FrequentlyBoughtTogether({
                   onClick={() => toggleItem(item.id)}
                   className={`group relative flex flex-col items-center p-3 rounded-2xl border transition-all duration-300 ${
                     isSelected
-                      ? "border-[#4A2E1B] bg-[#FDFBF7] shadow-sm"
-                      : "border-[#EDE5D8] bg-[#FDFBF7]/60 opacity-60 hover:opacity-100"
+                      ? "border-[#3E2723] bg-white shadow-sm"
+                      : "border-[#F0E2C4] bg-white/60 opacity-60 hover:opacity-100"
                   } ${!isMain ? "cursor-pointer" : ""}`}
                 >
-                  <div className="relative h-24 w-24 sm:h-28 sm:w-28 overflow-hidden rounded-xl bg-[#F7F3EB]">
+                  <div className="relative h-24 w-24 sm:h-28 sm:w-28 overflow-hidden rounded-xl bg-[#FFF3D6]">
                     <Image
                       src={item.image}
                       alt={item.name}
@@ -107,26 +107,26 @@ export default function FrequentlyBoughtTogether({
                       className="object-cover"
                     />
                     {isMain && (
-                      <span className="absolute left-1.5 top-1.5 rounded-md bg-[#4A2E1B] px-1.5 py-0.5 text-[9px] font-bold text-white">
+                      <span className="absolute left-1.5 top-1.5 rounded-md bg-[#3E2723] px-1.5 py-0.5 text-[9px] font-bold text-white">
                         This Item
                       </span>
                     )}
                   </div>
 
-                  <p className="mt-2 text-xs font-bold text-[#4A2E1B] max-w-[110px] text-center truncate">
+                  <p className="mt-2 text-xs font-bold text-[#3E2723] max-w-[110px] text-center truncate">
                     {item.name}
                   </p>
                   <p className="text-xs font-semibold text-[#F57C00] mt-0.5">
                     ₹{item.price.toFixed(0)}
                   </p>
 
-                  <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[#6B584C]">
+                  <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[#3E2723]/70">
                     <input
                       type="checkbox"
                       checked={isSelected}
                       disabled={isMain}
                       onChange={() => toggleItem(item.id)}
-                      className="h-3.5 w-3.5 rounded text-[#B85D3B] focus:ring-[#B85D3B]"
+                      className="h-3.5 w-3.5 rounded text-[#C2410C] focus:ring-[#F57C00]"
                     />
                     <span className="text-[10px] font-medium">
                       {isMain ? "Required" : isSelected ? "Included" : "Add item"}
@@ -135,7 +135,7 @@ export default function FrequentlyBoughtTogether({
                 </div>
 
                 {idx < bundleItems.length - 1 && (
-                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#EDE5D8] text-[#4A2E1B] font-bold text-sm">
+                  <span className="flex h-8 w-8 items-center justify-center rounded-full bg-[#F0E2C4] text-[#3E2723] font-bold text-sm">
                     +
                   </span>
                 )}
@@ -145,34 +145,34 @@ export default function FrequentlyBoughtTogether({
         </div>
 
         {/* Pricing & Add Bundle Action */}
-        <div className="flex flex-col items-center lg:items-end rounded-2xl border border-[#EDE5D8] bg-[#FDFBF7] p-6 text-center lg:text-right min-w-[240px] shadow-sm">
-          <span className="text-xs text-[#8C7A6B]">
+        <div className="flex flex-col items-center lg:items-end rounded-2xl border border-[#F0E2C4] bg-white p-6 text-center lg:text-right min-w-[240px] shadow-sm">
+          <span className="text-xs text-[#3E2723]/55">
             Bundle Total ({selectedProducts.length} items):
           </span>
 
           <div className="mt-1 flex items-baseline gap-2">
-            <span className="font-heading text-3xl font-extrabold text-[#4A2E1B]">
+            <span className="font-heading text-3xl font-extrabold text-[#3E2723]">
               ₹{finalTotal.toFixed(0)}
             </span>
             {hasBundleDiscount && (
-              <span className="text-sm text-[#8C7A6B] line-through">
+              <span className="text-sm text-[#3E2723]/55 line-through">
                 ₹{rawTotal.toFixed(0)}
               </span>
             )}
           </div>
 
           {hasBundleDiscount && (
-            <p className="mt-1 text-xs font-semibold text-[#6E7D60]">
+            <p className="mt-1 text-xs font-semibold text-[#2E7D32]">
               You save ₹{totalSaved.toFixed(0)} (10% off)
             </p>
           )}
 
           <button
             onClick={handleAddBundle}
-            className={`mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 px-6 text-xs font-bold text-[#FDFBF7] shadow-sm transition-all duration-300 ${
+            className={`mt-4 inline-flex w-full items-center justify-center gap-2 rounded-full py-3.5 px-6 text-xs font-bold text-[#FFF8E7] shadow-sm transition-all duration-300 ${
               addedAll
-                ? "bg-[#6E7D60]"
-                : "bg-[#4A2E1B] hover:bg-[#B85D3B]"
+                ? "bg-[#2E7D32]"
+                : "bg-[#3E2723] hover:bg-[#F57C00]"
             }`}
           >
             {addedAll ? (

@@ -71,10 +71,10 @@ const barVariants: Variants = {
 
 export default function DehydrationScience() {
   return (
-    <section id="process" className="relative overflow-hidden bg-[#FDFBF7] py-24 lg:py-32 border-t border-[#EDE5D8]">
+    <section id="process" className="relative overflow-hidden bg-white py-24 lg:py-32 border-t border-[#F0E2C4]">
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-32 bottom-0 h-[450px] w-[450px] rounded-full bg-[#6E7D60]/5 blur-3xl"
+        className="pointer-events-none absolute -left-32 bottom-0 h-[450px] w-[450px] rounded-full bg-[#2E7D32]/5 blur-3xl"
       />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -86,13 +86,13 @@ export default function DehydrationScience() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#6E7D60]">
+          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#2E7D32]">
             The Science of Flavor
           </span>
-          <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#4A2E1B] sm:text-5xl">
+          <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#3E2723] sm:text-5xl">
             Why Dehydrated &gt; Fried
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-[#6B584C]">
+          <p className="mt-4 text-base leading-relaxed text-[#3E2723]/70">
             Not all dried snacks are equal. Here's the nutritional science behind why low-temperature
             dehydration is the gold standard — and why frying destroys what matters most.
           </p>
@@ -104,50 +104,50 @@ export default function DehydrationScience() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.15 }}
-          className="mx-auto mt-14 max-w-3xl space-y-6 rounded-[2rem] border border-[#EDE5D8] bg-[#F7F3EB]/50 p-8"
+          className="mx-auto mt-14 max-w-3xl space-y-6 rounded-[2rem] border border-[#F0E2C4] bg-[#FFF3D6]/50 p-8"
         >
-          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#8C7A6B] pb-2 border-b border-[#EDE5D8]">
+          <div className="flex items-center justify-between text-xs font-semibold uppercase tracking-wider text-[#3E2723]/55 pb-2 border-b border-[#F0E2C4]">
             <span className="flex items-center gap-2">
-              <Apple className="h-4 w-4 text-[#6E7D60]" /> Slow Dehydration
+              <Apple className="h-4 w-4 text-[#2E7D32]" /> Slow Dehydration
             </span>
             <span className="flex items-center gap-2">
-              <Flame className="h-4 w-4 text-[#B85D3B]" /> Deep Frying
+              <Flame className="h-4 w-4 text-[#C2410C]" /> Deep Frying
             </span>
           </div>
 
           {comparisons.map((c, i) => (
             <div key={c.label}>
-              <p className="text-sm font-medium text-[#4A2E1B] mb-2">{c.label}</p>
+              <p className="text-sm font-medium text-[#3E2723] mb-2">{c.label}</p>
               <div className="space-y-1.5">
                 {/* Dehydrated bar */}
                 <div className="flex items-center gap-3">
-                  <div className="h-3 flex-1 overflow-hidden rounded-full bg-[#EDE5D8]">
+                  <div className="h-3 flex-1 overflow-hidden rounded-full bg-[#F0E2C4]">
                     <motion.div
                       custom={c.dehydratedPct}
                       variants={barVariants}
                       initial="hidden"
                       whileInView="visible"
                       viewport={{ once: true }}
-                      className="h-full rounded-full bg-gradient-to-r from-[#6E7D60] to-[#8B9A7D]"
+                      className="h-full rounded-full bg-gradient-to-r from-[#2E7D32] to-[#66BB6A]"
                     />
                   </div>
-                  <span className="w-16 text-right text-xs font-semibold text-[#6E7D60]">
+                  <span className="w-16 text-right text-xs font-semibold text-[#2E7D32]">
                     {c.dehydrated}
                   </span>
                 </div>
                 {/* Fried bar */}
                 <div className="flex items-center gap-3">
-                  <div className="h-3 flex-1 overflow-hidden rounded-full bg-[#EDE5D8]">
+                  <div className="h-3 flex-1 overflow-hidden rounded-full bg-[#F0E2C4]">
                     <motion.div
                       custom={c.friedPct}
                       variants={barVariants}
                       initial="hidden"
                       whileInView="visible"
                       viewport={{ once: true }}
-                      className="h-full rounded-full bg-gradient-to-r from-[#B85D3B] to-[#D48060]"
+                      className="h-full rounded-full bg-gradient-to-r from-[#F57C00] to-[#FFB74D]"
                     />
                   </div>
-                  <span className="w-16 text-right text-xs font-semibold text-[#B85D3B]">
+                  <span className="w-16 text-right text-xs font-semibold text-[#C2410C]">
                     {c.fried}
                   </span>
                 </div>
@@ -169,16 +169,16 @@ export default function DehydrationScience() {
                 delay: i * 0.08,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group flex gap-5 rounded-[1.5rem] border border-[#EDE5D8] bg-[#F7F3EB]/40 p-6 transition-all duration-300 hover:bg-[#FDFBF7] hover:shadow-[0_16px_32px_-12px_rgba(74,46,27,0.06)]"
+              className="group flex gap-5 rounded-[1.5rem] border border-[#F0E2C4] bg-[#FFF3D6]/40 p-6 transition-all duration-300 hover:bg-white hover:shadow-[0_16px_32px_-12px_rgba(62,39,35,0.06)]"
             >
-              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#6E7D60]/12 text-[#6E7D60] transition-all duration-300 group-hover:bg-[#6E7D60] group-hover:text-white">
+              <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#2E7D32]/12 text-[#2E7D32] transition-all duration-300 group-hover:bg-[#2E7D32] group-hover:text-white">
                 <item.icon className="h-5 w-5" strokeWidth={1.8} />
               </div>
               <div>
-                <h3 className="font-heading text-lg font-semibold text-[#4A2E1B]">
+                <h3 className="font-heading text-lg font-semibold text-[#3E2723]">
                   {item.title}
                 </h3>
-                <p className="mt-1.5 text-sm leading-relaxed text-[#6B584C]">
+                <p className="mt-1.5 text-sm leading-relaxed text-[#3E2723]/70">
                   {item.text}
                 </p>
               </div>

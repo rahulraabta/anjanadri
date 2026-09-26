@@ -212,51 +212,51 @@ export default function CrunchQuiz() {
   const recommendations = getRecommendations();
 
   return (
-    <section id="quiz" className="relative bg-[#FDFBF7] py-20 lg:py-28 border-t border-[#EDE5D8] overflow-hidden">
+    <section id="quiz" className="relative bg-white py-20 lg:py-28 border-t border-[#F0E2C4] overflow-hidden">
       {/* Background warm aesthetic orbs */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-24 top-1/2 h-[450px] w-[450px] -translate-y-1/2 rounded-full bg-[#B85D3B]/6 blur-3xl"
+        className="pointer-events-none absolute -right-24 top-1/2 h-[450px] w-[450px] -translate-y-1/2 rounded-full bg-[#F57C00]/6 blur-3xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-24 top-1/3 h-[400px] w-[400px] rounded-full bg-[#6E7D60]/8 blur-3xl"
+        className="pointer-events-none absolute -left-24 top-1/3 h-[400px] w-[400px] rounded-full bg-[#2E7D32]/8 blur-3xl"
       />
 
       <div className="relative mx-auto max-w-5xl px-6 lg:px-8">
         {/* Section Header */}
         <div className="text-center max-w-2xl mx-auto">
-          <div className="inline-flex items-center gap-2 rounded-full border border-[#B85D3B]/25 bg-[#F7F3EB] px-4 py-1.5 shadow-xs">
-            <Sparkles className="h-3.5 w-3.5 text-[#B85D3B]" />
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#B85D3B]">
+          <div className="inline-flex items-center gap-2 rounded-full border border-[#F57C00]/25 bg-[#FFF3D6] px-4 py-1.5 shadow-xs">
+            <Sparkles className="h-3.5 w-3.5 text-[#C2410C]" />
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C2410C]">
               Intelligent Taste Matcher
             </span>
           </div>
 
-          <h2 className="font-heading mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#4A2E1B]">
+          <h2 className="font-heading mt-4 text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight text-[#3E2723]">
             Find Your Perfect Crunch
           </h2>
-          <p className="mt-3 text-base text-[#6B584C] leading-relaxed">
+          <p className="mt-3 text-base text-[#3E2723]/70 leading-relaxed">
             Answer 3 quick questions. Our flavor algorithm scans small-batch harvests from our
             pantry to find the exact artisanal crisps your body craves.
           </p>
         </div>
 
         {/* Quiz Container Card */}
-        <div className="mt-12 rounded-[2.5rem] border border-[#EDE5D8] bg-[#F7F3EB]/70 p-6 sm:p-10 lg:p-12 shadow-[0_15px_45px_rgba(74,46,27,0.06)] backdrop-blur-sm">
+        <div className="mt-12 rounded-[2.5rem] border border-[#F0E2C4] bg-[#FFF3D6]/70 p-6 sm:p-10 lg:p-12 shadow-[0_15px_45px_rgba(62,39,35,0.06)] backdrop-blur-sm">
           {!isCompleted ? (
             <div>
               {/* Progress Indicator */}
               <div className="mb-8">
-                <div className="flex items-center justify-between text-xs font-semibold text-[#8C7A6B] mb-2">
+                <div className="flex items-center justify-between text-xs font-semibold text-[#3E2723]/55 mb-2">
                   <span>Step {currentStep + 1} of {quizSteps.length}</span>
-                  <span className="text-[#B85D3B]">
+                  <span className="text-[#C2410C]">
                     {Math.round(((currentStep + 1) / quizSteps.length) * 100)}% Completed
                   </span>
                 </div>
-                <div className="h-2 w-full rounded-full bg-[#EDE5D8] overflow-hidden">
+                <div className="h-2 w-full rounded-full bg-[#F0E2C4] overflow-hidden">
                   <motion.div
-                    className="h-full bg-[#B85D3B] rounded-full"
+                    className="h-full bg-[#F57C00] rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${((currentStep + 1) / quizSteps.length) * 100}%` }}
                     transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -274,10 +274,10 @@ export default function CrunchQuiz() {
                   transition={{ type: "spring", stiffness: 120, damping: 20 }}
                 >
                   <div className="mb-6">
-                    <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#4A2E1B]">
+                    <h3 className="font-heading text-2xl sm:text-3xl font-bold text-[#3E2723]">
                       {quizSteps[currentStep].title}
                     </h3>
-                    <p className="text-sm text-[#8C7A6B] mt-1">
+                    <p className="text-sm text-[#3E2723]/55 mt-1">
                       {quizSteps[currentStep].subtitle}
                     </p>
                   </div>
@@ -292,25 +292,25 @@ export default function CrunchQuiz() {
                           onClick={() => handleSelectOption(quizSteps[currentStep].key, option.id)}
                           className={`group flex items-start gap-4 p-5 rounded-2xl border text-left transition-all duration-300 ${
                             isSelected
-                              ? "border-[#B85D3B] bg-[#FDFBF7] shadow-[0_8px_24px_rgba(184,93,59,0.15)] ring-2 ring-[#B85D3B]/20"
-                              : "border-[#EDE5D8] bg-[#FDFBF7]/90 hover:border-[#6E7D60] hover:bg-[#FDFBF7] hover:shadow-sm"
+                              ? "border-[#F57C00] bg-white shadow-[0_8px_24px_rgba(245,124,0,0.15)] ring-2 ring-[#F57C00]/20"
+                              : "border-[#F0E2C4] bg-white/90 hover:border-[#2E7D32] hover:bg-white hover:shadow-sm"
                           }`}
                         >
-                          <span className="text-3xl p-2 rounded-xl bg-[#F7F3EB] flex-shrink-0 group-hover:scale-110 transition-transform">
+                          <span className="text-3xl p-2 rounded-xl bg-[#FFF3D6] flex-shrink-0 group-hover:scale-110 transition-transform">
                             {option.icon}
                           </span>
                           <div className="flex-1">
                             <div className="flex items-center justify-between">
-                              <span className="font-heading text-lg font-bold text-[#4A2E1B]">
+                              <span className="font-heading text-lg font-bold text-[#3E2723]">
                                 {option.label}
                               </span>
                               {isSelected && (
-                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#B85D3B] text-white">
+                                <span className="flex h-5 w-5 items-center justify-center rounded-full bg-[#F57C00] text-white">
                                   <Check className="h-3 w-3 stroke-[3]" />
                                 </span>
                               )}
                             </div>
-                            <p className="mt-1 text-xs text-[#6B584C] leading-relaxed">
+                            <p className="mt-1 text-xs text-[#3E2723]/70 leading-relaxed">
                               {option.descriptor}
                             </p>
                           </div>
@@ -320,11 +320,11 @@ export default function CrunchQuiz() {
                   </div>
 
                   {/* Navigation Footer */}
-                  <div className="mt-8 flex items-center justify-between border-t border-[#EDE5D8] pt-6">
+                  <div className="mt-8 flex items-center justify-between border-t border-[#F0E2C4] pt-6">
                     <button
                       onClick={() => setCurrentStep((prev) => Math.max(0, prev - 1))}
                       disabled={currentStep === 0}
-                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#8C7A6B] hover:text-[#4A2E1B] transition-colors disabled:opacity-40 disabled:hover:text-[#8C7A6B]"
+                      className="inline-flex items-center gap-1.5 text-xs font-semibold text-[#3E2723]/55 hover:text-[#3E2723] transition-colors disabled:opacity-40 disabled:hover:text-[#3E2723]/55"
                     >
                       <ArrowLeft className="h-4 w-4" /> Previous
                     </button>
@@ -337,7 +337,7 @@ export default function CrunchQuiz() {
                           setIsCompleted(true);
                         }
                       }}
-                      className="inline-flex items-center gap-2 rounded-full bg-[#4A2E1B] px-6 py-2.5 text-xs font-semibold text-[#FDFBF7] shadow-sm transition-all duration-300 hover:bg-[#B85D3B]"
+                      className="inline-flex items-center gap-2 rounded-full bg-[#3E2723] px-6 py-2.5 text-xs font-semibold text-[#FFF8E7] shadow-sm transition-all duration-300 hover:bg-[#F57C00]"
                     >
                       {currentStep === quizSteps.length - 1 ? "Calculate Matches" : "Next Step"}
                       <ArrowRight className="h-3.5 w-3.5" />
@@ -353,26 +353,26 @@ export default function CrunchQuiz() {
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 100, damping: 20 }}
             >
-              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#EDE5D8] pb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 border-b border-[#F0E2C4] pb-6">
                 <div>
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6E7D60]">
+                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#2E7D32]">
                     Personalized Recommendation
                   </span>
-                  <h3 className="font-heading mt-1 text-2xl sm:text-3xl font-bold text-[#4A2E1B]">
+                  <h3 className="font-heading mt-1 text-2xl sm:text-3xl font-bold text-[#3E2723]">
                     Your Perfect Crunch Lineup
                   </h3>
-                  <p className="mt-1 text-xs text-[#6B584C]">
-                    Curated for <strong className="font-medium text-[#B85D3B]">{answers.flavor}</strong> flavors, tailored for{" "}
-                    <strong className="font-medium text-[#B85D3B]">{answers.occasion}</strong> with{" "}
-                    <strong className="font-medium text-[#6E7D60]">{answers.diet}</strong> integrity.
+                  <p className="mt-1 text-xs text-[#3E2723]/70">
+                    Curated for <strong className="font-medium text-[#C2410C]">{answers.flavor}</strong> flavors, tailored for{" "}
+                    <strong className="font-medium text-[#C2410C]">{answers.occasion}</strong> with{" "}
+                    <strong className="font-medium text-[#2E7D32]">{answers.diet}</strong> integrity.
                   </p>
                 </div>
 
                 <button
                   onClick={handleReset}
-                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-[#EDE5D8] bg-[#FDFBF7] px-4 py-2 text-xs font-semibold text-[#4A2E1B] transition-colors hover:bg-[#EDE5D8]"
+                  className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-[#F0E2C4] bg-white px-4 py-2 text-xs font-semibold text-[#3E2723] transition-colors hover:bg-[#F0E2C4]"
                 >
-                  <RotateCcw className="h-3.5 w-3.5 text-[#B85D3B]" />
+                  <RotateCcw className="h-3.5 w-3.5 text-[#C2410C]" />
                   Retake Quiz
                 </button>
               </div>
@@ -382,23 +382,23 @@ export default function CrunchQuiz() {
                 {recommendations.map(({ product, score }, idx) => (
                   <div
                     key={product.id}
-                    className="group relative flex flex-col rounded-3xl border border-[#EDE5D8] bg-[#FDFBF7] p-5 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-[#B85D3B]/40"
+                    className="group relative flex flex-col rounded-3xl border border-[#F0E2C4] bg-white p-5 shadow-xs transition-all duration-300 hover:-translate-y-1 hover:shadow-md hover:border-[#F57C00]/40"
                   >
                     {/* Top Match Badge */}
                     <div className="flex items-center justify-between mb-3">
-                      <span className="rounded-full bg-[#B85D3B]/10 px-3 py-1 text-[11px] font-bold text-[#B85D3B] flex items-center gap-1">
+                      <span className="rounded-full bg-[#F57C00]/10 px-3 py-1 text-[11px] font-bold text-[#C2410C] flex items-center gap-1">
                         <Sparkles className="h-3 w-3" />
                         {score}% Match
                       </span>
                       {idx === 0 && (
-                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#6E7D60]">
+                        <span className="text-[10px] font-bold uppercase tracking-wider text-[#2E7D32]">
                           Top Choice
                         </span>
                       )}
                     </div>
 
                     {/* Image */}
-                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[#F7F3EB] mb-4">
+                    <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[#FFF3D6] mb-4">
                       <Image
                         src={product.image}
                         alt={product.name}
@@ -409,24 +409,24 @@ export default function CrunchQuiz() {
                     </div>
 
                     {/* Info */}
-                    <h4 className="font-heading text-lg font-bold text-[#4A2E1B] leading-tight">
-                      <Link href={`/products/${product.id}`} className="hover:text-[#B85D3B] transition-colors">
+                    <h4 className="font-heading text-lg font-bold text-[#3E2723] leading-tight">
+                      <Link href={`/products/${product.id}`} className="hover:text-[#C2410C] transition-colors">
                         {product.name}
                       </Link>
                     </h4>
-                    <p className="mt-1 text-xs text-[#6B584C] line-clamp-2">
+                    <p className="mt-1 text-xs text-[#3E2723]/70 line-clamp-2">
                       {product.shortDescription}
                     </p>
 
                     <div className="mt-3 flex items-center gap-1">
-                      <Star className="h-3.5 w-3.5 fill-[#B85D3B] text-[#B85D3B]" />
-                      <span className="text-xs font-bold text-[#4A2E1B]">{product.rating}</span>
-                      <span className="text-[11px] text-[#8C7A6B]">({product.reviewCount})</span>
+                      <Star className="h-3.5 w-3.5 fill-[#FFC107] text-[#C2410C]" />
+                      <span className="text-xs font-bold text-[#3E2723]">{product.rating}</span>
+                      <span className="text-[11px] text-[#3E2723]/55">({product.reviewCount})</span>
                     </div>
 
                     {/* Add to Basket Action */}
-                    <div className="mt-4 flex items-center justify-between border-t border-[#EDE5D8] pt-3">
-                      <span className="font-heading text-lg font-bold text-[#4A2E1B]">
+                    <div className="mt-4 flex items-center justify-between border-t border-[#F0E2C4] pt-3">
+                      <span className="font-heading text-lg font-bold text-[#3E2723]">
                         ${product.price.toFixed(2)}
                       </span>
 
@@ -436,7 +436,7 @@ export default function CrunchQuiz() {
                           setAddedId(product.id);
                           setTimeout(() => setAddedId(null), 2000);
                         }}
-                        className="inline-flex items-center gap-1.5 rounded-full bg-[#4A2E1B] px-4 py-2 text-xs font-semibold text-[#FDFBF7] transition-all hover:bg-[#B85D3B]"
+                        className="inline-flex items-center gap-1.5 rounded-full bg-[#3E2723] px-4 py-2 text-xs font-semibold text-[#FFF8E7] transition-all hover:bg-[#F57C00]"
                       >
                         {addedId === product.id ? (
                           <>
@@ -457,7 +457,7 @@ export default function CrunchQuiz() {
               <div className="mt-8 text-center">
                 <a
                   href="#shop"
-                  className="inline-flex items-center gap-2 text-xs font-semibold text-[#4A2E1B] hover:text-[#B85D3B] transition-colors"
+                  className="inline-flex items-center gap-2 text-xs font-semibold text-[#3E2723] hover:text-[#C2410C] transition-colors"
                 >
                   Explore All 12 Artisanal Varieties in The Pantry &rarr;
                 </a>

@@ -40,12 +40,12 @@ export default function OurStory() {
     <section
       ref={sectionRef}
       id="our-story"
-      className="relative overflow-hidden bg-[#FDFBF7] py-24 lg:py-32"
+      className="relative overflow-hidden bg-white py-24 lg:py-32"
     >
       {/* Background wash */}
       <div
         aria-hidden
-        className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-[#6E7D60]/5 blur-3xl"
+        className="pointer-events-none absolute right-0 top-0 h-[600px] w-[600px] rounded-full bg-[#2E7D32]/5 blur-3xl"
       />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -57,14 +57,14 @@ export default function OurStory() {
           transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#B85D3B]">
+          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C2410C]">
             Our Heritage
           </span>
-          <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#4A2E1B] sm:text-5xl">
+          <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#3E2723] sm:text-5xl">
             From Orchard to{" "}
-            <span className="italic font-normal text-[#B85D3B]">Your Pantry</span>
+            <span className="italic font-normal text-[#C2410C]">Your Pantry</span>
           </h2>
-          <p className="mt-5 text-base leading-relaxed text-[#6B584C]">
+          <p className="mt-5 text-base leading-relaxed text-[#3E2723]/70">
             Anjanadri isn't a factory — it's a philosophy. We believe the best snack is the simplest one:
             real fruit, nothing else. Here's how we got here and why it matters.
           </p>
@@ -77,7 +77,7 @@ export default function OurStory() {
             style={{ y: imageY }}
             className="relative hidden lg:block"
           >
-            <div className="relative aspect-[3/4] overflow-hidden rounded-[2.5rem] border border-[#EDE5D8] shadow-[0_30px_60px_-20px_rgba(74,46,27,0.12)]">
+            <div className="relative aspect-[3/4] overflow-hidden rounded-[2.5rem] border border-[#F0E2C4] shadow-[0_30px_60px_-20px_rgba(62,39,35,0.12)]">
               <Image
                 src="https://images.unsplash.com/photo-1464454709131-ffd692591ee5?w=800&q=80"
                 alt="Lush fruit orchard at golden hour"
@@ -85,7 +85,7 @@ export default function OurStory() {
                 sizes="45vw"
                 className="object-cover"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-[#4A2E1B]/40 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#3E2723]/40 via-transparent to-transparent" />
               <div className="absolute bottom-8 left-8 right-8">
                 <p
                   className="text-2xl text-white/90"
@@ -113,16 +113,16 @@ export default function OurStory() {
                   delay: i * 0.1,
                   ease: [0.16, 1, 0.3, 1],
                 }}
-                className="group flex gap-5 rounded-[1.5rem] border border-[#EDE5D8] bg-[#F7F3EB]/50 p-6 transition-all duration-400 hover:border-[#6E7D60]/40 hover:bg-[#FDFBF7] hover:shadow-[0_16px_32px_-12px_rgba(74,46,27,0.08)]"
+                className="group flex gap-5 rounded-[1.5rem] border border-[#F0E2C4] bg-[#FFF3D6]/50 p-6 transition-all duration-400 hover:border-[#2E7D32]/40 hover:bg-white hover:shadow-[0_16px_32px_-12px_rgba(62,39,35,0.08)]"
               >
-                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#6E7D60]/12 text-[#6E7D60] transition-all duration-300 group-hover:bg-[#4A2E1B] group-hover:text-[#FDFBF7]">
+                <div className="flex h-12 w-12 flex-shrink-0 items-center justify-center rounded-2xl bg-[#2E7D32]/12 text-[#2E7D32] transition-all duration-300 group-hover:bg-[#3E2723] group-hover:text-[#FFF8E7]">
                   <item.icon className="h-5 w-5" strokeWidth={1.8} />
                 </div>
                 <div>
-                  <h3 className="font-heading text-lg font-semibold text-[#4A2E1B]">
+                  <h3 className="font-heading text-lg font-semibold text-[#3E2723]">
                     {item.title}
                   </h3>
-                  <p className="mt-1.5 text-sm leading-relaxed text-[#6B584C]">
+                  <p className="mt-1.5 text-sm leading-relaxed text-[#3E2723]/70">
                     {item.text}
                   </p>
                 </div>

@@ -35,8 +35,8 @@
   --color-terracotta-soft: #FF9800;
   --color-sage: #2E7D32;
   --color-sage-soft: #66BB6A;
-  --font-sans: var(--font-poppins), var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  --font-heading: var(--font-poppins), var(--font-playfair), Georgia, sans-serif;
+  --font-sans: var(--font-inter), -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  --font-heading: var(--font-playfair), Georgia, "Times New Roman", serif;
   --font-script: var(--font-great-vibes), "Great Vibes", cursive;
 }
 

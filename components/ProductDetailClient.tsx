@@ -46,19 +46,19 @@ export default function ProductDetailClient({
     : null;
 
   return (
-    <div className="min-h-screen bg-[#FDFBF7] py-10 lg:py-16">
+    <div className="min-h-screen bg-white py-10 lg:py-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
-        <nav className="mb-8 flex items-center gap-2 text-sm text-[#8C7A6B]">
-          <Link href="/" className="hover:text-[#4A2E1B] transition-colors flex items-center gap-1">
+        <nav className="mb-8 flex items-center gap-2 text-sm text-[#3E2723]/55">
+          <Link href="/" className="hover:text-[#3E2723] transition-colors flex items-center gap-1">
             <ArrowLeft className="h-4 w-4" /> Home
           </Link>
           <span>/</span>
-          <Link href="/#shop" className="hover:text-[#4A2E1B] transition-colors">
+          <Link href="/#shop" className="hover:text-[#3E2723] transition-colors">
             Pantry
           </Link>
           <span>/</span>
-          <span className="font-medium text-[#4A2E1B] line-clamp-1">{product.name}</span>
+          <span className="font-medium text-[#3E2723] line-clamp-1">{product.name}</span>
         </nav>
 
         {/* Main Product Section */}
@@ -66,7 +66,7 @@ export default function ProductDetailClient({
           {/* Left Column: Image Gallery */}
           <div className="lg:col-span-7 flex flex-col gap-4">
             {/* Primary Main Image */}
-            <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] border border-[#EDE5D8] bg-[#F7F3EB] shadow-[0_15px_40px_rgba(74,46,27,0.06)]">
+            <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] border border-[#F0E2C4] bg-[#FFF3D6] shadow-[0_15px_40px_rgba(62,39,35,0.06)]">
               <Image
                 src={galleryImages[selectedImage] || product.image}
                 alt={product.name}
@@ -78,11 +78,11 @@ export default function ProductDetailClient({
 
               <div className="absolute left-6 top-6 flex flex-col gap-2">
                 {discount && (
-                  <span className="rounded-full bg-[#B85D3B] px-3.5 py-1 text-xs font-bold text-white shadow-md">
+                  <span className="rounded-full bg-[#F57C00] px-3.5 py-1 text-xs font-bold text-white shadow-md">
                     Save {discount}%
                   </span>
                 )}
-                <span className="rounded-full border border-white/40 bg-[#4A2E1B]/80 px-3.5 py-1 text-xs font-medium text-[#FDFBF7] backdrop-blur-md">
+                <span className="rounded-full border border-white/40 bg-[#3E2723]/80 px-3.5 py-1 text-xs font-medium text-[#FFF8E7] backdrop-blur-md">
                   100% Natural Harvest
                 </span>
               </div>
@@ -96,8 +96,8 @@ export default function ProductDetailClient({
                   onClick={() => setSelectedImage(idx)}
                   className={`relative h-24 w-24 flex-shrink-0 overflow-hidden rounded-2xl border-2 transition-all ${
                     selectedImage === idx
-                      ? "border-[#4A2E1B] shadow-md scale-102"
-                      : "border-[#EDE5D8] opacity-70 hover:opacity-100"
+                      ? "border-[#3E2723] shadow-md scale-102"
+                      : "border-[#F0E2C4] opacity-70 hover:opacity-100"
                   }`}
                 >
                   <Image
@@ -117,11 +117,11 @@ export default function ProductDetailClient({
 
           {/* Right Column: Details, Purchasing & Benefits */}
           <div className="lg:col-span-5 flex flex-col justify-start">
-            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#6E7D60]">
+            <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#2E7D32]">
               {product.category}
             </span>
 
-            <h1 className="font-heading mt-2.5 text-3xl font-bold leading-tight text-[#4A2E1B] sm:text-4xl">
+            <h1 className="font-heading mt-2.5 text-3xl font-bold leading-tight text-[#3E2723] sm:text-4xl">
               {product.name}
             </h1>
 
@@ -133,49 +133,49 @@ export default function ProductDetailClient({
                     key={i}
                     className={`h-4 w-4 ${
                       i < Math.round(product.rating)
-                        ? "fill-[#B85D3B] text-[#B85D3B]"
-                        : "fill-[#EDE5D8] text-[#EDE5D8]"
+                        ? "fill-[#FFC107] text-[#C2410C]"
+                        : "fill-[#F0E2C4] text-[#F0E2C4]"
                     }`}
                   />
                 ))}
               </div>
-              <span className="text-sm font-medium text-[#4A2E1B]">{product.rating}</span>
-              <span className="text-sm text-[#8C7A6B]">({product.reviewCount} verified reviews)</span>
+              <span className="text-sm font-medium text-[#3E2723]">{product.rating}</span>
+              <span className="text-sm text-[#3E2723]/55">({product.reviewCount} verified reviews)</span>
             </div>
 
             {/* Price Row */}
-            <div className="mt-6 flex items-baseline gap-3 border-y border-[#EDE5D8] py-4">
+            <div className="mt-6 flex items-baseline gap-3 border-y border-[#F0E2C4] py-4">
               <span className="font-heading text-3xl font-bold text-[#2E7D32]">
                 ₹{product.price.toFixed(0)}
               </span>
               {product.originalPrice && (
-                <span className="text-lg text-[#8C7A6B] line-through">
+                <span className="text-lg text-[#3E2723]/55 line-through">
                   ₹{product.originalPrice.toFixed(0)}
                 </span>
               )}
-              <span className="text-xs text-[#8C7A6B]">Net Wt: {product.weight}</span>
+              <span className="text-xs text-[#3E2723]/55">Net Wt: {product.weight}</span>
             </div>
 
             {/* Full Artisanal Description */}
             <div className="mt-6 space-y-3">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8C7A6B]">Description</h3>
-              <p className="text-base leading-relaxed text-[#6B584C]">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#3E2723]/55">Description</h3>
+              <p className="text-base leading-relaxed text-[#3E2723]/70">
                 {product.description}
               </p>
             </div>
 
             {/* Dietary Tags */}
             <div className="mt-6">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#8C7A6B] mb-2.5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#3E2723]/55 mb-2.5">
                 Certified Integrity
               </h3>
               <div className="flex flex-wrap gap-2">
                 {product.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center gap-1.5 rounded-full border border-[#EDE5D8] bg-[#F7F3EB] px-3.5 py-1 text-xs font-medium text-[#4A2E1B]"
+                    className="inline-flex items-center gap-1.5 rounded-full border border-[#F0E2C4] bg-[#FFF3D6] px-3.5 py-1 text-xs font-medium text-[#3E2723]"
                   >
-                    <Leaf className="h-3 w-3 text-[#6E7D60]" />
+                    <Leaf className="h-3 w-3 text-[#2E7D32]" />
                     {tag}
                   </span>
                 ))}
@@ -183,23 +183,23 @@ export default function ProductDetailClient({
             </div>
 
             {/* Quantity Selector & Add to Cart */}
-            <div className="mt-8 space-y-4 rounded-3xl border border-[#EDE5D8] bg-[#F7F3EB] p-6">
+            <div className="mt-8 space-y-4 rounded-3xl border border-[#F0E2C4] bg-[#FFF3D6] p-6">
               <div className="flex items-center justify-between">
-                <span className="text-sm font-medium text-[#4A2E1B]">Select Quantity</span>
-                <div className="flex items-center rounded-full border border-[#EDE5D8] bg-[#FDFBF7] px-3 py-1 shadow-sm">
+                <span className="text-sm font-medium text-[#3E2723]">Select Quantity</span>
+                <div className="flex items-center rounded-full border border-[#F0E2C4] bg-white px-3 py-1 shadow-sm">
                   <button
                     onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="p-1 text-[#8C7A6B] hover:text-[#4A2E1B] transition-colors"
+                    className="p-1 text-[#3E2723]/55 hover:text-[#3E2723] transition-colors"
                     aria-label="Decrease quantity"
                   >
                     <Minus className="h-4 w-4" />
                   </button>
-                  <span className="w-8 text-center font-heading text-sm font-bold text-[#4A2E1B]">
+                  <span className="w-8 text-center font-heading text-sm font-bold text-[#3E2723]">
                     {quantity}
                   </span>
                   <button
                     onClick={() => setQuantity(quantity + 1)}
-                    className="p-1 text-[#8C7A6B] hover:text-[#4A2E1B] transition-colors"
+                    className="p-1 text-[#3E2723]/55 hover:text-[#3E2723] transition-colors"
                     aria-label="Increase quantity"
                   >
                     <Plus className="h-4 w-4" />
@@ -210,7 +210,7 @@ export default function ProductDetailClient({
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
-                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-[#4A2E1B] py-4 text-base font-semibold text-[#FDFBF7] shadow-[0_12px_28px_-8px_rgba(74,46,27,0.35)] transition-all duration-300 hover:bg-[#B85D3B] disabled:cursor-not-allowed disabled:bg-[#EDE5D8] disabled:text-[#8C7A6B]"
+                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-[#3E2723] py-4 text-base font-semibold text-[#FFF8E7] shadow-[0_12px_28px_-8px_rgba(62,39,35,0.35)] transition-all duration-300 hover:bg-[#F57C00] disabled:cursor-not-allowed disabled:bg-[#F0E2C4] disabled:text-[#3E2723]/55"
               >
                 {addedNotice ? (
                   <>
@@ -226,7 +226,7 @@ export default function ProductDetailClient({
 
               <div className="pt-2 text-center">
                 <p
-                  className="text-xl text-[#B85D3B]"
+                  className="text-xl text-[#C2410C]"
                   style={{ fontFamily: "var(--font-script, cursive)" }}
                 >
                   Anjanadri — pure . healthy . delicious
@@ -235,17 +235,17 @@ export default function ProductDetailClient({
             </div>
 
             {/* Reassurances list */}
-            <div className="mt-8 space-y-3.5 border-t border-[#EDE5D8] pt-6 text-xs text-[#8C7A6B]">
+            <div className="mt-8 space-y-3.5 border-t border-[#F0E2C4] pt-6 text-xs text-[#3E2723]/55">
               <div className="flex items-center gap-3">
-                <Truck className="h-4 w-4 text-[#6E7D60]" />
+                <Truck className="h-4 w-4 text-[#2E7D32]" />
                 <span>Free delivery on orders over ₹499 • Mysore</span>
               </div>
               <div className="flex items-center gap-3">
-                <ShieldCheck className="h-4 w-4 text-[#6E7D60]" />
+                <ShieldCheck className="h-4 w-4 text-[#2E7D32]" />
                 <span>Handcrafted in small batches — 100% taste guarantee</span>
               </div>
               <div className="flex items-center gap-3">
-                <Sparkles className="h-4 w-4 text-[#6E7D60]" />
+                <Sparkles className="h-4 w-4 text-[#2E7D32]" />
                 <span>48-hour low-temperature dehydration preserves 97% of nutrients</span>
               </div>
             </div>
@@ -260,20 +260,20 @@ export default function ProductDetailClient({
 
         {/* Related Products Section */}
         {relatedProducts.length > 0 && (
-          <div className="mt-20 border-t border-[#EDE5D8] pt-16">
+          <div className="mt-20 border-t border-[#F0E2C4] pt-16">
 
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
               <div>
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#B85D3B]">
+                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C2410C]">
                   Pantry Complements
                 </span>
-                <h2 className="font-heading mt-2 text-3xl font-bold text-[#4A2E1B]">
+                <h2 className="font-heading mt-2 text-3xl font-bold text-[#3E2723]">
                   You May Also Enjoy
                 </h2>
               </div>
               <Link
                 href="/#shop"
-                className="text-sm font-semibold text-[#4A2E1B] hover:text-[#B85D3B] transition-colors"
+                className="text-sm font-semibold text-[#3E2723] hover:text-[#C2410C] transition-colors"
               >
                 View Complete Pantry &rarr;
               </Link>

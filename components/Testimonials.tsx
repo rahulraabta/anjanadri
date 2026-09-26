@@ -74,10 +74,10 @@ const cardVariants: Variants = {
 
 export default function Testimonials() {
   return (
-    <section id="reviews" className="relative overflow-hidden bg-[#F7F3EB] py-24 lg:py-32 border-t border-[#EDE5D8]">
+    <section id="reviews" className="relative overflow-hidden bg-[#FFF3D6] py-24 lg:py-32 border-t border-[#F0E2C4]">
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-40 top-1/4 h-[500px] w-[500px] rounded-full bg-[#B85D3B]/5 blur-3xl"
+        className="pointer-events-none absolute -right-40 top-1/4 h-[500px] w-[500px] rounded-full bg-[#F57C00]/5 blur-3xl"
       />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -89,13 +89,13 @@ export default function Testimonials() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#B85D3B]">
+          <span className="text-xs font-semibold uppercase tracking-[0.22em] text-[#C2410C]">
             What People Say
           </span>
-          <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#4A2E1B] sm:text-5xl">
+          <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#3E2723] sm:text-5xl">
             Trusted by Thousands
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-[#6B584C]">
+          <p className="mt-4 text-base leading-relaxed text-[#3E2723]/70">
             From nutritionists to busy parents, people who care about what they eat choose Anjanadri.
           </p>
         </motion.div>
@@ -112,10 +112,10 @@ export default function Testimonials() {
             <motion.div
               key={t.name}
               variants={cardVariants}
-              className="group flex flex-col rounded-[2rem] border border-[#EDE5D8] bg-[#FDFBF7] p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(74,46,27,0.08)]"
+              className="group flex flex-col rounded-[2rem] border border-[#F0E2C4] bg-white p-7 transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_40px_-15px_rgba(62,39,35,0.08)]"
             >
               {/* Quote icon */}
-              <Quote className="h-7 w-7 text-[#EDE5D8] mb-3" strokeWidth={1.5} />
+              <Quote className="h-7 w-7 text-[#F0E2C4] mb-3" strokeWidth={1.5} />
 
               {/* Star row */}
               <div className="flex gap-0.5 mb-4">
@@ -124,20 +124,20 @@ export default function Testimonials() {
                     key={i}
                     className={`h-4 w-4 ${
                       i < t.rating
-                        ? "fill-[#B85D3B] text-[#B85D3B]"
-                        : "fill-[#EDE5D8] text-[#EDE5D8]"
+                        ? "fill-[#FFC107] text-[#FFC107]"
+                        : "fill-[#F0E2C4] text-[#F0E2C4]"
                     }`}
                   />
                 ))}
               </div>
 
-              <p className="flex-1 text-sm leading-relaxed text-[#6B584C]">
+              <p className="flex-1 text-sm leading-relaxed text-[#3E2723]/70">
                 &ldquo;{t.text}&rdquo;
               </p>
 
               {/* Author */}
-              <div className="mt-5 flex items-center gap-3 border-t border-[#EDE5D8] pt-5">
-                <div className="h-10 w-10 overflow-hidden rounded-full bg-[#EDE5D8]">
+              <div className="mt-5 flex items-center gap-3 border-t border-[#F0E2C4] pt-5">
+                <div className="h-10 w-10 overflow-hidden rounded-full bg-[#F0E2C4]">
                   <Image
                     src={`https://images.unsplash.com/photo-${t.avatar}?w=80&h=80&fit=crop&q=80`}
                     alt={t.name}
@@ -147,8 +147,8 @@ export default function Testimonials() {
                   />
                 </div>
                 <div>
-                  <p className="text-sm font-semibold text-[#4A2E1B]">{t.name}</p>
-                  <p className="text-xs text-[#8C7A6B]">{t.role}</p>
+                  <p className="text-sm font-semibold text-[#3E2723]">{t.name}</p>
+                  <p className="text-xs text-[#3E2723]/55">{t.role}</p>
                 </div>
               </div>
             </motion.div>

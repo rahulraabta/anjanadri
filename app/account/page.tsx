@@ -56,52 +56,52 @@ export default function AccountPage() {
     return (
       <>
         <Navbar />
-        <main className="flex-1 bg-[#FDFBF7] py-24">
+        <main className="flex-1 bg-white py-24">
           <div className="mx-auto max-w-md px-6">
             <motion.div
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.6, ease: [0.16, 1, 0.3, 1] }}
-              className="rounded-[2rem] border border-[#EDE5D8] bg-[#F7F3EB] p-8 shadow-sm"
+              className="rounded-[2rem] border border-[#F0E2C4] bg-[#FFF3D6] p-8 shadow-sm"
             >
               <div className="flex items-center justify-center mb-6">
-                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#6E7D60]/15 text-[#6E7D60]">
+                <span className="flex h-14 w-14 items-center justify-center rounded-full bg-[#2E7D32]/15 text-[#2E7D32]">
                   <User className="h-6 w-6" />
                 </span>
               </div>
-              <h1 className="font-heading text-2xl font-bold text-[#4A2E1B] text-center">Your Account</h1>
-              <p className="mt-2 text-sm text-[#8C7A6B] text-center">Sign in to view orders and saved addresses</p>
+              <h1 className="font-heading text-2xl font-bold text-[#3E2723] text-center">Your Account</h1>
+              <p className="mt-2 text-sm text-[#3E2723]/55 text-center">Sign in to view orders and saved addresses</p>
               <form onSubmit={handleLogin} className="mt-8 space-y-4">
                 <div>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-[#8C7A6B]">Name</label>
-                  <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-[#EDE5D8] bg-[#FDFBF7] px-3.5 py-2.5">
-                    <User className="h-4 w-4 text-[#8C7A6B]" />
+                  <label className="text-xs font-semibold uppercase tracking-wider text-[#3E2723]/55">Name</label>
+                  <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-[#F0E2C4] bg-white px-3.5 py-2.5">
+                    <User className="h-4 w-4 text-[#3E2723]/55" />
                     <input
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Your name"
-                      className="flex-1 bg-transparent text-sm text-[#4A2E1B] placeholder:text-[#8C7A6B] focus:outline-none"
+                      className="flex-1 bg-transparent text-sm text-[#3E2723] placeholder:text-[#3E2723]/55 focus:outline-none"
                     />
                   </div>
                 </div>
                 <div>
-                  <label className="text-xs font-semibold uppercase tracking-wider text-[#8C7A6B]">Email</label>
-                  <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-[#EDE5D8] bg-[#FDFBF7] px-3.5 py-2.5">
-                    <Mail className="h-4 w-4 text-[#8C7A6B]" />
+                  <label className="text-xs font-semibold uppercase tracking-wider text-[#3E2723]/55">Email</label>
+                  <div className="mt-1.5 flex items-center gap-2 rounded-xl border border-[#F0E2C4] bg-white px-3.5 py-2.5">
+                    <Mail className="h-4 w-4 text-[#3E2723]/55" />
                     <input
                       type="email"
                       required
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="you@example.com"
-                      className="flex-1 bg-transparent text-sm text-[#4A2E1B] placeholder:text-[#8C7A6B] focus:outline-none"
+                      className="flex-1 bg-transparent text-sm text-[#3E2723] placeholder:text-[#3E2723]/55 focus:outline-none"
                     />
                   </div>
                 </div>
                 <button
                   type="submit"
-                  className="flex w-full items-center justify-center gap-2 rounded-full bg-[#4A2E1B] py-3 text-sm font-semibold text-[#FDFBF7] transition-all hover:bg-[#B85D3B]"
+                  className="flex w-full items-center justify-center gap-2 rounded-full bg-[#3E2723] py-3 text-sm font-semibold text-[#FFF8E7] transition-all hover:bg-[#F57C00]"
                 >
                   <LogIn className="h-4 w-4" /> Sign In
                 </button>
@@ -117,7 +117,7 @@ export default function AccountPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 bg-[#FDFBF7] py-16">
+      <main className="flex-1 bg-white py-16">
         <div className="mx-auto max-w-4xl px-6 lg:px-8">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -126,49 +126,49 @@ export default function AccountPage() {
           >
             <div className="flex items-center justify-between mb-10">
               <div>
-                <h1 className="font-heading text-3xl font-bold text-[#4A2E1B]">Welcome, {name || "Guest"}</h1>
-                <p className="mt-1 text-sm text-[#8C7A6B]">{email}</p>
+                <h1 className="font-heading text-3xl font-bold text-[#3E2723]">Welcome, {name || "Guest"}</h1>
+                <p className="mt-1 text-sm text-[#3E2723]/55">{email}</p>
               </div>
               <button
                 onClick={() => {
                   document.cookie = "anjanadri_session=; max-age=0; path=/";
                   setLoggedIn(false);
                 }}
-                className="rounded-full border border-[#EDE5D8] px-5 py-2 text-xs font-semibold text-[#4A2E1B] transition-all hover:bg-[#4A2E1B] hover:text-[#FDFBF7]"
+                className="rounded-full border border-[#F0E2C4] px-5 py-2 text-xs font-semibold text-[#3E2723] transition-all hover:bg-[#3E2723] hover:text-[#FFF8E7]"
               >
                 Sign Out
               </button>
             </div>
 
             <div className="grid gap-8 lg:grid-cols-2">
-              <div className="rounded-[2rem] border border-[#EDE5D8] bg-[#F7F3EB] p-8">
+              <div className="rounded-[2rem] border border-[#F0E2C4] bg-[#FFF3D6] p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <Package className="h-5 w-5 text-[#B85D3B]" />
-                  <h2 className="font-heading text-xl font-bold text-[#4A2E1B]">Order History</h2>
+                  <Package className="h-5 w-5 text-[#C2410C]" />
+                  <h2 className="font-heading text-xl font-bold text-[#3E2723]">Order History</h2>
                 </div>
                 {loading ? (
-                  <p className="text-sm text-[#8C7A6B]">Loading...</p>
+                  <p className="text-sm text-[#3E2723]/55">Loading...</p>
                 ) : orders.length === 0 ? (
                   <div className="text-center py-8">
-                    <ShoppingBag className="h-10 w-10 mx-auto text-[#EDE5D8] mb-3" />
-                    <p className="text-sm text-[#8C7A6B]">No orders yet</p>
+                    <ShoppingBag className="h-10 w-10 mx-auto text-[#F0E2C4] mb-3" />
+                    <p className="text-sm text-[#3E2723]/55">No orders yet</p>
                   </div>
                 ) : (
                   <div className="space-y-4">
                     {orders.map((order) => (
-                      <div key={order.id} className="rounded-xl border border-[#EDE5D8] bg-[#FDFBF7] p-4">
+                      <div key={order.id} className="rounded-xl border border-[#F0E2C4] bg-white p-4">
                         <div className="flex items-center justify-between">
-                          <span className="font-mono text-xs font-semibold text-[#4A2E1B]">{order.id}</span>
+                          <span className="font-mono text-xs font-semibold text-[#3E2723]">{order.id}</span>
                           <span className={`rounded-full px-2.5 py-0.5 text-[10px] font-semibold ${
-                            order.status === "fulfilled" ? "bg-[#6E7D60]/15 text-[#6E7D60]" : "bg-[#B85D3B]/15 text-[#B85D3B]"
+                            order.status === "fulfilled" ? "bg-[#2E7D32]/15 text-[#2E7D32]" : "bg-[#F57C00]/15 text-[#C2410C]"
                           }`}>
                             {order.status}
                           </span>
                         </div>
-                        <p className="mt-2 text-sm text-[#6B584C]">${parseFloat(order.total_amount).toFixed(2)}</p>
-                        <p className="text-xs text-[#8C7A6B]">{new Date(order.created_at).toLocaleDateString()}</p>
+                        <p className="mt-2 text-sm text-[#3E2723]/70">${parseFloat(order.total_amount).toFixed(2)}</p>
+                        <p className="text-xs text-[#3E2723]/55">{new Date(order.created_at).toLocaleDateString()}</p>
                         {order.items?.length > 0 && (
-                          <p className="mt-1 text-xs text-[#8C7A6B]">{order.items.length} item(s)</p>
+                          <p className="mt-1 text-xs text-[#3E2723]/55">{order.items.length} item(s)</p>
                         )}
                       </div>
                     ))}
@@ -176,13 +176,13 @@ export default function AccountPage() {
                 )}
               </div>
 
-              <div className="rounded-[2rem] border border-[#EDE5D8] bg-[#F7F3EB] p-8">
+              <div className="rounded-[2rem] border border-[#F0E2C4] bg-[#FFF3D6] p-8">
                 <div className="flex items-center gap-3 mb-6">
-                  <MapPin className="h-5 w-5 text-[#6E7D60]" />
-                  <h2 className="font-heading text-xl font-bold text-[#4A2E1B]">Saved Addresses</h2>
+                  <MapPin className="h-5 w-5 text-[#2E7D32]" />
+                  <h2 className="font-heading text-xl font-bold text-[#3E2723]">Saved Addresses</h2>
                 </div>
                 <div className="text-center py-8">
-                  <p className="text-sm text-[#8C7A6B]">Address management coming soon</p>
+                  <p className="text-sm text-[#3E2723]/55">Address management coming soon</p>
                 </div>
               </div>
             </div>

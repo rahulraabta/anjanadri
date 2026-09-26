@@ -15,7 +15,7 @@ function getIp(request: NextRequest): string {
   return "unknown";
 }
 
-export function middleware(request: NextRequest) {
+export function proxy(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   if (!pathname.startsWith("/api/")) {

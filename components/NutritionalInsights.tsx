@@ -45,28 +45,28 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
     : fallbackNutrients;
 
   return (
-    <div className="mt-8 rounded-[2.25rem] border border-[#EDE5D8] bg-[#F7F3EB] p-6 sm:p-8 shadow-xs">
+    <div className="mt-8 rounded-[2.25rem] border border-[#F0E2C4] bg-[#FFF3D6] p-6 sm:p-8 shadow-xs">
       {/* Header */}
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-[#EDE5D8] pb-5">
+      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-3 border-b border-[#F0E2C4] pb-5">
         <div>
           <div className="flex items-center gap-2">
-            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#B85D3B]/15 text-[#B85D3B]">
+            <span className="flex h-6 w-6 items-center justify-center rounded-full bg-[#F57C00]/15 text-[#C2410C]">
               <Sparkles className="h-3.5 w-3.5" />
             </span>
-            <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#4A2E1B]">
+            <h3 className="font-heading text-xl sm:text-2xl font-bold text-[#3E2723]">
               Intelligent Health Insights
             </h3>
           </div>
-          <p className="text-xs text-[#8C7A6B] mt-1">
+          <p className="text-xs text-[#3E2723]/55 mt-1">
             Tap or hover any nutrient tile to explore how 48h slow dehydration benefits your body
           </p>
         </div>
 
         <button
           onClick={() => setShowComparison(!showComparison)}
-          className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-[#EDE5D8] bg-[#FDFBF7] px-3.5 py-1.5 text-xs font-semibold text-[#4A2E1B] transition-colors hover:border-[#4A2E1B] hover:bg-[#4A2E1B] hover:text-[#FDFBF7]"
+          className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-[#F0E2C4] bg-white px-3.5 py-1.5 text-xs font-semibold text-[#3E2723] transition-colors hover:border-[#3E2723] hover:bg-[#3E2723] hover:text-[#FFF8E7]"
         >
-          <Award className="h-3.5 w-3.5 text-[#B85D3B]" />
+          <Award className="h-3.5 w-3.5 text-[#C2410C]" />
           <span>{showComparison ? "View Nutrients" : "Compare vs Standard Snacks"}</span>
         </button>
       </div>
@@ -84,20 +84,20 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
                   onMouseEnter={() => setActiveNutrient(item)}
                   className={`group relative cursor-pointer rounded-2xl border p-4 text-center transition-all duration-300 ${
                     isSelected
-                      ? "border-[#B85D3B] bg-[#FDFBF7] shadow-md ring-2 ring-[#B85D3B]/20 -translate-y-0.5"
-                      : "border-[#EDE5D8] bg-[#FDFBF7]/90 hover:border-[#6E7D60] hover:bg-[#FDFBF7] hover:shadow-xs"
+                      ? "border-[#F57C00] bg-white shadow-md ring-2 ring-[#F57C00]/20 -translate-y-0.5"
+                      : "border-[#F0E2C4] bg-white/90 hover:border-[#2E7D32] hover:bg-white hover:shadow-xs"
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[11px] text-[#8C7A6B] mb-1">
+                  <div className="flex items-center justify-between text-[11px] text-[#3E2723]/55 mb-1">
                     <span className="font-medium truncate">{item.name}</span>
                     <Info className={`h-3 w-3 flex-shrink-0 transition-colors ${
-                      isSelected ? "text-[#B85D3B]" : "text-[#8C7A6B] group-hover:text-[#4A2E1B]"
+                      isSelected ? "text-[#C2410C]" : "text-[#3E2723]/55 group-hover:text-[#3E2723]"
                     }`} />
                   </div>
-                  <p className="font-heading text-xl sm:text-2xl font-bold text-[#4A2E1B]">
+                  <p className="font-heading text-xl sm:text-2xl font-bold text-[#3E2723]">
                     {item.amount}
                   </p>
-                  <span className="mt-1 block text-[10px] font-semibold text-[#6E7D60] truncate">
+                  <span className="mt-1 block text-[10px] font-semibold text-[#2E7D32] truncate">
                     {item.benefit}
                   </span>
                 </div>
@@ -115,30 +115,30 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: -8 }}
                   transition={{ duration: 0.2 }}
-                  className="rounded-2xl border border-[#B85D3B]/30 bg-[#FDFBF7] p-4 shadow-sm"
+                  className="rounded-2xl border border-[#F57C00]/30 bg-white p-4 shadow-sm"
                 >
                   <div className="flex items-start gap-3">
-                    <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl bg-[#B85D3B]/10 text-[#B85D3B]">
+                    <span className="flex h-8 w-8 flex-shrink-0 items-center justify-center rounded-xl bg-[#F57C00]/10 text-[#C2410C]">
                       <Heart className="h-4 w-4" />
                     </span>
                     <div>
                       <div className="flex items-baseline gap-2">
-                        <h4 className="font-heading font-bold text-sm text-[#4A2E1B]">
+                        <h4 className="font-heading font-bold text-sm text-[#3E2723]">
                           {activeNutrient.name} ({activeNutrient.amount}):
                         </h4>
-                        <span className="text-xs font-semibold text-[#B85D3B]">
+                        <span className="text-xs font-semibold text-[#C2410C]">
                           {activeNutrient.benefit}
                         </span>
                       </div>
-                      <p className="mt-1 text-xs text-[#6B584C] leading-relaxed">
+                      <p className="mt-1 text-xs text-[#3E2723]/70 leading-relaxed">
                         {activeNutrient.description}
                       </p>
                     </div>
                   </div>
                 </motion.div>
               ) : (
-                <div className="flex items-center gap-2 rounded-2xl border border-dashed border-[#EDE5D8] p-4 text-xs text-[#8C7A6B] bg-[#FDFBF7]/60">
-                  <Info className="h-4 w-4 text-[#B85D3B] flex-shrink-0" />
+                <div className="flex items-center gap-2 rounded-2xl border border-dashed border-[#F0E2C4] p-4 text-xs text-[#3E2723]/55 bg-white/60">
+                  <Info className="h-4 w-4 text-[#C2410C] flex-shrink-0" />
                   <span>
                     Hover or click any metric above to see clinically grounded explanations of why this whole food ingredient supports long-term vitality.
                   </span>
@@ -152,51 +152,51 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
         <motion.div
           initial={{ opacity: 0, y: 8 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mt-6 rounded-2xl border border-[#EDE5D8] bg-[#FDFBF7] p-5"
+          className="mt-6 rounded-2xl border border-[#F0E2C4] bg-white p-5"
         >
-          <div className="grid grid-cols-3 gap-2 text-xs font-bold text-[#4A2E1B] border-b border-[#EDE5D8] pb-3">
+          <div className="grid grid-cols-3 gap-2 text-xs font-bold text-[#3E2723] border-b border-[#F0E2C4] pb-3">
             <span>Metric</span>
-            <span className="text-[#B85D3B]">Anjanadri Crisps</span>
-            <span className="text-[#8C7A6B]">Commercial Chips</span>
+            <span className="text-[#C2410C]">Anjanadri Crisps</span>
+            <span className="text-[#3E2723]/55">Commercial Chips</span>
           </div>
 
-          <div className="divide-y divide-[#EDE5D8] text-xs">
+          <div className="divide-y divide-[#F0E2C4] text-xs">
             <div className="grid grid-cols-3 gap-2 py-3 items-center">
-              <span className="font-medium text-[#4A2E1B]">Added Sugars / Syrups</span>
-              <span className="font-bold text-[#6E7D60] flex items-center gap-1">
-                <Check className="h-3.5 w-3.5 text-[#6E7D60]" /> 0.0 g (None)
+              <span className="font-medium text-[#3E2723]">Added Sugars / Syrups</span>
+              <span className="font-bold text-[#2E7D32] flex items-center gap-1">
+                <Check className="h-3.5 w-3.5 text-[#2E7D32]" /> 0.0 g (None)
               </span>
-              <span className="text-[#8C7A6B]">12g - 18g Added Cane/Corn</span>
+              <span className="text-[#3E2723]/55">12g - 18g Added Cane/Corn</span>
             </div>
 
             <div className="grid grid-cols-3 gap-2 py-3 items-center">
-              <span className="font-medium text-[#4A2E1B]">Nutrient Retention</span>
-              <span className="font-bold text-[#B85D3B]">97% (42°C slow-dry)</span>
-              <span className="text-[#8C7A6B]">&lt; 30% (high-temp fry)</span>
+              <span className="font-medium text-[#3E2723]">Nutrient Retention</span>
+              <span className="font-bold text-[#C2410C]">97% (42°C slow-dry)</span>
+              <span className="text-[#3E2723]/55">&lt; 30% (high-temp fry)</span>
             </div>
 
             <div className="grid grid-cols-3 gap-2 py-3 items-center">
-              <span className="font-medium text-[#4A2E1B]">Industrial Seed Oils</span>
-              <span className="font-bold text-[#6E7D60] flex items-center gap-1">
-                <Check className="h-3.5 w-3.5 text-[#6E7D60]" /> Zero (Oil-Free or Avocado)
+              <span className="font-medium text-[#3E2723]">Industrial Seed Oils</span>
+              <span className="font-bold text-[#2E7D32] flex items-center gap-1">
+                <Check className="h-3.5 w-3.5 text-[#2E7D32]" /> Zero (Oil-Free or Avocado)
               </span>
-              <span className="text-[#8C7A6B]">Palm / Canola High-Heat Blend</span>
+              <span className="text-[#3E2723]/55">Palm / Canola High-Heat Blend</span>
             </div>
 
             <div className="grid grid-cols-3 gap-2 py-3 items-center">
-              <span className="font-medium text-[#4A2E1B]">Preservatives / Sulfites</span>
-              <span className="font-bold text-[#6E7D60] flex items-center gap-1">
-                <Check className="h-3.5 w-3.5 text-[#6E7D60]" /> 100% Free
+              <span className="font-medium text-[#3E2723]">Preservatives / Sulfites</span>
+              <span className="font-bold text-[#2E7D32] flex items-center gap-1">
+                <Check className="h-3.5 w-3.5 text-[#2E7D32]" /> 100% Free
               </span>
-              <span className="text-[#8C7A6B]">Sulfur Dioxide &amp; BHT</span>
+              <span className="text-[#3E2723]/55">Sulfur Dioxide &amp; BHT</span>
             </div>
           </div>
         </motion.div>
       )}
 
       {/* Footer Promise Note */}
-      <div className="mt-4 flex items-center gap-2 text-[11px] text-[#8C7A6B]">
-        <ShieldCheck className="h-3.5 w-3.5 text-[#6E7D60] flex-shrink-0" />
+      <div className="mt-4 flex items-center gap-2 text-[11px] text-[#3E2723]/55">
+        <ShieldCheck className="h-3.5 w-3.5 text-[#2E7D32] flex-shrink-0" />
         <span>
           Cold-crafted at low temperatures below 42°C to prevent thermal destruction of enzymes and antioxidants.
         </span>

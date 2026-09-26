@@ -12,7 +12,7 @@ export default function QuizPage() {
   return (
     <>
       <Navbar />
-      <main className="flex-1 min-h-[80vh] bg-[#FDFBF7]">
+      <main className="flex-1 min-h-[80vh] bg-white">
         <CrunchQuiz />
       </main>
       <Footer />

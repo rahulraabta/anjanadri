@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Playfair_Display, Inter, Great_Vibes, Poppins } from "next/font/google";
+import { Playfair_Display, Inter, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
@@ -14,13 +14,6 @@ const playfair = Playfair_Display({
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
-  display: "swap",
-});
-
-const poppins = Poppins({
-  variable: "--font-poppins",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
   display: "swap",
 });
 
@@ -77,7 +70,7 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${playfair.variable} ${inter.variable} ${poppins.variable} ${greatVibes.variable} h-full antialiased`}
+      className={`${playfair.variable} ${inter.variable} ${greatVibes.variable} h-full antialiased`}
     >
       <body className="flex min-h-full flex-col bg-[#FFF8E7] font-sans text-[#3E2723]">
         <CartProvider>

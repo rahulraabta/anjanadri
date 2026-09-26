@@ -51,15 +51,15 @@ const reasons = [
 
 export default function WhyChooseUs() {
   return (
-    <section id="why" className="relative overflow-hidden bg-[#FDFBF7] py-24 lg:py-32">
+    <section id="why" className="relative overflow-hidden bg-white py-24 lg:py-32">
       {/* Background Soft Glows */}
       <div
         aria-hidden
-        className="pointer-events-none absolute -left-40 top-1/3 h-[500px] w-[500px] rounded-full bg-[#6E7D60]/6 blur-3xl"
+        className="pointer-events-none absolute -left-40 top-1/3 h-[500px] w-[500px] rounded-full bg-[#2E7D32]/6 blur-3xl"
       />
       <div
         aria-hidden
-        className="pointer-events-none absolute -right-32 bottom-10 h-[400px] w-[400px] rounded-full bg-[#B85D3B]/6 blur-3xl"
+        className="pointer-events-none absolute -right-32 bottom-10 h-[400px] w-[400px] rounded-full bg-[#F57C00]/6 blur-3xl"
       />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
@@ -70,13 +70,13 @@ export default function WhyChooseUs() {
           transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
           className="mx-auto max-w-2xl text-center"
         >
-          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#B85D3B]">
+          <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#C2410C]">
             The Anjanadri Difference
           </span>
-          <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#4A2E1B] sm:text-5xl">
+          <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#3E2723] sm:text-5xl">
             Pure. Healthy. Delicious.
           </h2>
-          <p className="mt-4 text-base leading-relaxed text-[#6B584C]">
+          <p className="mt-4 text-base leading-relaxed text-[#3E2723]/70">
             We obsess over every harvest—from fertile orchard soil to sealed craft pouch—so you
             experience the unmistakable crunch of nature at its absolute finest.
           </p>
@@ -94,15 +94,15 @@ export default function WhyChooseUs() {
                 delay: (i % 3) * 0.1,
                 ease: [0.16, 1, 0.3, 1],
               }}
-              className="group rounded-[2rem] border border-[#EDE5D8] bg-[#F7F3EB]/60 p-8 transition-all duration-400 hover:-translate-y-1 hover:border-[#6E7D60]/40 hover:bg-[#FDFBF7] hover:shadow-[0_20px_40px_-15px_rgba(74,46,27,0.08)]"
+              className="group rounded-[2rem] border border-[#F0E2C4] bg-[#FFF3D6]/60 p-8 transition-all duration-400 hover:-translate-y-1 hover:border-[#2E7D32]/40 hover:bg-white hover:shadow-[0_20px_40px_-15px_rgba(62,39,35,0.08)]"
             >
-              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#6E7D60]/12 text-[#6E7D60] transition-all duration-300 group-hover:bg-[#4A2E1B] group-hover:text-[#FDFBF7]">
+              <div className="flex h-14 w-14 items-center justify-center rounded-2xl bg-[#2E7D32]/12 text-[#2E7D32] transition-all duration-300 group-hover:bg-[#3E2723] group-hover:text-[#FFF8E7]">
                 <reason.icon className="h-6 w-6" strokeWidth={1.8} />
               </div>
-              <h3 className="font-heading mt-6 text-xl font-semibold text-[#4A2E1B]">
+              <h3 className="font-heading mt-6 text-xl font-semibold text-[#3E2723]">
                 {reason.title}
               </h3>
-              <p className="mt-2.5 text-sm leading-relaxed text-[#6B584C]">
+              <p className="mt-2.5 text-sm leading-relaxed text-[#3E2723]/70">
                 {reason.description}
               </p>
             </motion.div>

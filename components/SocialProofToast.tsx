@@ -117,10 +117,10 @@ export default function SocialProofToast() {
             transition={{ type: "spring", stiffness: 140, damping: 20 }}
             onMouseEnter={() => setIsHovered(true)}
             onMouseLeave={() => setIsHovered(false)}
-            className="pointer-events-auto relative flex items-center gap-3.5 rounded-2xl border border-[#EDE5D8] bg-[#FDFBF7]/95 p-3.5 pr-8 shadow-[0_12px_32px_rgba(74,46,27,0.14)] backdrop-blur-md"
+            className="pointer-events-auto relative flex items-center gap-3.5 rounded-2xl border border-[#F0E2C4] bg-white/95 p-3.5 pr-8 shadow-[0_12px_32px_rgba(62,39,35,0.14)] backdrop-blur-md"
           >
             {/* Thumbnail */}
-            <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border border-[#EDE5D8] bg-[#F7F3EB]">
+            <div className="relative h-12 w-12 flex-shrink-0 overflow-hidden rounded-xl border border-[#F0E2C4] bg-[#FFF3D6]">
               <Image
                 src={current.productImage}
                 alt={current.productName}
@@ -132,26 +132,26 @@ export default function SocialProofToast() {
 
             {/* Content */}
             <div className="flex flex-col text-left">
-              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#4A2E1B]">
+              <div className="flex items-center gap-1.5 text-[11px] font-semibold text-[#3E2723]">
                 <span>{current.name}</span>
-                <span className="text-[#8C7A6B]">&bull;</span>
-                <span className="flex items-center gap-0.5 text-[#6E7D60]">
+                <span className="text-[#3E2723]/55">&bull;</span>
+                <span className="flex items-center gap-0.5 text-[#2E7D32]">
                   <MapPin className="h-2.5 w-2.5" />
                   {current.city}
                 </span>
               </div>
 
-              <p className="text-xs text-[#6B584C] font-medium leading-tight mt-0.5">
+              <p className="text-xs text-[#3E2723]/70 font-medium leading-tight mt-0.5">
                 Purchased{" "}
-                <span className="font-semibold text-[#B85D3B]">
+                <span className="font-semibold text-[#C2410C]">
                   {current.quantity ? `${current.quantity}x ` : ""}
                   {current.productName}
                 </span>
               </p>
 
-              <div className="mt-1 flex items-center gap-2 text-[10px] text-[#8C7A6B]">
+              <div className="mt-1 flex items-center gap-2 text-[10px] text-[#3E2723]/55">
                 <span>{current.timeAgo}</span>
-                <span className="inline-flex items-center gap-0.5 text-[#6E7D60] font-medium">
+                <span className="inline-flex items-center gap-0.5 text-[#2E7D32] font-medium">
                   <CheckCircle2 className="h-2.5 w-2.5" /> Verified Order
                 </span>
               </div>
@@ -161,7 +161,7 @@ export default function SocialProofToast() {
             <button
               onClick={() => setIsDismissed(true)}
               aria-label="Dismiss notification"
-              className="absolute right-2 top-2 p-1 text-[#8C7A6B] hover:text-[#4A2E1B] transition-colors rounded-full"
+              className="absolute right-2 top-2 p-1 text-[#3E2723]/55 hover:text-[#3E2723] transition-colors rounded-full"
             >
               <X className="h-3 w-3" />
             </button>
