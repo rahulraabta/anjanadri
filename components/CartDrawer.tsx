@@ -1,8 +1,7 @@
 "use client";
 
-import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight, CheckCircle2, Sparkles, Loader2 } from "lucide-react";
+import { X, Plus, Minus, Trash2, ShoppingBag, MessageCircle, Sparkles } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
@@ -10,56 +9,43 @@ import { products as fallbackProducts } from "@/data/products";
 
 const FREE_SHIPPING_THRESHOLD = 499;
 
+// WhatsApp is the final checkout destination — no payment gateway, no DB
+// order tracking. Number defaults to the business contact published in the
+// footer; override with NEXT_PUBLIC_WHATSAPP_NUMBER (digits only, with
+// country code, e.g. "919880106885").
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919880106885";
+
 export default function CartDrawer() {
   const { cart, isCartOpen, closeCart, addToCart, updateQuantity, removeFromCart, clearCart, subtotal, totalItems } = useCart();
-  const [isCheckingOut, setIsCheckingOut] = useState(false);
-  const [orderSuccess, setOrderSuccess] = useState<string | null>(null);
-  const [userEmail, setUserEmail] = useState("");
 
   const freeShippingDiff = FREE_SHIPPING_THRESHOLD - subtotal;
   const freeShippingProgress = Math.min(100, Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
-  const handleCheckout = async (e: React.FormEvent) => {
+  const handleCheckout = (e: React.FormEvent) => {
     e.preventDefault();
     if (cart.length === 0) return;
 
-    setIsCheckingOut(true);
-    try {
-      const response = await fetch("/api/checkout", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          userEmail: userEmail || "customer@anjanadri.com",
-          items: cart.map((item) => ({
-            id: item.product.id,
-            name: item.product.name,
-            price: item.product.price,
-            quantity: item.quantity,
-          })),
-          totalAmount: subtotal,
-        }),
-      });
+    const lines = cart.map(
+      (item) =>
+        `\u2022 ${item.product.name} x ${item.quantity} — ₹${(item.product.price * item.quantity).toFixed(0)}`
+    );
+    const message = [
+      "Hello Anjanadri! I would like to place an order:",
+      "",
+      ...lines,
+      "",
+      `Total: ₹${subtotal.toFixed(0)}`,
+      "",
+      "Name:",
+      "Delivery address:",
+    ].join("\n");
 
-      const data = await response.json();
-      if (data.success) {
-        setOrderSuccess(data.orderId);
-        clearCart();
-      } else {
-        alert("Checkout notice: " + (data.error || "Please try again."));
-      }
-    } catch (err) {
-      console.error("Checkout request failed:", err);
-      // Fallback order ID
-      const fallbackId = `ORD-${Date.now().toString(36).toUpperCase()}`;
-      setOrderSuccess(fallbackId);
-      clearCart();
-    } finally {
-      setIsCheckingOut(false);
-    }
-  };
-
-  const handleResetAfterSuccess = () => {
-    setOrderSuccess(null);
+    window.open(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
+      "_blank",
+      "noopener"
+    );
+    clearCart();
     closeCart();
   };
 
@@ -134,37 +120,7 @@ export default function CartDrawer() {
 
             {/* Drawer Body */}
             <div className="flex-1 overflow-y-auto px-6 py-4">
-              {orderSuccess ? (
-                /* Order Confirmation Modal Inside Drawer */
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.95 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  className="flex flex-col items-center justify-center py-10 text-center"
-                >
-                  <div className="flex h-16 w-16 items-center justify-center rounded-full bg-[#2E7D32]/20 text-[#2E7D32]">
-                    <CheckCircle2 className="h-10 w-10" />
-                  </div>
-                  <h3 className="font-heading mt-5 text-2xl font-bold text-[#3E2723]">
-                    Thank You!
-                  </h3>
-                  <p className="mt-2 text-sm text-[#3E2723]/55">
-                    Your Anjanadri harvest has been confirmed.
-                  </p>
-                  <div className="mt-6 rounded-2xl border border-[#F0E2C4] bg-[#FFF3D6] p-4 text-center">
-                    <p className="text-xs uppercase tracking-wider text-[#3E2723]/55">Order Number</p>
-                    <p className="mt-1 font-mono text-sm font-semibold text-[#3E2723]">{orderSuccess}</p>
-                  </div>
-                  <p className="mt-4 text-xs text-[#3E2723]/55">
-                    We’ve recorded your order in our Neon PostgreSQL database.
-                  </p>
-                  <button
-                    onClick={handleResetAfterSuccess}
-                    className="mt-8 inline-flex items-center gap-2 rounded-full bg-[#3E2723] px-8 py-3.5 text-sm font-semibold text-[#FFF8E7] shadow-md transition-all hover:bg-[#F57C00]"
-                  >
-                    Continue Exploring
-                  </button>
-                </motion.div>
-              ) : cart.length === 0 ? (
+              {cart.length === 0 ? (
                 /* Empty Cart State */
                 <div className="flex h-full flex-col items-center justify-center py-12 text-center">
                   <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FFF3D6] text-[#3E2723]/55">
@@ -254,7 +210,7 @@ export default function CartDrawer() {
               )}
 
               {/* Frequently Bought Together / Smart Cart Recommendations */}
-              {!orderSuccess && cart.length > 0 && (
+              {cart.length > 0 && (
                 <div className="mt-6 border-t border-[#F0E2C4] pt-5">
                   <div className="flex items-center gap-1.5 text-xs font-semibold text-[#3E2723] mb-3">
                     <Sparkles className="h-3.5 w-3.5 text-[#C2410C]" />
@@ -316,7 +272,7 @@ export default function CartDrawer() {
 
 
             {/* Footer / Checkout */}
-            {!orderSuccess && cart.length > 0 && (
+            {cart.length > 0 && (
               <div className="border-t border-[#F0E2C4] bg-[#FFF3D6] p-6 space-y-4">
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-sm text-[#3E2723]/55">
@@ -333,38 +289,18 @@ export default function CartDrawer() {
                   </div>
                 </div>
 
-                <form onSubmit={handleCheckout} className="space-y-3">
-                  <div>
-                    <input
-                      type="email"
-                      value={userEmail}
-                      onChange={(e) => setUserEmail(e.target.value)}
-                      placeholder="Enter email for receipt"
-                      className="w-full rounded-xl border border-[#F0E2C4] bg-white px-4 py-3 text-base text-[#3E2723] placeholder:text-[#3E2723]/55 focus:border-[#3E2723] focus:outline-none"
-                    />
-                  </div>
-
+                <form onSubmit={handleCheckout}>
                   <button
                     type="submit"
-                    disabled={isCheckingOut}
-                    className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#3E2723] py-3.5 text-base font-semibold text-[#FFF8E7] shadow-lg transition-all duration-300 hover:bg-[#F57C00] disabled:opacity-70"
+                    className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#2E7D32] py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:bg-[#1B5E20]"
                   >
-                    {isCheckingOut ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Securing Order...
-                      </>
-                    ) : (
-                      <>
-                        Checkout Now
-                        <ArrowRight className="h-4 w-4" />
-                      </>
-                    )}
+                    <MessageCircle className="h-5 w-5" />
+                    Place Order on WhatsApp
                   </button>
                 </form>
 
                 <p className="text-center text-[11px] text-[#3E2723]/55">
-                  🔒 Secure checkout • Free shipping over ₹499
+                  You&apos;ll confirm your order in WhatsApp • Free shipping over ₹499
                 </p>
               </div>
             )}

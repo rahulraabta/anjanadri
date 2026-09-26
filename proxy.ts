@@ -3,7 +3,6 @@ import type { NextRequest } from "next/server";
 
 const RATE_LIMIT_WINDOW_MS = 15 * 60 * 1000;
 const RATE_LIMIT_MAX_REQUESTS = 100;
-const CHECKOUT_RATE_LIMIT_MAX = 20;
 
 const ipRequestCounts = new Map<string, { count: number; resetAt: number }>();
 
@@ -24,9 +23,8 @@ export function proxy(request: NextRequest) {
 
   const ip = getIp(request);
   const now = Date.now();
-  const isCheckout = pathname.startsWith("/api/checkout");
-  const maxRequests = isCheckout ? CHECKOUT_RATE_LIMIT_MAX : RATE_LIMIT_MAX_REQUESTS;
-  const key = `${ip}:${pathname.startsWith("/api/checkout") ? "checkout" : "general"}`;
+  const maxRequests = RATE_LIMIT_MAX_REQUESTS;
+  const key = `${ip}:general`;
 
   let record = ipRequestCounts.get(key);
 
