@@ -8,6 +8,10 @@ import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { products } from "@/data/products";
 
+// Motion-enhanced Next Link so the primary CTA keeps SPA navigation
+// while supporting tap feedback via whileTap.
+const MotionLink = motion(Link);
+
 export default function Hero() {
   const { addToCart } = useCart();
   const [justAdded, setJustAdded] = useState(false);
@@ -35,7 +39,7 @@ export default function Hero() {
         className="pointer-events-none absolute -bottom-28 -left-24 h-[380px] w-[380px] rounded-full bg-[#2E7D32]/10 blur-3xl"
       />
 
-      <div className="relative mx-auto w-full max-w-7xl px-4 py-8 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
+      <div className="relative mx-auto w-full max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
           {/* Image: first on mobile and full-bleed, right column on desktop */}
           <motion.div
@@ -78,9 +82,9 @@ export default function Hero() {
 
           {/* Copy */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ type: "spring", stiffness: 110, damping: 18, delay: 0.1 }}
+            transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
             className="order-2 flex w-full flex-col items-start lg:order-1"
           >
             <span className="inline-flex items-center gap-2 rounded-full border border-[#2E7D32]/20 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#2E7D32]">
@@ -88,19 +92,19 @@ export default function Hero() {
               Flagship Product
             </span>
 
-            <h1 className="font-heading mt-4 text-4xl font-bold leading-tight tracking-tight text-[#2E7D32] sm:text-5xl">
+            <h1 className="font-heading mt-4 text-3xl font-bold leading-[1.15] tracking-tight text-[#2E7D32] sm:text-5xl sm:leading-tight">
               Our Best-Selling Sticky Banana
             </h1>
             <p className="mt-3 text-lg font-semibold text-[#C2410C] sm:text-xl">
               100% Natural, No Preservatives, Dehydrated &amp; Healthy
             </p>
-            <p className="mt-3 max-w-lg text-base leading-relaxed text-[#3E2723]/80">
+            <p className="mt-3 max-w-lg text-base leading-relaxed text-[#3E2723]/80 line-clamp-2 sm:line-clamp-none">
               Naturally sweet Mysore bananas, slow dehydrated to a chewy golden bite and
               topped with nuts and seeds. No sugar, no chemicals — just farm-fresh
               goodness in every pack.
             </p>
 
-            <div className="mt-5 flex flex-wrap items-baseline gap-3">
+            <div className="mb-8 mt-6 flex flex-wrap items-baseline gap-3">
               <span className="font-heading text-4xl font-bold text-[#3E2723]">
                 &#8377;{stickyBanana.price}
               </span>
@@ -114,17 +118,19 @@ export default function Hero() {
               </span>
             </div>
 
-            <div className="mt-6 flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
-              <Link
+            <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
+              <MotionLink
                 href={`/products/${stickyBanana.id}`}
-                className="inline-flex min-h-12 w-full items-center justify-center rounded-full bg-[#F57C00] px-8 py-3.5 text-base font-bold text-white shadow-[0_10px_24px_-6px_rgba(245,124,0,0.5)] transition-all hover:-translate-y-0.5 hover:bg-[#E65100] active:translate-y-0 sm:w-auto"
+                whileTap={{ scale: 0.97 }}
+                className="inline-flex h-14 w-full items-center justify-center rounded-full bg-[#F57C00] px-8 py-3.5 text-base font-bold text-white shadow-[0_10px_24px_-6px_rgba(245,124,0,0.5)] transition-all hover:-translate-y-0.5 hover:bg-[#E65100] active:translate-y-0 active:scale-[0.98] sm:w-auto"
               >
                 Shop Now
-              </Link>
-              <button
+              </MotionLink>
+              <motion.button
                 type="button"
                 onClick={handleAdd}
-                className={`inline-flex min-h-12 w-full items-center justify-center gap-2 rounded-full border-2 px-7 py-3.5 text-base font-bold transition-all sm:w-auto ${
+                whileTap={{ scale: 0.97 }}
+                className={`inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border-2 px-7 py-3.5 text-base font-bold transition-all active:scale-[0.98] sm:w-auto ${
                   justAdded
                     ? "border-[#2E7D32] bg-[#2E7D32] text-white"
                     : "border-[#2E7D32] text-[#2E7D32] hover:bg-[#2E7D32] hover:text-white"
@@ -132,10 +138,10 @@ export default function Hero() {
               >
                 {justAdded ? <Check className="h-5 w-5" /> : <ShoppingBag className="h-5 w-5" />}
                 {justAdded ? "Added to Cart" : "Add to Cart"}
-              </button>
+              </motion.button>
             </div>
 
-            <div className="mt-6 flex flex-wrap items-center gap-x-5 gap-y-2 text-xs font-semibold text-[#3E2723]/70">
+            <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 pt-6 text-xs font-semibold text-[#3E2723]/70 lg:justify-start lg:px-0">
               <span className="flex items-center gap-1.5">
                 <Sun className="h-4 w-4 text-[#F57C00]" /> Dehydrated
               </span>

@@ -67,7 +67,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         </button>
       </div>
 
-      <div className="flex flex-1 flex-col p-4 sm:p-5">
+      <div className="flex flex-1 flex-col p-5">
         <div className="flex items-center gap-1">
           {Array.from({ length: 5 }).map((_, i) => (
             <Star
@@ -82,12 +82,12 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           <span className="ml-1 text-xs font-semibold text-[#3E2723]/70">{product.rating}</span>
         </div>
 
-        <h3 className="font-heading mt-2 line-clamp-2 min-h-[3.5rem] text-lg font-bold leading-snug text-[#2E7D32]">
+        <h3 className="font-heading mt-2 line-clamp-2 min-h-[3.5rem] text-lg font-semibold leading-snug text-[#2E7D32]">
           <Link href={`/products/${product.id}`}>{product.name}</Link>
         </h3>
 
         <div className="mt-1 flex items-baseline gap-2">
-          <p className="text-xl font-semibold text-[#F57C00]">&#8377;{product.price}</p>
+          <p className="text-xl font-bold text-[#F57C00]">&#8377;{product.price}</p>
           {product.originalPrice && (
             <p className="text-sm text-[#3E2723]/45 line-through">
               &#8377;{product.originalPrice}
@@ -95,7 +95,7 @@ export default function ProductCard({ product, index }: ProductCardProps) {
           )}
         </div>
 
-        <p className="mt-1 flex-1 text-sm leading-relaxed text-[#3E2723]/70 line-clamp-2">
+        <p className="mt-1 flex-1 text-sm leading-relaxed text-[#3E2723]/60 line-clamp-2">
           {product.shortDescription}
         </p>
       </div>
