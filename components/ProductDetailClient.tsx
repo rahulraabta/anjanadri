@@ -164,6 +164,27 @@ export default function ProductDetailClient({
                 </div>
               </div>
 
+              <ul className="mb-4 space-y-1.5 text-sm text-[#3E2723]/80">
+                <li className="flex items-center gap-2">
+                  <svg className="h-4 w-4 text-[#2E7D32] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Dehydrated in Mysore, India</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="h-4 w-4 text-[#2E7D32] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>No Preservatives · No Added Sugar</span>
+                </li>
+                <li className="flex items-center gap-2">
+                  <svg className="h-4 w-4 text-[#2E7D32] shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2.5" aria-hidden="true">
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
+                  </svg>
+                  <span>Secure food-grade packaging</span>
+                </li>
+              </ul>
+
               <button
                 onClick={handleAddToCart}
                 disabled={!product.inStock}
@@ -186,7 +207,7 @@ export default function ProductDetailClient({
                   className="text-xl text-[#C2410C]"
                   style={{ fontFamily: "var(--font-script, cursive)" }}
                 >
-                  Anjanadri — pure . healthy . delicious
+                  Anjanadri — pure . natural . delicious
                 </p>
               </div>
             </div>
@@ -199,11 +220,11 @@ export default function ProductDetailClient({
               </div>
               <div className="flex items-center gap-3">
                 <ShieldCheck className="h-4 w-4 text-[#2E7D32]" />
-                <span>Handcrafted in small batches — 100% taste guarantee</span>
+                <span>Handcrafted in small batches — naturally sweet, no added sugar</span>
               </div>
               <div className="flex items-center gap-3">
                 <Sparkles className="h-4 w-4 text-[#2E7D32]" />
-                <span>48-hour low-temperature dehydration preserves 97% of nutrients</span>
+                <span>Slow, low-temperature dehydration preserves natural nutrients and flavor</span>
               </div>
             </div>
           </div>

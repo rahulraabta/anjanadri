@@ -28,11 +28,11 @@ const BRAND = "Anjanadri Dehydrated Fruits & Vegetables";
 
 export const metadata: Metadata = {
   title: {
-    default: `${BRAND} — 100% Natural, Dehydrated & Healthy`,
+    default: `${BRAND} — 100% Natural, Dehydrated & Natural`,
     template: `%s | ${BRAND}`,
   },
   description:
-    "Anjanadri Dehydrated Fruits & Vegetables from Mysore. 100% Natural, No Preservatives, Dehydrated & Healthy. Sticky Banana best-seller at ₹190. Free shipping over ₹499.",
+    "Anjanadri Dehydrated Fruits & Vegetables from Mysore. 100% Natural, No Preservatives, Dehydrated & Natural. Sticky Banana best-seller at ₹190. Free shipping over ₹499.",
   keywords: [
     "dehydrated fruits",
     "dried vegetables",
@@ -55,7 +55,7 @@ export const metadata: Metadata = {
     card: "summary_large_image",
     title: `${BRAND} — Nature's Crunch, Preserved`,
     description:
-      "Artisanal dehydrated fruits & vegetable crisps. Slow-dried to lock in 97% of nutrients. Shop now.",
+      "Artisanal dehydrated fruits & vegetable crisps. Slow-dried to lock in natural flavor and nutrients. Shop now.",
   },
   robots: { index: true, follow: true },
 };

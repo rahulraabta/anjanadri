@@ -9,7 +9,7 @@ export default function Footer() {
           <div>
             <Logo size="sm" light={true} showTagline={true} />
             <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85">
-              100% Natural • No Preservatives • Dehydrated & Healthy
+              100% Natural • No Preservatives • Dehydrated & Natural
             </p>
           </div>
           <a
@@ -35,6 +35,9 @@ export default function Footer() {
           <p>&copy; {new Date().getFullYear()} Anjanadri Dehydrated Fruits &amp; Vegetables. All rights reserved.</p>
           <p>100% Natural • Dehydrated in Mysore</p>
         </div>
+        <p className="mt-4 text-center text-[11px] leading-relaxed text-white/50">
+          This product is not intended to diagnose, treat, cure, or prevent any disease.
+        </p>
       </div>
     </footer>
   );

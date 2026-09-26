@@ -92,7 +92,7 @@ export default function Hero() {
               Our Best-Selling Sticky Banana
             </h1>
             <p className="mt-3 text-lg font-semibold text-[#C2410C] sm:text-xl">
-              100% Natural, No Preservatives, Dehydrated &amp; Healthy
+              100% Natural, No Preservatives, Dehydrated &amp; Natural
             </p>
             <p className="mt-3 max-w-lg text-base leading-relaxed text-[#3E2723]/80 line-clamp-2 sm:line-clamp-none">
               Naturally sweet Mysore bananas, slow dehydrated to a chewy golden bite and

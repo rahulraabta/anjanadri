@@ -4,10 +4,7 @@ import { motion } from "framer-motion";
 import {
   Leaf,
   ShieldCheck,
-  Truck,
   Sparkles,
-  Heart,
-  Recycle,
 } from "lucide-react";
 
 const reasons = [
@@ -21,31 +18,13 @@ const reasons = [
     icon: ShieldCheck,
     title: "Artisanal Integrity",
     description:
-      "Each small harvest is hand-inspected, taste-verified, and moisture-calibrated before sealing. If you're not delighted, we guarantee it.",
-  },
-  {
-    icon: Truck,
-    title: "Carbon-Neutral Delivery",
-    description:
-      "Complimentary eco-friendly shipping on orders above $35. Delivered in 100% biodegradable and recyclable kraft mailers.",
+      "Each small harvest is hand-inspected, taste-verified, and moisture-calibrated before sealing.",
   },
   {
     icon: Sparkles,
     title: "Gentle Dehydration",
     description:
-      "Our signature 48-hour slow dehydration technique retains up to 97% of live antioxidants, dietary fiber, and natural enzymes.",
-  },
-  {
-    icon: Heart,
-    title: "Sustainably Harvested",
-    description:
-      "Direct relationships with certified regenerative organic orchards and growers who nurture biological soil vitality.",
-  },
-  {
-    icon: Recycle,
-    title: "Zero-Waste Philosophy",
-    description:
-      "Every fruit core and peel byproduct is composted back into agricultural soil. We never generate single-use plastic waste.",
+      "Our signature slow dehydration technique preserves natural antioxidants, dietary fiber, and enzymes.",
   },
 ];
 
@@ -74,7 +53,7 @@ export default function WhyChooseUs() {
             The Anjanadri Difference
           </span>
           <h2 className="font-heading mt-3 text-4xl font-semibold tracking-tight text-[#3E2723] sm:text-5xl">
-            Pure. Healthy. Delicious.
+            Pure. Natural. Delicious.
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[#3E2723]/70">
             We obsess over every harvest—from fertile orchard soil to sealed craft pouch—so you

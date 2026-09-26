@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Info, ShieldCheck, Heart, Zap, Award, Check } from "lucide-react";
+import { Sparkles, Info, ShieldCheck, Heart, Zap, Check } from "lucide-react";
 import type { Product, NutrientInsight } from "@/data/products";
 
 interface NutritionalInsightsProps {
@@ -13,32 +13,31 @@ const fallbackNutrients: NutrientInsight[] = [
   {
     name: "Active Vitamin C",
     amount: "35% DV",
-    benefit: "Boosts Immunity & Skin Collagen",
-    description: "Bioactive ascorbic acid preserved without thermal degradation, supporting white blood cell activity and youthful cellular elasticity.",
+    benefit: "Vitamin C for Skin Vitality",
+    description: "Bioactive ascorbic acid preserved without thermal degradation. Vitamin C contributes to normal collagen formation.",
   },
   {
     name: "Dietary Plant Fiber",
     amount: "4.5 g",
-    benefit: "Prebiotic Gut Harmony",
-    description: "Intact cellulose and soluble pectin slow glucose release, supporting steady all-day vitality and nourishing healthy gut flora.",
+    benefit: "Natural Plant Fiber",
+    description: "Intact cellulose and soluble pectin from whole fruit, with no added sugars.",
   },
   {
     name: "Added Sugars",
     amount: "0.0 g",
-    benefit: "Zero Blood Sugar Crashes",
-    description: "Only whole-harvest fructose stabilized inside the intact fruit cellular wall. Never candied, never sweetened.",
+    benefit: "No Added Sugars",
+    description: "Only naturally occurring fruit sugars in the intact cellular wall. Never candied, never sweetened.",
   },
   {
     name: "Antioxidant Polyphenols",
     amount: "Rich Matrix",
-    benefit: "Neutralizes Cellular Stress",
-    description: "Plant flavonoids and phytochemicals that defend cells against oxidation and post-workout physical stress.",
+    benefit: "Natural Antioxidants",
+    description: "Plant flavonoids and phytochemicals preserved by low-temperature dehydration.",
   },
 ];
 
 export default function NutritionalInsights({ product }: NutritionalInsightsProps) {
   const [activeNutrient, setActiveNutrient] = useState<NutrientInsight | null>(null);
-  const [showComparison, setShowComparison] = useState(false);
 
   const nutrients = product.nutrients && product.nutrients.length > 0
     ? product.nutrients
@@ -58,20 +57,20 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
             </h3>
           </div>
           <p className="text-xs text-[#3E2723]/55 mt-1">
-            Tap or hover any nutrient tile to explore how 48h slow dehydration benefits your body
+            Tap or hover any nutrient tile to explore how slow dehydration preserves the goodness of whole fruit
           </p>
         </div>
 
         <button
-          onClick={() => setShowComparison(!showComparison)}
-          className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-[#F0E2C4] bg-white px-3.5 py-1.5 text-xs font-semibold text-[#3E2723] transition-colors hover:border-[#3E2723] hover:bg-[#3E2723] hover:text-[#FFF8E7]"
+          onClick={() => setActiveNutrient(null)}
+          className="inline-flex items-center gap-1.5 self-start sm:self-auto rounded-full border border-[#F0E2C4] bg-white px-3.5 py-1.5 text-xs font-semibold text-[#3E2723] transition-colors hover:border-[#3E7D32] hover:bg-[#3E7D32] hover:text-[#FFF8E7]"
         >
-          <Award className="h-3.5 w-3.5 text-[#C2410C]" />
-          <span>{showComparison ? "View Nutrients" : "Compare vs Standard Snacks"}</span>
+          <Check className="h-3.5 w-3.5 text-[#C2410C]" />
+          <span>Reset Selection</span>
         </button>
       </div>
 
-      {!showComparison ? (
+      {(
         <>
           {/* Interactive Tiles */}
           <div className="mt-6 grid grid-cols-2 gap-3 sm:grid-cols-4">
@@ -140,65 +139,20 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
                 <div className="flex items-center gap-2 rounded-2xl border border-dashed border-[#F0E2C4] p-4 text-xs text-[#3E2723]/55 bg-white/60">
                   <Info className="h-4 w-4 text-[#C2410C] flex-shrink-0" />
                   <span>
-                    Hover or click any metric above to see clinically grounded explanations of why this whole food ingredient supports long-term vitality.
+                    Hover or click any metric above to see clear explanations of why this whole food ingredient supports everyday vitality.
                   </span>
                 </div>
               )}
             </AnimatePresence>
           </div>
         </>
-      ) : (
-        /* Comparison Table */
-        <motion.div
-          initial={{ opacity: 0, y: 8 }}
-          animate={{ opacity: 1, y: 0 }}
-          className="mt-6 rounded-2xl border border-[#F0E2C4] bg-white p-5"
-        >
-          <div className="grid grid-cols-3 gap-2 text-xs font-bold text-[#3E2723] border-b border-[#F0E2C4] pb-3">
-            <span>Metric</span>
-            <span className="text-[#C2410C]">Anjanadri Crisps</span>
-            <span className="text-[#3E2723]/55">Commercial Chips</span>
-          </div>
-
-          <div className="divide-y divide-[#F0E2C4] text-xs">
-            <div className="grid grid-cols-3 gap-2 py-3 items-center">
-              <span className="font-medium text-[#3E2723]">Added Sugars / Syrups</span>
-              <span className="font-bold text-[#2E7D32] flex items-center gap-1">
-                <Check className="h-3.5 w-3.5 text-[#2E7D32]" /> 0.0 g (None)
-              </span>
-              <span className="text-[#3E2723]/55">12g - 18g Added Cane/Corn</span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 py-3 items-center">
-              <span className="font-medium text-[#3E2723]">Nutrient Retention</span>
-              <span className="font-bold text-[#C2410C]">97% (42°C slow-dry)</span>
-              <span className="text-[#3E2723]/55">&lt; 30% (high-temp fry)</span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 py-3 items-center">
-              <span className="font-medium text-[#3E2723]">Industrial Seed Oils</span>
-              <span className="font-bold text-[#2E7D32] flex items-center gap-1">
-                <Check className="h-3.5 w-3.5 text-[#2E7D32]" /> Zero (Oil-Free or Avocado)
-              </span>
-              <span className="text-[#3E2723]/55">Palm / Canola High-Heat Blend</span>
-            </div>
-
-            <div className="grid grid-cols-3 gap-2 py-3 items-center">
-              <span className="font-medium text-[#3E2723]">Preservatives / Sulfites</span>
-              <span className="font-bold text-[#2E7D32] flex items-center gap-1">
-                <Check className="h-3.5 w-3.5 text-[#2E7D32]" /> 100% Free
-              </span>
-              <span className="text-[#3E2723]/55">Sulfur Dioxide &amp; BHT</span>
-            </div>
-          </div>
-        </motion.div>
       )}
 
       {/* Footer Promise Note */}
       <div className="mt-4 flex items-center gap-2 text-[11px] text-[#3E2723]/55">
         <ShieldCheck className="h-3.5 w-3.5 text-[#2E7D32] flex-shrink-0" />
         <span>
-          Cold-crafted at low temperatures below 42°C to prevent thermal destruction of enzymes and antioxidants.
+          Cold-crafted at low temperatures to protect enzymes and antioxidants from heat damage.
         </span>
       </div>
     </div>

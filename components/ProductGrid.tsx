@@ -68,7 +68,7 @@ export default function ProductGrid() {
               Our Dehydrated Collection
             </h2>
             <p className="mt-2 max-w-2xl text-base text-[#3E2723]/70">
-              Farm-fresh favourites, dehydrated in Mysore. Clean, crunchy and healthy.
+              Farm-fresh favourites, dehydrated in Mysore. Clean, crunchy and natural.
             </p>
           </div>
 

@@ -13,8 +13,8 @@ const milestones = [
   },
   {
     icon: Sun,
-    title: "The 48-Hour Promise",
-    text: "Every slice is dehydrated over 48 hours at temperatures below 65°C. This slow, patient process removes moisture while preserving up to 97% of the original vitamins, fiber, and natural enzymes that heat-based methods destroy.",
+    title: "The Slow-Dry Promise",
+    text: "Every slice is slowly dehydrated at low temperatures. This patient process removes moisture while preserving the original vitamins, fiber, and natural enzymes that heat-based methods destroy.",
   },
   {
     icon: Droplets,
