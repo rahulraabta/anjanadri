@@ -45,3 +45,13 @@ next-env.d.ts
 .opencode/
 .openvisio/
 .remember/
+
+# Local-only tooling directories
+.agents/
+.codenexus/
+skills-lock.json
+
+# Local agent-router proxy setup (do not commit)
+agentrouter-proxy*
+/main.go
+/wrangler.toml
