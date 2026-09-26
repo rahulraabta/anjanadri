@@ -60,8 +60,6 @@ export const metadata: Metadata = {
   robots: { index: true, follow: true },
 };
 
-import SocialProofToast from "@/components/SocialProofToast";
-
 export default function RootLayout({
   children,
 }: {
@@ -76,7 +74,6 @@ export default function RootLayout({
         <CartProvider>
           {children}
           <CartDrawer />
-          <SocialProofToast />
         </CartProvider>
       </body>
     </html>
