@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { 
   Sparkles, 
@@ -133,26 +133,9 @@ export default function CrunchQuiz() {
     diet: "No Added Sugar",
   });
   const [isCompleted, setIsCompleted] = useState(false);
-  const [productsList, setProductsList] = useState<Product[]>(fallbackProducts);
+  // Static catalogue: the site is a fully static export with no API routes.
+  const [productsList] = useState<Product[]>(fallbackProducts);
   const [addedId, setAddedId] = useState<string | null>(null);
-
-  // Fetch live products from Neon / API
-  useEffect(() => {
-    async function fetchProducts() {
-      try {
-        const res = await fetch("/api/products");
-        if (res.ok) {
-          const data = await res.json();
-          if (data.products && Array.isArray(data.products) && data.products.length > 0) {
-            setProductsList(data.products);
-          }
-        }
-      } catch (err) {
-        console.error("Quiz products fetch error, using local fallback:", err);
-      }
-    }
-    fetchProducts();
-  }, []);
 
   const handleSelectOption = (key: string, optionId: string) => {
     setAnswers((prev) => ({ ...prev, [key]: optionId }));

@@ -4,9 +4,14 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductDetailClient from "@/components/ProductDetailClient";
 import { getAllProducts, getProductBySlug } from "@/lib/products";
+import { products } from "@/data/products";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+}
+
+export function generateStaticParams() {
+  return products.map((p) => ({ slug: p.id }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {

@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag, Menu, X, User, Search, Sparkles } from "lucide-react";
+import { ShoppingBag, Menu, X, Search, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
@@ -102,9 +102,6 @@ export default function Navbar() {
           <Link href="/#shop-search" aria-label="Search products" className={`${iconButton} hidden sm:flex`}>
             <Search className="h-[18px] w-[18px]" strokeWidth={1.8} />
           </Link>
-          <Link href="/account" aria-label="Your account" className={`${iconButton} hidden sm:flex`}>
-            <User className="h-[18px] w-[18px]" strokeWidth={1.8} />
-          </Link>
           <button
             type="button"
             onClick={openCart}
@@ -156,14 +153,6 @@ export default function Navbar() {
                 >
                   <Search className="h-5 w-5 text-[#2E7D32]" />
                   Search Products
-                </Link>
-                <Link
-                  href="/account"
-                  onClick={() => setIsOpen(false)}
-                  className="flex min-h-12 items-center gap-2.5 rounded-2xl px-4 text-base font-semibold text-[#3E2723] hover:bg-[#FFF3D6]"
-                >
-                  <User className="h-5 w-5 text-[#2E7D32]" />
-                  My Account
                 </Link>
                 <Link
                   href="/#contact"
