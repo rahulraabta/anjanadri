@@ -6,8 +6,16 @@ import { ShieldCheck, Package, CheckCircle2, Clock, Loader2 } from "lucide-react
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+interface AdminOrder {
+  id: string;
+  status: string;
+  total_amount: number | string;
+  created_at: string;
+  user_email: string;
+}
+
 export default function AdminPage() {
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<AdminOrder[]>([]);
   const [loading, setLoading] = useState(true);
   const [updating, setUpdating] = useState<string | null>(null);
   const [authed, setAuthed] = useState(false);
@@ -28,10 +36,13 @@ export default function AdminPage() {
     setLoading(true);
     try {
       const res = await fetch("/api/admin/orders");
-      const data = await res.json();
-      if (data.success) setOrders(data.orders);
-    } catch {}
-    setLoading(false);
+      const data: { success?: boolean; orders?: AdminOrder[] } = await res.json();
+      if (data.success && data.orders) setOrders(data.orders);
+    } catch {
+      setOrders([]);
+    } finally {
+      setLoading(false);
+    }
   }
 
   async function markFulfilled(orderId: string) {
@@ -116,7 +127,7 @@ export default function AdminPage() {
                     </span>
                     <div>
                       <p className="font-mono text-sm font-semibold text-[#3E2723]">{order.id}</p>
-                      <p className="text-xs text-[#3E2723]/55">{order.user_email} &middot; ${parseFloat(order.total_amount).toFixed(2)}</p>
+                      <p className="text-xs text-[#3E2723]/55">{order.user_email} &middot; ₹{Number(order.total_amount).toFixed(2)}</p>
                       <p className="text-xs text-[#3E2723]/55">{new Date(order.created_at).toLocaleString()}</p>
                     </div>
                   </div>

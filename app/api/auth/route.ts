@@ -31,7 +31,21 @@ export async function POST(request: Request) {
     });
 
     return response;
-  } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json(
+      { success: false, error: err instanceof Error ? err.message : "Sign-in failed" },
+      { status: 500 }
+    );
   }
+}
+
+export async function DELETE() {
+  const response = NextResponse.json({ success: true });
+  response.cookies.set("anjanadri_session", "", {
+    httpOnly: true,
+    path: "/",
+    maxAge: 0,
+    sameSite: "lax",
+  });
+  return response;
 }

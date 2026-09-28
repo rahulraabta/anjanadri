@@ -1,42 +1,58 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useCallback, useState } from "react";
 import { motion } from "framer-motion";
 import { Package, MapPin, LogIn, Mail, User, ShoppingBag } from "lucide-react";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 
+interface OrderItem {
+  product_id: string;
+  quantity: number;
+  price_at_purchase: number;
+}
+
+interface Order {
+  id: string;
+  status: string;
+  total_amount: number | string;
+  created_at: string;
+  items?: OrderItem[];
+}
+
+interface OrdersResponse {
+  success?: boolean;
+  orders?: Order[];
+}
+
 export default function AccountPage() {
   const [email, setEmail] = useState("");
   const [name, setName] = useState("");
   const [loggedIn, setLoggedIn] = useState(false);
-  const [orders, setOrders] = useState<any[]>([]);
+  const [orders, setOrders] = useState<Order[]>([]);
   const [loading, setLoading] = useState(false);
 
-  useEffect(() => {
-    try {
-      const cookie = document.cookie.split(";").find((c) => c.trim().startsWith("anjanadri_session="));
-      if (cookie) {
-        const session = JSON.parse(decodeURIComponent(cookie.split("=")[1]));
-        setEmail(session.email || "");
-        setName(session.name || "");
-        setLoggedIn(true);
-      }
-    } catch {}
-  }, []);
-
-  useEffect(() => {
-    if (loggedIn && email) fetchOrders();
-  }, [loggedIn, email]);
-
-  async function fetchOrders() {
+  const fetchOrders = useCallback(async (customerEmail: string) => {
     setLoading(true);
     try {
-      const res = await fetch(`/api/orders?email=${encodeURIComponent(email)}`);
-      const data = await res.json();
-      if (data.success) setOrders(data.orders);
-    } catch {}
-    setLoading(false);
+      const res = await fetch(`/api/orders?email=${encodeURIComponent(customerEmail)}`);
+      const data: OrdersResponse = await res.json();
+      if (data.success && data.orders) setOrders(data.orders);
+    } catch {
+      setOrders([]);
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
+  async function handleSignOut() {
+    try {
+      await fetch("/api/auth", { method: "DELETE" });
+    } catch {
+      // Server clear failed; still reset local state.
+    } finally {
+      setLoggedIn(false);
+    }
   }
 
   async function handleLogin(e: React.FormEvent) {
@@ -47,9 +63,14 @@ export default function AccountPage() {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, name }),
       });
-      const data = await res.json();
-      if (data.success) setLoggedIn(true);
-    } catch {}
+      const data: { success?: boolean } = await res.json();
+      if (data.success) {
+        setLoggedIn(true);
+        void fetchOrders(email);
+      }
+    } catch {
+      // Network failure: stay on the sign-in form.
+    }
   }
 
   if (!loggedIn) {
@@ -130,10 +151,7 @@ export default function AccountPage() {
                 <p className="mt-1 text-sm text-[#3E2723]/55">{email}</p>
               </div>
               <button
-                onClick={() => {
-                  document.cookie = "anjanadri_session=; max-age=0; path=/";
-                  setLoggedIn(false);
-                }}
+                onClick={handleSignOut}
                 className="rounded-full border border-[#F0E2C4] px-5 py-2 text-xs font-semibold text-[#3E2723] transition-all hover:bg-[#3E2723] hover:text-[#FFF8E7]"
               >
                 Sign Out
@@ -165,9 +183,9 @@ export default function AccountPage() {
                             {order.status}
                           </span>
                         </div>
-                        <p className="mt-2 text-sm text-[#3E2723]/70">${parseFloat(order.total_amount).toFixed(2)}</p>
+                        <p className="mt-2 text-sm text-[#3E2723]/70">₹{Number(order.total_amount).toFixed(2)}</p>
                         <p className="text-xs text-[#3E2723]/55">{new Date(order.created_at).toLocaleDateString()}</p>
-                        {order.items?.length > 0 && (
+                        {order.items && order.items.length > 0 && (
                           <p className="mt-1 text-xs text-[#3E2723]/55">{order.items.length} item(s)</p>
                         )}
                       </div>
