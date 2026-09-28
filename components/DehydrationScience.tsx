@@ -50,7 +50,7 @@ export default function DehydrationScience() {
             Why Dehydrated &gt; Fried
           </h2>
           <p className="mt-4 text-base leading-relaxed text-[#3E2723]/70">
-            Not all dried snacks are equal. Here's the nutritional science behind why low-temperature
+            Not all dried snacks are equal. Here&apos;s the nutritional science behind why low-temperature
             dehydration is the gold standard — and why frying destroys what matters most.
           </p>
         </motion.div>

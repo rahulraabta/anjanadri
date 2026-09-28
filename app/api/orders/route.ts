@@ -34,7 +34,10 @@ export async function GET(request: Request) {
     } catch {
       return NextResponse.json({ success: true, orders: [] });
     }
-  } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json(
+      { success: false, error: err instanceof Error ? err.message : "Failed to load orders" },
+      { status: 500 }
+    );
   }
 }

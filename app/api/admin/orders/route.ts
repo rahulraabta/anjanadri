@@ -14,8 +14,11 @@ export async function GET() {
     } catch {
       return NextResponse.json({ success: true, orders: [] });
     }
-  } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json(
+      { success: false, error: err instanceof Error ? err.message : "Failed to load orders" },
+      { status: 500 }
+    );
   }
 }
 
@@ -37,7 +40,10 @@ export async function PATCH(request: Request) {
     } catch {
       return NextResponse.json({ success: false, error: "DB update failed" }, { status: 500 });
     }
-  } catch (err: any) {
-    return NextResponse.json({ success: false, error: err.message }, { status: 500 });
+  } catch (err) {
+    return NextResponse.json(
+      { success: false, error: err instanceof Error ? err.message : "Failed to update order" },
+      { status: 500 }
+    );
   }
 }

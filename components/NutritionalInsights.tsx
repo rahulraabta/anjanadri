@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Sparkles, Info, ShieldCheck, Heart, Zap, Check } from "lucide-react";
+import { Sparkles, Info, ShieldCheck, Heart, Check } from "lucide-react";
 import type { Product, NutrientInsight } from "@/data/products";
 
 interface NutritionalInsightsProps {

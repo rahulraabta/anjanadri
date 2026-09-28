@@ -9,8 +9,6 @@ import {
   RotateCcw, 
   Check, 
   ShoppingBag, 
-  Heart, 
-  Flame, 
   Leaf, 
 } from "lucide-react";
 import Image from "next/image";

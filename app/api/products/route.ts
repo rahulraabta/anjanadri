@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { getDb } from "@/lib/db";
 import { products as fallbackProducts, type Product } from "@/data/products";
+import type { ProductRow } from "@/lib/products";
 
 export async function GET() {
   try {
@@ -12,19 +13,19 @@ export async function GET() {
       ORDER BY id ASC;
     `;
 
-    const mappedProducts: Product[] = rows.map((r: any) => {
+    const mappedProducts: Product[] = (rows as ProductRow[]).map((r) => {
       const fallback = fallbackProducts.find((p) => p.id === r.id);
       const stockNum = r.stock !== undefined && r.stock !== null ? parseInt(r.stock) : (fallback?.stock ?? 15);
       return {
         id: r.id,
         name: r.name,
-        description: r.description,
-        shortDescription: r.short_description || r.description.slice(0, 80) + "...",
+        description: r.description ?? "",
+        shortDescription: r.short_description || (r.description ?? "").slice(0, 80) + "...",
         price: parseFloat(r.price),
         originalPrice: r.original_price ? parseFloat(r.original_price) : undefined,
         category: r.category,
         image: r.image_url,
-        rating: parseFloat(r.rating) || 5.0,
+        rating: parseFloat(r.rating ?? "") || 5.0,
         reviewCount: r.review_count || 120,
         inStock: stockNum > 0,
         stock: stockNum,
@@ -40,9 +41,8 @@ export async function GET() {
     });
 
     return NextResponse.json({ products: mappedProducts, source: "neon" });
-  } catch (err: any) {
+  } catch (err) {
     console.error("Failed to fetch products from Neon, using fallback data:", err);
     return NextResponse.json({ products: fallbackProducts, source: "fallback" });
   }
 }
-

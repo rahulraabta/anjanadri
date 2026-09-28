@@ -53,7 +53,7 @@ export default function Logo({
     },
   };
 
-  const { img, wrap, title, descriptor, tagline } = sizeMap[size];
+  const { img, wrap, title, tagline } = sizeMap[size];
 
   const content = (
     <div

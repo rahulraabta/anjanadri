@@ -65,8 +65,8 @@ export default function OurStory() {
             <span className="italic font-normal text-[#C2410C]">Your Pantry</span>
           </h2>
           <p className="mt-5 text-base leading-relaxed text-[#3E2723]/70">
-            Anjanadri isn't a factory — it's a philosophy. We believe the best snack is the simplest one:
-            real fruit, nothing else. Here's how we got here and why it matters.
+            Anjanadri isn&apos;t a factory — it&apos;s a philosophy. We believe the best snack is the simplest one:
+            real fruit, nothing else. Here&apos;s how we got here and why it matters.
           </p>
         </motion.div>
 
@@ -91,7 +91,7 @@ export default function OurStory() {
                   className="text-2xl text-white/90"
                   style={{ fontFamily: "var(--font-script, cursive)" }}
                 >
-                  "We don't make snacks — we preserve nature."
+                  &ldquo;We don&apos;t make snacks — we preserve nature.&rdquo;
                 </p>
                 <p className="mt-2 text-sm font-medium text-white/70">
                   — Anjanadri Founding Team

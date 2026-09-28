@@ -2,9 +2,27 @@ import { cache } from "react";
 import { getDb } from "@/lib/db";
 import { products as fallbackProducts, type Product } from "@/data/products";
 
+/** Shape of a row from the `products` table. Neon returns `numeric` columns as
+ *  strings, so the parsers below normalise them into numbers. */
+export interface ProductRow {
+  id: string;
+  name: string;
+  description: string | null;
+  short_description: string | null;
+  price: string;
+  original_price: string | null;
+  category: string;
+  image_url: string;
+  stock?: string | null;
+  rating?: string | null;
+  review_count?: number | null;
+  weight?: string | null;
+  tags?: string[] | null;
+}
+
 /** Shared Neon row -> Product mapper. `fallback` fills the local-only fields
  *  (nutrients, flavour profile, complementary ids) the DB does not store. */
-export function mapProductRow(row: any, fallback?: Product): Product {
+export function mapProductRow(row: ProductRow, fallback?: Product): Product {
   const stockRaw = row.stock !== undefined && row.stock !== null ? parseInt(row.stock) : undefined;
   const stock = stockRaw ?? fallback?.stock ?? 15;
   const ratingRaw = row.rating !== undefined && row.rating !== null ? parseFloat(row.rating) : NaN;
@@ -50,8 +68,8 @@ export const getAllProducts = cache(async (): Promise<Product[]> => {
       ORDER BY id ASC;
     `;
     if (rows.length > 0) {
-      return rows.map((row: any) =>
-        mapProductRow(row, fallbackProducts.find((p) => p.id === row.id))
+      return rows.map((row) =>
+        mapProductRow(row as ProductRow, fallbackProducts.find((p) => p.id === row.id))
       );
     }
   } catch (err) {
@@ -72,7 +90,7 @@ export const getProductBySlug = cache(
         LIMIT 1;
       `;
       if (rows.length > 0) {
-        return mapProductRow(rows[0], fallbackProducts.find((p) => p.id === slug));
+        return mapProductRow(rows[0] as ProductRow, fallbackProducts.find((p) => p.id === slug));
       }
     } catch (err) {
       console.error("Failed to fetch product from Neon, using local catalogue:", err);

@@ -79,29 +79,29 @@ export default function Navbar() {
         <ul className="hidden items-center gap-1 lg:flex">
           {categories.map((category) => (
             <li key={category.label}>
-              <a
+              <Link
                 href={`/#${category.hash}`}
                 className="group relative flex min-h-12 items-center rounded-full px-3.5 text-sm font-semibold text-[#3E2723]/80 transition-colors hover:bg-[#FFF3D6] hover:text-[#2E7D32] xl:px-4"
               >
                 {category.label}
                 <span className="absolute inset-x-3.5 bottom-2 h-0.5 scale-x-0 rounded-full bg-[#F57C00] transition-transform duration-300 group-hover:scale-x-100" />
-              </a>
+              </Link>
             </li>
           ))}
           <li className="ml-1 border-l border-[#F0E2C4] pl-2">
-            <a
+            <Link
               href="/#contact"
               className="flex min-h-12 items-center rounded-full px-3 text-sm font-semibold text-[#3E2723]/60 transition-colors hover:bg-[#FFF3D6] hover:text-[#2E7D32]"
             >
               Contact
-            </a>
+            </Link>
           </li>
         </ul>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <a href="/#shop-search" aria-label="Search products" className={`${iconButton} hidden sm:flex`}>
+          <Link href="/#shop-search" aria-label="Search products" className={`${iconButton} hidden sm:flex`}>
             <Search className="h-[18px] w-[18px]" strokeWidth={1.8} />
-          </a>
+          </Link>
           <Link href="/account" aria-label="Your account" className={`${iconButton} hidden sm:flex`}>
             <User className="h-[18px] w-[18px]" strokeWidth={1.8} />
           </Link>
@@ -139,24 +139,24 @@ export default function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.04, duration: 0.25 }}
                 >
-                  <a
+                  <Link
                     href={`/#${category.hash}`}
                     onClick={() => setIsOpen(false)}
                     className="flex min-h-12 items-center rounded-2xl px-4 text-base font-semibold text-[#3E2723] transition-colors hover:bg-[#FFF3D6]"
                   >
                     {category.label}
-                  </a>
+                  </Link>
                 </motion.li>
               ))}
               <li className="mt-1 flex flex-col gap-1 border-t border-[#F0E2C4] pt-2">
-                <a
+                <Link
                   href="/#shop-search"
                   onClick={() => setIsOpen(false)}
                   className="flex min-h-12 items-center gap-2.5 rounded-2xl px-4 text-base font-semibold text-[#3E2723] hover:bg-[#FFF3D6]"
                 >
                   <Search className="h-5 w-5 text-[#2E7D32]" />
                   Search Products
-                </a>
+                </Link>
                 <Link
                   href="/account"
                   onClick={() => setIsOpen(false)}
@@ -165,13 +165,13 @@ export default function Navbar() {
                   <User className="h-5 w-5 text-[#2E7D32]" />
                   My Account
                 </Link>
-                <a
+                <Link
                   href="/#contact"
                   onClick={() => setIsOpen(false)}
                   className="flex min-h-12 items-center rounded-2xl px-4 text-base font-semibold text-[#3E2723] hover:bg-[#FFF3D6]"
                 >
                   Contact
-                </a>
+                </Link>
               </li>
             </ul>
           </motion.div>
