@@ -1,52 +1,25 @@
 "use client";
 
 import { motion, AnimatePresence } from "framer-motion";
-import { X, Plus, Minus, Trash2, ShoppingBag, MessageCircle, Sparkles } from "lucide-react";
+import { X, Plus, Minus, Trash2, ShoppingBag, Sparkles, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
 import { products as fallbackProducts } from "@/data/products";
 
 const FREE_SHIPPING_THRESHOLD = 499;
 
-// WhatsApp is the final checkout destination — no payment gateway, no DB
-// order tracking. Number defaults to the business contact published in the
-// footer; override with NEXT_PUBLIC_WHATSAPP_NUMBER (digits only, with
-// country code, e.g. "919880106885").
-const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919880106885";
-
 export default function CartDrawer() {
-  const { cart, isCartOpen, closeCart, addToCart, updateQuantity, removeFromCart, clearCart, subtotal, totalItems } = useCart();
+  const router = useRouter();
+  const { cart, isCartOpen, closeCart, addToCart, updateQuantity, removeFromCart, subtotal, totalItems } = useCart();
 
   const freeShippingDiff = FREE_SHIPPING_THRESHOLD - subtotal;
   const freeShippingProgress = Math.min(100, Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
-  const handleCheckout = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (cart.length === 0) return;
-
-    const lines = cart.map(
-      (item) =>
-        `\u2022 ${item.product.name} x ${item.quantity} — ₹${(item.product.price * item.quantity).toFixed(0)}`
-    );
-    const message = [
-      "Hello Anjanadri! I would like to place an order:",
-      "",
-      ...lines,
-      "",
-      `Total: ₹${subtotal.toFixed(0)}`,
-      "",
-      "Name:",
-      "Delivery address:",
-    ].join("\n");
-
-    window.open(
-      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
-      "_blank",
-      "noopener"
-    );
-    clearCart();
+  const handleCheckout = () => {
     closeCart();
+    router.push("/checkout");
   };
 
   return (
@@ -281,7 +254,7 @@ export default function CartDrawer() {
                   </div>
                   <div className="flex justify-between text-xs text-[#3E2723]/55">
                     <span>Shipping</span>
-                    <span>{freeShippingDiff <= 0 ? "FREE" : "Calculated at step"}</span>
+                    <span>{freeShippingDiff <= 0 ? "FREE" : "Calculated on WhatsApp"}</span>
                   </div>
                   <div className="flex justify-between border-t border-[#F0E2C4] pt-2 text-base font-semibold text-[#3E2723]">
                     <span>Estimated Total</span>
@@ -289,18 +262,17 @@ export default function CartDrawer() {
                   </div>
                 </div>
 
-                <form onSubmit={handleCheckout}>
-                  <button
-                    type="submit"
-                    className="flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#2E7D32] py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:bg-[#1B5E20]"
-                  >
-                    <MessageCircle className="h-5 w-5" />
-                    Place Order on WhatsApp
-                  </button>
-                </form>
+                <button
+                  type="button"
+                  onClick={handleCheckout}
+                  className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#2E7D32] py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:bg-[#1B5E20]"
+                >
+                  <span>Proceed to Checkout</span>
+                  <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
+                </button>
 
                 <p className="text-center text-[11px] text-[#3E2723]/55">
-                  You&apos;ll confirm your order in WhatsApp • Free shipping over ₹499
+                  Enter delivery details &amp; order via WhatsApp • Free shipping over ₹499
                 </p>
               </div>
             )}

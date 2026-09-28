@@ -1,6 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import { motion, AnimatePresence } from "framer-motion";
+import { ShoppingBag } from "lucide-react";
 import type { Product } from "@/data/products";
 
 export interface CartItem {
@@ -20,6 +22,9 @@ interface CartContextType {
   setIsCartOpen: (open: boolean) => void;
   openCart: () => void;
   closeCart: () => void;
+  isLoaded: boolean;
+  toastMessage: string | null;
+  showToast: (message: string) => void;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
@@ -34,15 +39,19 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     try {
       const stored = localStorage.getItem("bnatural_cart");
       if (stored) {
-        setCart(JSON.parse(stored));
-      } else {
-        // Start with an empty cart for the fresh Anjanadri store
-        setCart([]);
+        const parsed = JSON.parse(stored);
+        queueMicrotask(() => {
+          setCart(parsed);
+          setIsLoaded(true);
+        });
+        return;
       }
     } catch (e) {
       console.error("Failed to read cart from localStorage", e);
     }
-    setIsLoaded(true);
+    queueMicrotask(() => {
+      setIsLoaded(true);
+    });
   }, []);
 
   // Save to localStorage
@@ -97,6 +106,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     0
   );
 
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+
+  const showToast = useCallback((message: string) => {
+    setToastMessage(message);
+  }, []);
+
+  useEffect(() => {
+    if (!toastMessage) return;
+    const timer = setTimeout(() => {
+      setToastMessage(null);
+    }, 3500);
+    return () => clearTimeout(timer);
+  }, [toastMessage]);
+
   return (
     <CartContext.Provider
       value={{
@@ -111,9 +134,30 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
         setIsCartOpen,
         openCart,
         closeCart,
+        isLoaded,
+        toastMessage,
+        showToast,
       }}
     >
       {children}
+
+      {/* Global floating toast notification */}
+      <AnimatePresence>
+        {toastMessage && (
+          <motion.div
+            initial={{ opacity: 0, y: -24, scale: 0.95 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
+            exit={{ opacity: 0, y: -20, scale: 0.95 }}
+            transition={{ type: "spring", damping: 25, stiffness: 350 }}
+            className="fixed top-6 left-1/2 z-50 -translate-x-1/2 flex max-w-sm items-center gap-3 rounded-full border border-[#F0E2C4] bg-[#3E2723] px-5 py-3 text-sm font-medium text-[#FFF8E7] shadow-[0_12px_32px_rgba(62,39,35,0.28)]"
+          >
+            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F57C00] text-white">
+              <ShoppingBag className="h-3.5 w-3.5" />
+            </div>
+            <span className="pr-1">{toastMessage}</span>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </CartContext.Provider>
   );
 }
