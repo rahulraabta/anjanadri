@@ -6,19 +6,17 @@ import Link from "next/link";
 import { ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
-import ProductCard from "@/components/ProductCard";
 import NutritionalInsights from "@/components/NutritionalInsights";
 import FrequentlyBoughtTogether from "@/components/FrequentlyBoughtTogether";
 
 interface ProductDetailClientProps {
   product: Product;
-  relatedProducts: Product[];
+  relatedProducts?: Product[];
   allProducts?: Product[];
 }
 
 export default function ProductDetailClient({
   product,
-  relatedProducts,
   allProducts = [],
 }: ProductDetailClientProps) {
 
@@ -232,37 +230,8 @@ export default function ProductDetailClient({
         {/* Frequently Bought Together Bundle Engine */}
         <FrequentlyBoughtTogether
           currentProduct={product}
-          allProducts={allProducts.length > 0 ? allProducts : relatedProducts}
+          allProducts={allProducts}
         />
-
-        {/* Related Products Section */}
-        {relatedProducts.length > 0 && (
-          <div className="mt-20 border-t border-[#F0E2C4] pt-16">
-
-            <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-[0.18em] text-[#C2410C]">
-                  Pantry Complements
-                </span>
-                <h2 className="font-heading mt-2 text-3xl font-bold text-[#3E2723]">
-                  You May Also Enjoy
-                </h2>
-              </div>
-              <Link
-                href="/#shop"
-                className="text-sm font-semibold text-[#3E2723] hover:text-[#C2410C] transition-colors"
-              >
-                View Complete Pantry &rarr;
-              </Link>
-            </div>
-
-            <div className="grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
-              {relatedProducts.map((p, i) => (
-                <ProductCard key={p.id} product={p} index={i} />
-              ))}
-            </div>
-          </div>
-        )}
       </div>
     </div>
   );
