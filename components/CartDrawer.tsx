@@ -70,23 +70,18 @@ export default function CartDrawer() {
             {/* Free Shipping Tier Banner */}
             {cart.length > 0 && (
             <div className="border-b border-[#F0E2C4] bg-[#FFF3D6] px-6 py-3.5">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-medium text-[#3E2723]">
-                  {freeShippingDiff > 0 ? (
-                    <>Add <strong className="text-[#F57C00]">₹{freeShippingDiff.toFixed(0)}</strong> for free shipping</>
-                  ) : (
-                    <span className="flex items-center gap-1.5 font-semibold text-[#2E7D32]">
-                      <Sparkles className="h-3.5 w-3.5" /> You unlocked free shipping!
-                    </span>
-                  )}
-                </span>
-                <span className="text-[11px] font-medium text-[#3E2723]/55">
-                  ₹{subtotal.toFixed(0)} / ₹{FREE_SHIPPING_THRESHOLD}
-                </span>
-              </div>
+              {freeShippingDiff > 0 ? (
+                <p className="text-xs font-semibold text-[#3E2723]">
+                  Add ₹{freeShippingDiff.toFixed(0)} for free shipping
+                </p>
+              ) : (
+                <p className="text-xs font-semibold text-[#2E7D32]">
+                  ✓ You&apos;ve unlocked free shipping!
+                </p>
+              )}
               <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#F0E2C4]">
                 <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#2E7D32] to-[#F57C00] transition-all duration-500 ease-out"
+                  className={`h-full rounded-full transition-[width] duration-300 ease-out ${freeShippingDiff > 0 ? "bg-[#2E7D32]" : "bg-[#F57C00]"}`}
                   style={{ width: `${freeShippingProgress}%` }}
                 />
               </div>
