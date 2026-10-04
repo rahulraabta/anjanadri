@@ -22,17 +22,17 @@ export default function Logo({
 }: LogoProps) {
   const sizeMap = {
     sm: {
-      img: 44,
-      wrap: "h-11 w-11",
+      img: 48,
+      wrap: "h-10 w-10 md:h-12 md:w-12",
       title: "text-xl sm:text-2xl",
       descriptor: "text-[10px]",
       tagline: "text-[10px]",
     },
     md: {
-      // Single responsive instance: compact (sm-equivalent) below lg,
+      // Single responsive instance: compact (sm-equivalent) below md,
       // full md presence on desktop. No display-toggle classes needed.
       img: 56,
-      wrap: "h-11 w-11 lg:h-14 lg:w-14",
+      wrap: "h-12 w-12 md:h-14 md:w-14",
       title: "text-xl sm:text-2xl lg:text-3xl",
       descriptor: "text-[11px] sm:text-xs",
       tagline: "text-xs",
@@ -64,10 +64,10 @@ export default function Logo({
       {/* Brand Icon Emblem - circular leaf/fruit */}
       <div className="relative flex-shrink-0 flex items-center justify-center">
         <div
-          className={`relative rounded-full p-1 transition-all duration-300 ${wrap} ${
+          className={`relative rounded-full ring-1 p-1 flex items-center justify-center transition-all duration-300 ${wrap} ${
             light
-              ? "bg-white/10 ring-1 ring-white/20 shadow-md"
-              : "bg-white border-2 border-[#2E7D32]/15 shadow-[0_4px_16px_rgba(46,125,50,0.12)] group-hover:border-[#F57C00]/50 group-hover:shadow-[0_8px_20px_rgba(245,124,0,0.18)]"
+              ? "bg-white/10 ring-white/20 shadow-md"
+              : "bg-white ring-[#3E2723]/10 shadow-[0_2px_8px_rgba(62,39,35,0.12)] group-hover:ring-[#F57C00]/40 group-hover:shadow-[0_8px_20px_rgba(245,124,0,0.18)]"
           }`}
         >
           <Image
@@ -75,9 +75,12 @@ export default function Logo({
             alt="Anjanadri Logo"
             width={img}
             height={img}
-            className={`w-full h-full object-contain rounded-full transition-transform duration-500 group-hover:scale-105 ${
-              light ? "brightness-0 invert drop-shadow-[0_2px_8px_rgba(255,255,255,0.4)]" : ""
-            }`}
+            style={{
+              filter: light
+                ? "brightness(1.15) contrast(1.1)"
+                : "brightness(1.08) contrast(1.12) saturate(1.05)",
+            }}
+            className="w-full h-full object-contain rounded-full transition-transform duration-500 group-hover:scale-105"
             priority
           />
         </div>
