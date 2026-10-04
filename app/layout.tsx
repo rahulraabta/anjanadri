@@ -3,6 +3,7 @@ import { Playfair_Display, Inter, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
+import Toast from "@/components/Toast";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -74,6 +75,7 @@ export default function RootLayout({
         <CartProvider>
           {children}
           <CartDrawer />
+          <Toast />
         </CartProvider>
       </body>
     </html>

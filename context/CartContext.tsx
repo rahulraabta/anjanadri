@@ -1,8 +1,6 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "framer-motion";
-import { ShoppingBag } from "lucide-react";
 import type { Product } from "@/data/products";
 
 export interface CartItem {
@@ -33,6 +31,14 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [toastMessage, setToastMessage] = useState<string | null>(null);
+  const [toastKey, setToastKey] = useState(0);
+
+  // Single toast at a time — new message replaces the current one.
+  const showToast = useCallback((message: string) => {
+    setToastMessage(message);
+    setToastKey((k) => k + 1);
+  }, []);
 
   // Load from localStorage
   useEffect(() => {
@@ -77,6 +83,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, { product, quantity }];
     });
+    showToast(`Added ${product.name} to basket`);
     setIsCartOpen(true);
   };
 
@@ -106,19 +113,13 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     0
   );
 
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-
-  const showToast = useCallback((message: string) => {
-    setToastMessage(message);
-  }, []);
-
   useEffect(() => {
     if (!toastMessage) return;
     const timer = setTimeout(() => {
       setToastMessage(null);
-    }, 3500);
+    }, 3000);
     return () => clearTimeout(timer);
-  }, [toastMessage]);
+  }, [toastMessage, toastKey]);
 
   return (
     <CartContext.Provider
@@ -140,24 +141,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }}
     >
       {children}
-
-      {/* Global floating toast notification */}
-      <AnimatePresence>
-        {toastMessage && (
-          <motion.div
-            initial={{ opacity: 0, y: -24, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: -20, scale: 0.95 }}
-            transition={{ type: "spring", damping: 25, stiffness: 350 }}
-            className="fixed top-6 left-1/2 z-50 -translate-x-1/2 flex max-w-sm items-center gap-3 rounded-full border border-[#F0E2C4] bg-[#3E2723] px-5 py-3 text-sm font-medium text-[#FFF8E7] shadow-[0_12px_32px_rgba(62,39,35,0.28)]"
-          >
-            <div className="flex h-7 w-7 shrink-0 items-center justify-center rounded-full bg-[#F57C00] text-white">
-              <ShoppingBag className="h-3.5 w-3.5" />
-            </div>
-            <span className="pr-1">{toastMessage}</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </CartContext.Provider>
   );
 }
