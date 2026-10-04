@@ -68,6 +68,7 @@ export default function CartDrawer() {
             </div>
 
             {/* Free Shipping Tier Banner */}
+            {cart.length > 0 && (
             <div className="border-b border-[#F0E2C4] bg-[#FFF3D6] px-6 py-3.5">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-medium text-[#3E2723]">
@@ -90,27 +91,27 @@ export default function CartDrawer() {
                 />
               </div>
             </div>
+            )}
 
             {/* Drawer Body */}
             <div className="flex-1 overflow-y-auto px-6 py-4">
               {cart.length === 0 ? (
                 /* Empty Cart State */
-                <div className="flex h-full flex-col items-center justify-center py-12 text-center">
-                  <div className="flex h-20 w-20 items-center justify-center rounded-full bg-[#FFF3D6] text-[#3E2723]/55">
-                    <ShoppingBag className="h-10 w-10 opacity-40" />
-                  </div>
-                  <h3 className="font-heading mt-4 text-xl font-semibold text-[#3E2723]">
+                <div className="flex flex-col items-center justify-center py-16 px-6">
+                  <ShoppingBag size={48} color="#3E2723" className="opacity-40" />
+                  <h3 className="font-heading text-xl font-bold text-[#3E2723] mt-4">
                     Your basket is empty
                   </h3>
-                  <p className="mt-2 max-w-xs text-sm text-[#3E2723]/55">
-                    Discover our slow-dehydrated fruits and crisps crafted with 100% natural ingredients.
+                  <p className="text-sm text-[#3E2723]/70 mt-2 text-center">
+                    Add some dehydrated goodness to get started.
                   </p>
-                  <button
+                  <Link
+                    href="/#shop"
                     onClick={closeCart}
-                    className="mt-6 rounded-full bg-[#3E2723] px-6 py-2.5 text-sm font-semibold text-[#FFF8E7] transition-all hover:bg-[#F57C00]"
+                    className="mt-6 bg-[#F57C00] text-white font-bold py-3 px-6 rounded-full"
                   >
-                    Explore Shop
-                  </button>
+                    Browse Products
+                  </Link>
                 </div>
               ) : (
                 /* Item list */
