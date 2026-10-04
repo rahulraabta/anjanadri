@@ -22,31 +22,31 @@ export default function Logo({
 }: LogoProps) {
   const sizeMap = {
     sm: {
-      img: 48,
-      wrap: "h-10 w-10 md:h-12 md:w-12",
+      img: 56,
+      wrap: "h-12 w-12 md:h-14 md:w-14",
       title: "text-xl sm:text-2xl",
       descriptor: "text-[10px]",
       tagline: "text-[10px]",
     },
     md: {
-      // Single responsive instance: compact (sm-equivalent) below md,
+      // Single responsive instance: compact below md,
       // full md presence on desktop. No display-toggle classes needed.
-      img: 56,
-      wrap: "h-12 w-12 md:h-14 md:w-14",
+      img: 64,
+      wrap: "h-14 w-14 md:h-16 md:w-16",
       title: "text-xl sm:text-2xl lg:text-3xl",
       descriptor: "text-[11px] sm:text-xs",
       tagline: "text-xs",
     },
     lg: {
-      img: 72,
-      wrap: "h-[72px] w-[72px]",
+      img: 80,
+      wrap: "h-20 w-20",
       title: "text-3xl sm:text-4xl",
       descriptor: "text-xs sm:text-sm",
       tagline: "text-sm",
     },
     xl: {
-      img: 96,
-      wrap: "h-24 w-24",
+      img: 112,
+      wrap: "h-28 w-28",
       title: "text-4xl sm:text-6xl",
       descriptor: "text-sm sm:text-base",
       tagline: "text-base",
@@ -55,27 +55,29 @@ export default function Logo({
 
   const { img, wrap, title, tagline } = sizeMap[size];
 
+  // Footer (light) emblem needs premium scale + a subtle white disc so the
+  // brown badge stays legible on the dark green footer background.
+  const emblemWrap = light ? "h-16 w-16 md:h-20 md:w-20" : wrap;
+
   const content = (
     <div
       className={`group inline-flex items-center cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
-        layout === "stacked" ? "flex-col text-center" : "flex-row gap-3.5 sm:gap-4 text-left"
+        layout === "stacked" ? "flex-col text-center" : "flex-row gap-2.5 md:gap-3 text-left"
       } ${className}`}
     >
-      {/* Brand Icon Emblem - circular leaf/fruit */}
+      {/* Brand emblem — transparent badge, no container ring/background needed */}
       <div className="relative flex-shrink-0 flex items-center justify-center">
         <div
-          className={`relative rounded-full ring-1 p-1 flex items-center justify-center transition-all duration-300 ${wrap} ${
-            light
-              ? "bg-white/10 ring-white/20 shadow-md"
-              : "bg-white ring-[#3E2723]/10 shadow-[0_2px_8px_rgba(62,39,35,0.12)] group-hover:ring-[#F57C00]/40 group-hover:shadow-[0_8px_20px_rgba(245,124,0,0.18)]"
+          className={`relative flex items-center justify-center transition-all duration-300 ${emblemWrap} ${
+            light ? "bg-white/90 rounded-full p-1.5" : ""
           }`}
         >
           <Image
-            src="/logo.png"
+            src="/logo2.png"
             alt="Anjanadri Logo"
             width={img}
             height={img}
-            className="w-full h-full object-contain rounded-full transition-transform duration-500 group-hover:scale-105"
+            className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(62,39,35,0.15)] transition-transform duration-500 group-hover:scale-105"
             priority
           />
         </div>
