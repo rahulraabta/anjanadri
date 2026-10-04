@@ -75,11 +75,6 @@ export default function Logo({
             alt="Anjanadri Logo"
             width={img}
             height={img}
-            style={{
-              filter: light
-                ? "brightness(1.15) contrast(1.1)"
-                : "brightness(1.08) contrast(1.12) saturate(1.05)",
-            }}
             className="w-full h-full object-contain rounded-full transition-transform duration-500 group-hover:scale-105"
             priority
           />
