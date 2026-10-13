@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
@@ -23,6 +24,20 @@ export default function ProductDetailClient({
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [addedNotice, setAddedNotice] = useState(false);
+  const [showSticky, setShowSticky] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const past = window.scrollY > 400;
+      const nearBottom =
+        window.scrollY + window.innerHeight >
+        document.documentElement.scrollHeight - 200;
+      setShowSticky(past && !nearBottom);
+    };
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -233,6 +248,50 @@ export default function ProductDetailClient({
           allProducts={allProducts}
         />
       </div>
+
+      {/* Sticky Mobile Add-to-Cart Bar */}
+      <AnimatePresence>
+        {showSticky && (
+          <motion.div
+            initial={{ y: "100%" }}
+            animate={{ y: 0 }}
+            exit={{ y: "100%" }}
+            transition={{ duration: 0.25, ease: "easeOut" }}
+            className="fixed inset-x-0 bottom-0 z-40 border-t border-[#F0E2C4] bg-white/95 shadow-[0_-8px_24px_rgba(62,39,35,0.12)] backdrop-blur-md lg:hidden"
+          >
+            <div
+              className="mx-auto flex max-w-7xl items-center gap-3 px-4 pt-3"
+              style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
+            >
+              <div className="min-w-0 flex-1">
+                <p className="truncate text-sm font-semibold text-[#3E2723]">
+                  {product.name}
+                </p>
+                <p className="font-heading text-lg font-bold text-[#2E7D32]">
+                  &#8377;{(product.price * quantity).toFixed(0)}
+                </p>
+              </div>
+              <button
+                onClick={handleAddToCart}
+                disabled={!product.inStock}
+                aria-label="Add to basket"
+                className="flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[#3E2723] px-6 text-sm font-semibold text-[#FFF8E7] shadow-[0_12px_28px_-8px_rgba(62,39,35,0.35)] transition-all duration-300 hover:bg-[#F57C00] disabled:cursor-not-allowed disabled:bg-[#F0E2C4] disabled:text-[#3E2723]/55"
+              >
+                {addedNotice ? (
+                  <>
+                    <Check className="h-5 w-5" /> Added!
+                  </>
+                ) : (
+                  <>
+                    <ShoppingBag className="h-5 w-5" />
+                    {product.inStock ? "Add to Basket" : "Unavailable"}
+                  </>
+                )}
+              </button>
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

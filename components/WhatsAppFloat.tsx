@@ -12,6 +12,9 @@ export default function WhatsAppFloat() {
 
   if (pathname === "/checkout") return null;
 
+  // On product pages, lift above the sticky mobile add-to-cart bar.
+  const isProductPage = pathname.startsWith("/products");
+
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(MESSAGE)}`;
 
   const handleClick = () => {
@@ -19,7 +22,7 @@ export default function WhatsAppFloat() {
   };
 
   return (
-    <div className="group fixed bottom-4 right-4 z-40 sm:bottom-6 sm:right-6">
+    <div className={`group fixed right-4 z-40 sm:right-6 ${isProductPage ? "bottom-24 lg:bottom-6" : "bottom-4 sm:bottom-6"}`}>
       <span
         role="tooltip"
         aria-hidden="true"
