@@ -1,9 +1,14 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
-import { Leaf, Search, X } from "lucide-react";
+import { useState, useEffect, useMemo, useRef } from "react";
+import { useRouter } from "next/navigation";
+import Image from "next/image";
+import { Leaf, Search, X, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
-import { SanityProduct } from "@/lib/sanity";
+import { SanityProduct, productKey, productSlug, urlFor } from "@/lib/sanity";
+
+const imgUrl = (img: SanityProduct["image"], w = 96) =>
+  typeof img === "string" ? img : urlFor(img).width(w).url();
 
 const categories = [
   { label: "All", hash: "shop" },
@@ -22,6 +27,9 @@ interface ProductGridProps {
 export default function ProductGrid({ products }: ProductGridProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
+  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const router = useRouter();
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const syncFromHash = () => {
@@ -54,6 +62,33 @@ export default function ProductGrid({ products }: ProductGridProps) {
     });
   }, [products, activeCategory, query]);
 
+  const searchResults = useMemo(() => {
+    const needle = query.trim().toLowerCase();
+    if (!needle) return [];
+    return products
+      .filter((product) => {
+        const haystack = `${product.name} ${product.shortDescription ?? ""} ${product.category ?? ""} ${product.benefit ?? ""}`;
+        return haystack.toLowerCase().includes(needle);
+      })
+      .slice(0, 5);
+  }, [products, query]);
+
+  const showDropdown =
+    isSearchOpen && query.trim().length > 0 && searchResults.length > 0;
+
+  useEffect(() => {
+    const handlePointerDown = (event: MouseEvent) => {
+      if (
+        containerRef.current &&
+        !containerRef.current.contains(event.target as Node)
+      ) {
+        setIsSearchOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handlePointerDown);
+    return () => document.removeEventListener("mousedown", handlePointerDown);
+  }, []);
+
   return (
     <section id="shop" className="scroll-mt-24 border-t border-[#F0E2C4] bg-[#FFF8E7] py-12 lg:py-20">
       <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
@@ -72,15 +107,26 @@ export default function ProductGrid({ products }: ProductGridProps) {
           </div>
 
           <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center lg:w-auto">
-            <div className="relative w-full sm:w-64">
+            <div ref={containerRef} className="relative w-full sm:w-64">
               <Search aria-hidden className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#3E2723]/45" />
               <input
                 id={SEARCH_ANCHOR}
                 type="search"
                 value={query}
-                onChange={(event) => setQuery(event.target.value)}
+                onChange={(event) => {
+                  setQuery(event.target.value);
+                  setIsSearchOpen(true);
+                }}
+                onFocus={() => setIsSearchOpen(true)}
+                onKeyDown={(event) => {
+                  if (event.key === "Escape") setIsSearchOpen(false);
+                }}
                 placeholder="Search snacks"
                 aria-label="Search snacks"
+                role="combobox"
+                aria-autocomplete="list"
+                aria-expanded={showDropdown}
+                aria-controls="shop-search-results"
                 className="h-12 w-full scroll-mt-28 rounded-full border border-[#F0E2C4] bg-white pl-11 pr-10 text-base text-[#3E2723] outline-none transition-colors placeholder:text-[#3E2723]/40 focus:border-[#2E7D32]"
               />
               {query && (
@@ -92,6 +138,61 @@ export default function ProductGrid({ products }: ProductGridProps) {
                 >
                   <X className="h-4 w-4" />
                 </button>
+              )}
+
+              {showDropdown && (
+                <div
+                  id="shop-search-results"
+                  className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-[#F0E2C4] bg-white shadow-[0_12px_32px_rgba(62,39,35,0.14)]"
+                >
+                  <ul className="divide-y divide-[#F0E2C4]">
+                    {searchResults.map((product) => (
+                      <li key={productKey(product)}>
+                        <button
+                          type="button"
+                          onClick={() => {
+                            setIsSearchOpen(false);
+                            setQuery("");
+                            router.push(`/products/${productSlug(product)}`);
+                          }}
+                          className="flex w-full items-center gap-3 px-3 py-2.5 text-left transition-colors hover:bg-[#FFF8E7]"
+                        >
+                          <Image
+                            src={imgUrl(product.image)}
+                            alt={product.name}
+                            width={48}
+                            height={48}
+                            unoptimized
+                            className="h-12 w-12 shrink-0 rounded-xl bg-[#FFF3D6] object-cover"
+                          />
+                          <span className="min-w-0 flex-1">
+                            <span className="block truncate text-sm font-semibold text-[#3E2723]">
+                              {product.name}
+                            </span>
+                            <span className="block text-sm font-bold text-[#F57C00]">
+                              &#8377;{product.price.toFixed(0)}
+                            </span>
+                          </span>
+                          <ChevronRight
+                            aria-hidden
+                            className="h-4 w-4 shrink-0 text-[#3E2723]/40"
+                          />
+                        </button>
+                      </li>
+                    ))}
+                  </ul>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      setIsSearchOpen(false);
+                      router.push("/#shop");
+                    }}
+                    className="flex w-full items-center justify-between gap-2 border-t border-[#F0E2C4] bg-[#FFF8E7] px-3 py-2.5 text-sm font-semibold text-[#2E7D32] transition-colors hover:bg-[#FFF3D6]"
+                  >
+                    <span>See all results</span>
+                    <ChevronRight aria-hidden className="h-4 w-4" />
+                  </button>
+                </div>
               )}
             </div>
             <span className="shrink-0 rounded-full border border-[#F0E2C4] bg-white px-4 py-2 text-center text-xs font-bold text-[#3E2723]">
