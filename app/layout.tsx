@@ -4,6 +4,7 @@ import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
 import Toast from "@/components/Toast";
+import WhatsAppFloat from "@/components/WhatsAppFloat";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -77,6 +78,7 @@ export default function RootLayout({
           <CartDrawer />
           <Toast />
         </CartProvider>
+        <WhatsAppFloat />
       </body>
     </html>
   );
