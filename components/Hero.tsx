@@ -6,23 +6,29 @@ import { ShoppingBag, Check, Leaf, Sun, ShieldCheck } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
-import { products } from "@/data/products";
+import { SanityProduct, urlFor } from "@/lib/sanity";
 
-// Motion-enhanced Next Link so the primary CTA keeps SPA navigation
-// while supporting tap feedback via whileTap.
 const MotionLink = motion(Link);
 
-export default function Hero() {
+const imgUrl = (img: any, w = 1600) =>
+  typeof img === "string" ? img : urlFor(img).width(w).url();
+
+interface HeroProps {
+  products: SanityProduct[];
+}
+
+export default function Hero({ products }: HeroProps) {
   const { addToCart } = useCart();
   const [justAdded, setJustAdded] = useState(false);
 
   const stickyBanana =
-    products.find((p) => p.isBestSeller === true) ??
-    products.find((p) => p.id === "sticky-banana") ??
+    products.find((p) => p.badge === "Best Seller") ??
+    products.find((p) => p.slug === "sticky-banana") ??
     products[0];
 
+  if (!stickyBanana) return null;
+
   const handleAdd = () => {
-    if (!stickyBanana) return;
     addToCart(stickyBanana, 1);
     setJustAdded(true);
     setTimeout(() => setJustAdded(false), 1800);
@@ -41,7 +47,6 @@ export default function Hero() {
 
       <div className="relative mx-auto w-full max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
-          {/* Image: first on mobile and full-bleed, right column on desktop */}
           <motion.div
             initial={{ opacity: 0, scale: 0.96 }}
             animate={{ opacity: 1, scale: 1 }}
@@ -50,7 +55,7 @@ export default function Hero() {
           >
             <div className="relative overflow-hidden bg-white lg:rounded-[2rem] lg:border lg:border-[#F0E2C4] lg:shadow-[0_24px_60px_-20px_rgba(62,39,35,0.25)]">
               <Image
-                src={stickyBanana.image}
+                src={imgUrl(stickyBanana.image, 1600)}
                 alt={`Anjanadri ${stickyBanana.name} — dehydrated banana with nuts and seeds`}
                 width={1600}
                 height={873}
@@ -58,6 +63,7 @@ export default function Hero() {
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="h-auto w-full object-cover"
                 priority
+                unoptimized
               />
 
               <span className="absolute left-4 top-4 rounded-full bg-[#FFC107] px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-[#3E2723] shadow-md sm:left-6 sm:top-6">
@@ -76,7 +82,6 @@ export default function Hero() {
             </div>
           </motion.div>
 
-          {/* Copy */}
           <motion.div
             initial={{ opacity: 0, y: 12 }}
             animate={{ opacity: 1, y: 0 }}
@@ -109,14 +114,16 @@ export default function Hero() {
                   &#8377;{stickyBanana.originalPrice}
                 </span>
               )}
-              <span className="rounded-full bg-[#2E7D32]/10 px-3 py-1 text-xs font-bold text-[#2E7D32]">
-                {stickyBanana.weight} pack
-              </span>
+              {stickyBanana.weight && (
+                <span className="rounded-full bg-[#2E7D32]/10 px-3 py-1 text-xs font-bold text-[#2E7D32]">
+                  {stickyBanana.weight} pack
+                </span>
+              )}
             </div>
 
             <div className="flex w-full flex-col gap-3 sm:w-auto sm:flex-row">
               <MotionLink
-                href={`/products/${stickyBanana.id}`}
+                href={`/products/${stickyBanana.slug}`}
                 whileTap={{ scale: 0.97 }}
                 className="inline-flex h-14 w-full items-center justify-center rounded-full bg-[#F57C00] px-8 py-3.5 text-base font-bold text-white shadow-[0_10px_24px_-6px_rgba(245,124,0,0.5)] transition-all hover:-translate-y-0.5 hover:bg-[#E65100] active:translate-y-0 active:scale-[0.98] sm:w-auto"
               >

@@ -25,12 +25,16 @@ import {
   ExternalLink,
 } from "lucide-react";
 import { useCart } from "@/context/CartContext";
+import { productKey, urlFor } from "@/lib/sanity";
 
 const FREE_SHIPPING_THRESHOLD = 499;
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919880106885";
 const PHONE_REGEX = /^[6-9]\d{9}$/;
 const PINCODE_REGEX = /^\d{6}$/;
 const NOTES_MAX_LENGTH = 200;
+
+const imgUrl = (img: any, w = 112) =>
+  typeof img === "string" ? img : urlFor(img).width(w).url();
 
 interface FormData {
   fullName: string;
@@ -72,7 +76,6 @@ export default function CheckoutForm() {
     whatsappUrl: string;
   } | null>(null);
 
-  // Handle empty cart redirect
   useEffect(() => {
     if (isLoaded && cart.length === 0 && !orderSubmitted) {
       showToast("Your basket is empty.");
@@ -136,7 +139,6 @@ export default function CheckoutForm() {
 
     setIsSubmitting(true);
 
-    // Build the WhatsApp message
     const orderLines = cart.map(
       (item) =>
         `• *${item.product.name}*${item.product.weight ? ` (${item.product.weight})` : ""} x ${item.quantity} — ₹${(
@@ -169,7 +171,6 @@ export default function CheckoutForm() {
     const message = messageLines.join("\n");
     const whatsappUrl = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
 
-    // Store state for success view
     setLastOrderDetails({
       itemsCount: totalItems,
       totalAmount: subtotal,
@@ -177,15 +178,12 @@ export default function CheckoutForm() {
     });
     setOrderSubmitted(true);
 
-    // Open WhatsApp
     window.open(whatsappUrl, "_blank", "noopener,noreferrer");
 
-    // Clear cart
     clearCart();
     setIsSubmitting(false);
   };
 
-  // Loading skeleton while reading localStorage cart
   if (!isLoaded) {
     return (
       <div className="mx-auto max-w-5xl px-4 py-16 sm:px-6">
@@ -198,7 +196,6 @@ export default function CheckoutForm() {
     );
   }
 
-  // Success view if order was submitted
   if (orderSubmitted && lastOrderDetails) {
     return (
       <div className="mx-auto max-w-xl px-4 py-16 sm:px-6">
@@ -261,7 +258,6 @@ export default function CheckoutForm() {
     );
   }
 
-  // If cart is empty and redirect is in flight
   if (cart.length === 0) {
     return (
       <div className="mx-auto max-w-md px-4 py-24 text-center">
@@ -282,7 +278,6 @@ export default function CheckoutForm() {
 
   return (
     <div className="mx-auto max-w-7xl px-4 py-6 sm:px-6 sm:py-10 lg:px-8">
-      {/* Top navigation & breadcrumb */}
       <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
         <Link
           href="/#shop"
@@ -301,7 +296,6 @@ export default function CheckoutForm() {
         </div>
       </div>
 
-      {/* Page Title & Brand Headline */}
       <div className="mb-8">
         <div className="flex items-center gap-2 text-xs font-bold uppercase tracking-wider text-[#F57C00]">
           <Sparkles className="h-3.5 w-3.5" />
@@ -315,9 +309,7 @@ export default function CheckoutForm() {
         </p>
       </div>
 
-      {/* Main Grid: Form on Left / Order Summary on Right */}
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
-        {/* LEFT COLUMN: Delivery Information Form */}
         <motion.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
@@ -339,12 +331,8 @@ export default function CheckoutForm() {
           </div>
 
           <form id="checkout-form" onSubmit={handleSubmit} noValidate className="mt-6 space-y-5">
-            {/* Full Name */}
             <div>
-              <label
-                htmlFor="fullName"
-                className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80"
-              >
+              <label htmlFor="fullName" className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80">
                 Full Name <span className="text-[#C2410C]">*</span>
               </label>
               <div className="relative mt-1.5">
@@ -370,12 +358,8 @@ export default function CheckoutForm() {
               )}
             </div>
 
-            {/* Mobile Number */}
             <div>
-              <label
-                htmlFor="phone"
-                className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80"
-              >
+              <label htmlFor="phone" className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80">
                 Mobile Number (for WhatsApp &amp; Delivery Updates) <span className="text-[#C2410C]">*</span>
               </label>
               <div className="relative mt-1.5 flex rounded-2xl border border-[#F0E2C4] bg-[#FFF8E7]/50 overflow-hidden focus-within:border-[#2E7D32] focus-within:ring-2 focus-within:ring-[#2E7D32]">
@@ -403,12 +387,8 @@ export default function CheckoutForm() {
               )}
             </div>
 
-            {/* Street Address */}
             <div>
-              <label
-                htmlFor="address"
-                className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80"
-              >
+              <label htmlFor="address" className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80">
                 Street Address / Apartment / House No. <span className="text-[#C2410C]">*</span>
               </label>
               <div className="relative mt-1.5">
@@ -434,14 +414,9 @@ export default function CheckoutForm() {
               )}
             </div>
 
-            {/* City (optional) & Pincode */}
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-              {/* City */}
               <div>
-                <label
-                  htmlFor="city"
-                  className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80"
-                >
+                <label htmlFor="city" className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80">
                   City <span className="text-[#3E2723]/40">(Optional)</span>
                 </label>
                 <input
@@ -455,12 +430,8 @@ export default function CheckoutForm() {
                 />
               </div>
 
-              {/* Pincode */}
               <div>
-                <label
-                  htmlFor="pincode"
-                  className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80"
-                >
+                <label htmlFor="pincode" className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80">
                   Pincode <span className="text-[#C2410C]">*</span>
                 </label>
                 <input
@@ -484,12 +455,8 @@ export default function CheckoutForm() {
               </div>
             </div>
 
-            {/* Delivery / Order Notes (Optional) */}
             <div>
-              <label
-                htmlFor="notes"
-                className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80"
-              >
+              <label htmlFor="notes" className="block text-xs font-semibold uppercase tracking-wider text-[#3E2723]/80">
                 Order Notes / Special Instructions <span className="text-[#3E2723]/40">(Optional)</span>
               </label>
               <div className="relative mt-1.5">
@@ -523,7 +490,6 @@ export default function CheckoutForm() {
               </div>
             </div>
 
-            {/* Desktop form submit button (also repeated in summary) */}
             <div className="hidden lg:block pt-3">
               <button
                 type="submit"
@@ -537,14 +503,12 @@ export default function CheckoutForm() {
           </form>
         </motion.div>
 
-        {/* RIGHT COLUMN: Order Summary & Instant Checkout */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 220, damping: 24, delay: 0.05 }}
           className="order-first space-y-6 lg:order-none lg:col-span-5"
         >
-          {/* Summary Card */}
           <div className="rounded-3xl border border-[#F0E2C4] bg-white p-5 shadow-[0_12px_40px_rgba(62,39,35,0.06)] sm:p-7">
             <div className="flex items-center justify-between border-b border-[#F0E2C4] pb-4">
               <div className="flex items-center gap-2.5">
@@ -558,7 +522,6 @@ export default function CheckoutForm() {
               </span>
             </div>
 
-            {/* Free Shipping Progress bar */}
             <div className="mt-4 rounded-2xl bg-[#FFF3D6] p-3 border border-[#F0E2C4]/60">
               <div className="flex items-center justify-between text-xs">
                 <span className="font-medium text-[#3E2723]">
@@ -584,70 +547,72 @@ export default function CheckoutForm() {
               </div>
             </div>
 
-            {/* Item List */}
             <div className="mt-4 max-h-72 overflow-y-auto divide-y divide-[#F0E2C4]/60 pr-1">
-              {cart.map(({ product, quantity }) => (
-                <div key={product.id} className="flex items-center gap-3.5 py-3">
-                  <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl border border-[#F0E2C4] bg-[#FFF8E7]">
-                    <Image
-                      src={product.image}
-                      alt={product.name}
-                      fill
-                      sizes="56px"
-                      className="object-cover"
-                    />
-                  </div>
+              {cart.map(({ product, quantity }) => {
+                const key = productKey(product);
+                return (
+                  <div key={key} className="flex items-center gap-3.5 py-3">
+                    <div className="relative h-14 w-14 flex-shrink-0 overflow-hidden rounded-xl border border-[#F0E2C4] bg-[#FFF8E7]">
+                      <Image
+                        src={imgUrl(product.image, 112)}
+                        alt={product.name}
+                        fill
+                        sizes="56px"
+                        className="object-cover"
+                        unoptimized
+                      />
+                    </div>
 
-                  <div className="flex-1 min-w-0">
-                    <p className="text-xs font-bold text-[#3E2723] truncate">{product.name}</p>
-                    <p className="text-[11px] text-[#3E2723]/55">
-                      {product.weight || "Pack"} &bull; ₹{product.price} each
-                    </p>
+                    <div className="flex-1 min-w-0">
+                      <p className="text-xs font-bold text-[#3E2723] truncate">{product.name}</p>
+                      <p className="text-[11px] text-[#3E2723]/55">
+                        {product.weight || "Pack"} &bull; ₹{product.price} each
+                      </p>
 
-                    <div className="mt-1.5 flex items-center gap-2">
-                      <div className="flex items-center rounded-full border border-[#F0E2C4] bg-[#FFF8E7] px-1.5 py-0.5 text-xs">
+                      <div className="mt-1.5 flex items-center gap-2">
+                        <div className="flex items-center rounded-full border border-[#F0E2C4] bg-[#FFF8E7] px-1.5 py-0.5 text-xs">
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(key, quantity - 1)}
+                            className="p-0.5 text-[#3E2723]/60 hover:text-[#3E2723]"
+                            aria-label="Decrease quantity"
+                          >
+                            <Minus className="h-3 w-3" />
+                          </button>
+                          <span className="w-5 text-center text-xs font-semibold text-[#3E2723]">
+                            {quantity}
+                          </span>
+                          <button
+                            type="button"
+                            onClick={() => updateQuantity(key, quantity + 1)}
+                            className="p-0.5 text-[#3E2723]/60 hover:text-[#3E2723]"
+                            aria-label="Increase quantity"
+                          >
+                            <Plus className="h-3 w-3" />
+                          </button>
+                        </div>
+
                         <button
                           type="button"
-                          onClick={() => updateQuantity(product.id, quantity - 1)}
-                          className="p-0.5 text-[#3E2723]/60 hover:text-[#3E2723]"
-                          aria-label="Decrease quantity"
+                          onClick={() => removeFromCart(key)}
+                          className="p-1 text-[#3E2723]/40 hover:text-[#C2410C]"
+                          aria-label={`Remove ${product.name}`}
                         >
-                          <Minus className="h-3 w-3" />
-                        </button>
-                        <span className="w-5 text-center text-xs font-semibold text-[#3E2723]">
-                          {quantity}
-                        </span>
-                        <button
-                          type="button"
-                          onClick={() => updateQuantity(product.id, quantity + 1)}
-                          className="p-0.5 text-[#3E2723]/60 hover:text-[#3E2723]"
-                          aria-label="Increase quantity"
-                        >
-                          <Plus className="h-3 w-3" />
+                          <Trash2 className="h-3 w-3" />
                         </button>
                       </div>
+                    </div>
 
-                      <button
-                        type="button"
-                        onClick={() => removeFromCart(product.id)}
-                        className="p-1 text-[#3E2723]/40 hover:text-[#C2410C]"
-                        aria-label={`Remove ${product.name}`}
-                      >
-                        <Trash2 className="h-3 w-3" />
-                      </button>
+                    <div className="text-right">
+                      <p className="font-heading text-sm font-bold text-[#3E2723]">
+                        ₹{(product.price * quantity).toFixed(0)}
+                      </p>
                     </div>
                   </div>
-
-                  <div className="text-right">
-                    <p className="font-heading text-sm font-bold text-[#3E2723]">
-                      ₹{(product.price * quantity).toFixed(0)}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
 
-            {/* Cost Breakdown */}
             <div className="mt-4 border-t border-[#F0E2C4] pt-4 space-y-2 text-xs">
               <div className="flex justify-between text-[#3E2723]/70">
                 <span>Basket Subtotal</span>
@@ -669,7 +634,6 @@ export default function CheckoutForm() {
               </div>
             </div>
 
-            {/* Mobile / Direct CTA in Card */}
             <div className="mt-5">
               <button
                 type="submit"
@@ -686,7 +650,6 @@ export default function CheckoutForm() {
             </div>
           </div>
 
-          {/* Trust & Guarantee Box */}
           <div className="rounded-3xl border border-[#F0E2C4] bg-[#FFF3D6]/70 p-5 space-y-3">
             <h3 className="font-heading text-sm font-semibold text-[#3E2723] flex items-center gap-2">
               <ShieldCheck className="h-4 w-4 text-[#2E7D32]" />

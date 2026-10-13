@@ -1,16 +1,16 @@
 "use client";
 
 import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
-import type { Product } from "@/data/products";
+import type { SanityProduct } from "@/lib/sanity";
 
 export interface CartItem {
-  product: Product;
+  product: SanityProduct;
   quantity: number;
 }
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: Product, quantity?: number) => void;
+  addToCart: (product: SanityProduct, quantity?: number) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -34,13 +34,11 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [toastMessage, setToastMessage] = useState<string | null>(null);
   const [toastKey, setToastKey] = useState(0);
 
-  // Single toast at a time — new message replaces the current one.
   const showToast = useCallback((message: string) => {
     setToastMessage(message);
     setToastKey((k) => k + 1);
   }, []);
 
-  // Load from localStorage
   useEffect(() => {
     try {
       const stored = localStorage.getItem("bnatural_cart");
@@ -55,12 +53,9 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     } catch (e) {
       console.error("Failed to read cart from localStorage", e);
     }
-    queueMicrotask(() => {
-      setIsLoaded(true);
-    });
+    queueMicrotask(() => setIsLoaded(true));
   }, []);
 
-  // Save to localStorage
   useEffect(() => {
     if (isLoaded) {
       try {
@@ -71,12 +66,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [cart, isLoaded]);
 
-  const addToCart = (product: Product, quantity = 1) => {
+  const addToCart = (product: SanityProduct, quantity = 1) => {
     setCart((prev) => {
-      const existing = prev.find((item) => item.product.id === product.id);
+      const existing = prev.find((item) => item.product._id === product._id);
       if (existing) {
         return prev.map((item) =>
-          item.product.id === product.id
+          item.product._id === product._id
             ? { ...item, quantity: item.quantity + quantity }
             : item
         );
@@ -88,7 +83,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   };
 
   const removeFromCart = (productId: string) => {
-    setCart((prev) => prev.filter((item) => item.product.id !== productId));
+    setCart((prev) => prev.filter((item) => item.product._id !== productId));
   };
 
   const updateQuantity = (productId: string, quantity: number) => {
@@ -98,7 +93,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
     setCart((prev) =>
       prev.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
+        item.product._id === productId ? { ...item, quantity } : item
       )
     );
   };
@@ -108,36 +103,20 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const closeCart = () => setIsCartOpen(false);
 
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
-  const subtotal = cart.reduce(
-    (sum, item) => sum + item.product.price * item.quantity,
-    0
-  );
+  const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
   useEffect(() => {
     if (!toastMessage) return;
-    const timer = setTimeout(() => {
-      setToastMessage(null);
-    }, 3000);
+    const timer = setTimeout(() => setToastMessage(null), 3000);
     return () => clearTimeout(timer);
   }, [toastMessage, toastKey]);
 
   return (
     <CartContext.Provider
       value={{
-        cart,
-        addToCart,
-        removeFromCart,
-        updateQuantity,
-        clearCart,
-        totalItems,
-        subtotal,
-        isCartOpen,
-        setIsCartOpen,
-        openCart,
-        closeCart,
-        isLoaded,
-        toastMessage,
-        showToast,
+        cart, addToCart, removeFromCart, updateQuantity, clearCart,
+        totalItems, subtotal, isCartOpen, setIsCartOpen, openCart, closeCart,
+        isLoaded, toastMessage, showToast,
       }}
     >
       {children}
@@ -147,8 +126,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
 
 export function useCart() {
   const context = useContext(CartContext);
-  if (!context) {
-    throw new Error("useCart must be used within a CartProvider");
-  }
+  if (!context) throw new Error("useCart must be used within a CartProvider");
   return context;
 }

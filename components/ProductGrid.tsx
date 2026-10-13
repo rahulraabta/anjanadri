@@ -2,11 +2,9 @@
 
 import { useState, useEffect, useMemo } from "react";
 import { Leaf, Search, X } from "lucide-react";
-import { products } from "@/data/products";
 import ProductCard from "./ProductCard";
+import { SanityProduct } from "@/lib/sanity";
 
-// `hash` values must match the category anchors rendered by Navbar so a nav
-// click deep-links straight into a filtered grid.
 const categories = [
   { label: "All", hash: "shop" },
   { label: "Fruits", hash: "shop-fruits" },
@@ -17,12 +15,14 @@ const categories = [
 
 const SEARCH_ANCHOR = "shop-search";
 
-export default function ProductGrid() {
+interface ProductGridProps {
+  products: SanityProduct[];
+}
+
+export default function ProductGrid({ products }: ProductGridProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
 
-  // Category state lives in the URL hash so nav links, back/forward and
-  // deep links all work without pulling the route off static rendering.
   useEffect(() => {
     const syncFromHash = () => {
       const hash = window.location.hash.replace(/^#/, "");
@@ -45,15 +45,14 @@ export default function ProductGrid() {
       const inCategory =
         activeCategory === "All" ||
         (activeCategory === "Best Sellers"
-          ? product.isBestSeller === true || product.tags.includes("Best Seller")
+          ? product.badge === "Best Seller"
           : product.category === activeCategory);
       if (!inCategory) return false;
       if (!needle) return true;
-      return `${product.name} ${product.shortDescription} ${product.category} ${product.tags.join(" ")}`
-        .toLowerCase()
-        .includes(needle);
+      const haystack = `${product.name} ${product.shortDescription ?? ""} ${product.category ?? ""} ${product.benefit ?? ""}`;
+      return haystack.toLowerCase().includes(needle);
     });
-  }, [activeCategory, query]);
+  }, [products, activeCategory, query]);
 
   return (
     <section id="shop" className="scroll-mt-24 border-t border-[#F0E2C4] bg-[#FFF8E7] py-12 lg:py-20">
@@ -130,7 +129,7 @@ export default function ProductGrid() {
         ) : (
           <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
             {filteredProducts.map((product, i) => (
-              <ProductCard key={product.id} product={product} index={i} />
+              <ProductCard key={product._id} product={product} index={i} />
             ))}
           </div>
         )}

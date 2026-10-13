@@ -1,16 +1,19 @@
+import { client, PRODUCTS_QUERY, SanityProduct } from "@/lib/sanity";
 import Navbar from "@/components/Navbar";
 import Hero from "@/components/Hero";
 import ProductGrid from "@/components/ProductGrid";
 import Footer from "@/components/Footer";
 
-export default function Home() {
+export const dynamic = "force-static";
+
+export default async function Home() {
+  const products = await client.fetch<SanityProduct[]>(PRODUCTS_QUERY);
+
   return (
     <>
       <Navbar />
-      <main className="flex-1 bg-[#FFF8E7]">
-        <Hero />
-        <ProductGrid />
-      </main>
+      <Hero products={products} />
+      <ProductGrid products={products} />
       <Footer />
     </>
   );
