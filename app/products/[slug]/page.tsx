@@ -6,6 +6,7 @@ import ProductDetailClient from "@/components/ProductDetailClient";
 import ProductCard from "@/components/ProductCard";
 import { getAllProducts, getProductBySlug } from "@/lib/products";
 import { products } from "@/data/products";
+import { urlFor, productSlug, type SanityProduct } from "@/lib/sanity";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
@@ -52,16 +53,32 @@ export default async function ProductDetailPage({ params }: PageProps) {
     "@context": "https://schema.org",
     "@type": "Product",
     name: product.name,
+    image:
+      typeof product.image === "string"
+        ? `https://anjanadri.pages.dev${product.image}`
+        : urlFor(product.image).width(1200).height(1200).url(),
     description: product.description,
-    image: product.image,
-    brand: { "@type": "Brand", name: "Anjanadri" },
-    category: product.category,
+    sku:
+      (product as SanityProduct)._id ??
+      (product as SanityProduct).slug ??
+      product.id,
+    brand: {
+      "@type": "Brand",
+      name: "Anjanadri Dehydrated Fruits & Vegetables",
+    },
     offers: {
       "@type": "Offer",
+      url: `https://anjanadri.pages.dev/products/${productSlug(product)}`,
       priceCurrency: "INR",
-      price: product.price,
-      availability: product.inStock ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-      url: `https://anjanadri.com/products/${product.id}`,
+      price: product.price.toString(),
+      availability:
+        product.inStock !== false
+          ? "https://schema.org/InStock"
+          : "https://schema.org/OutOfStock",
+      seller: {
+        "@type": "Organization",
+        name: "Anjanadri Dehydrated Fruits & Vegetables",
+      },
     },
   };
 
