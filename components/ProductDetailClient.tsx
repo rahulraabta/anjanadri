@@ -7,6 +7,7 @@ import Link from "next/link";
 import { ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
 import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
+import { urlFor } from "@/lib/sanity";
 import NutritionalInsights from "@/components/NutritionalInsights";
 import FrequentlyBoughtTogether from "@/components/FrequentlyBoughtTogether";
 
@@ -45,12 +46,17 @@ export default function ProductDetailClient({
     setTimeout(() => setAddedNotice(false), 2500);
   };
 
+  const thumbSrc =
+    typeof product.image === "string"
+      ? product.image
+      : urlFor(product.image).width(96).url();
+
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
     : null;
 
   return (
-    <div className="min-h-screen bg-white py-10 lg:py-16">
+    <div className="min-h-screen bg-white pt-10 pb-24 lg:pb-0 lg:pt-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
         <nav className="mb-8 flex items-center gap-2 text-sm text-[#3E2723]/55">
@@ -253,40 +259,42 @@ export default function ProductDetailClient({
       <AnimatePresence>
         {showSticky && (
           <motion.div
-            initial={{ y: "100%" }}
-            animate={{ y: 0 }}
-            exit={{ y: "100%" }}
+            initial={{ y: 100, opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            exit={{ y: 100, opacity: 0 }}
             transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed inset-x-0 bottom-0 z-40 border-t border-[#F0E2C4] bg-white/95 shadow-[0_-8px_24px_rgba(62,39,35,0.12)] backdrop-blur-md lg:hidden"
+            className="fixed bottom-0 left-0 right-0 z-40 border-t border-[#F0E2C4] bg-white shadow-[0_-4px_20px_rgba(62,39,35,0.08)] lg:hidden"
           >
-            <div
-              className="mx-auto flex max-w-7xl items-center gap-3 px-4 pt-3"
-              style={{ paddingBottom: "calc(0.75rem + env(safe-area-inset-bottom))" }}
-            >
+            <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
+              <Image
+                src={thumbSrc}
+                alt={product.name}
+                width={48}
+                height={48}
+                unoptimized
+                className="h-12 w-12 shrink-0 rounded-xl bg-[#FFF3D6] object-cover"
+              />
               <div className="min-w-0 flex-1">
                 <p className="truncate text-sm font-semibold text-[#3E2723]">
                   {product.name}
                 </p>
-                <p className="font-heading text-lg font-bold text-[#2E7D32]">
-                  &#8377;{(product.price * quantity).toFixed(0)}
+                <p className="flex items-baseline gap-1.5 text-sm font-bold text-[#F57C00]">
+                  &#8377;{product.price.toFixed(0)}
+                  {product.originalPrice && (
+                    <span className="text-xs font-normal text-[#3E2723]/50 line-through">
+                      &#8377;{product.originalPrice.toFixed(0)}
+                    </span>
+                  )}
                 </p>
               </div>
               <button
-                onClick={handleAddToCart}
+                onClick={() => addToCart(product, 1)}
                 disabled={!product.inStock}
                 aria-label="Add to basket"
-                className="flex min-h-12 shrink-0 items-center justify-center gap-2 rounded-full bg-[#3E2723] px-6 text-sm font-semibold text-[#FFF8E7] shadow-[0_12px_28px_-8px_rgba(62,39,35,0.35)] transition-all duration-300 hover:bg-[#F57C00] disabled:cursor-not-allowed disabled:bg-[#F0E2C4] disabled:text-[#3E2723]/55"
+                className="flex shrink-0 items-center justify-center gap-2 rounded-full bg-[#2E7D32] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#256428] disabled:cursor-not-allowed disabled:bg-[#F0E2C4] disabled:text-[#3E2723]/55"
               >
-                {addedNotice ? (
-                  <>
-                    <Check className="h-5 w-5" /> Added!
-                  </>
-                ) : (
-                  <>
-                    <ShoppingBag className="h-5 w-5" />
-                    {product.inStock ? "Add to Basket" : "Unavailable"}
-                  </>
-                )}
+                <ShoppingBag className="h-5 w-5" />
+                Add
               </button>
             </div>
           </motion.div>
