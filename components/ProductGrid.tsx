@@ -27,9 +27,9 @@ interface ProductGridProps {
 export default function ProductGrid({ products }: ProductGridProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
-  const [isSearchOpen, setIsSearchOpen] = useState(false);
+  const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
-  const containerRef = useRef<HTMLDivElement>(null);
+  const searchContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const syncFromHash = () => {
@@ -73,16 +73,15 @@ export default function ProductGrid({ products }: ProductGridProps) {
       .slice(0, 5);
   }, [products, query]);
 
-  const showDropdown =
-    isSearchOpen && query.trim().length > 0 && searchResults.length > 0;
+  const dropdownVisible = showDropdown && searchResults.length > 0;
 
   useEffect(() => {
     const handlePointerDown = (event: MouseEvent) => {
       if (
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        searchContainerRef.current &&
+        !searchContainerRef.current.contains(event.target as Node)
       ) {
-        setIsSearchOpen(false);
+        setShowDropdown(false);
       }
     };
     document.addEventListener("mousedown", handlePointerDown);
@@ -107,7 +106,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
           </div>
 
           <div className="flex w-full flex-col gap-3 sm:flex-row sm:items-center lg:w-auto">
-            <div ref={containerRef} className="relative w-full sm:w-64">
+            <div ref={searchContainerRef} className="relative w-full sm:w-64">
               <Search aria-hidden className="pointer-events-none absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-[#3E2723]/45" />
               <input
                 id={SEARCH_ANCHOR}
@@ -115,24 +114,27 @@ export default function ProductGrid({ products }: ProductGridProps) {
                 value={query}
                 onChange={(event) => {
                   setQuery(event.target.value);
-                  setIsSearchOpen(true);
+                  setShowDropdown(true);
                 }}
-                onFocus={() => setIsSearchOpen(true)}
+                onFocus={() => setShowDropdown(true)}
                 onKeyDown={(event) => {
-                  if (event.key === "Escape") setIsSearchOpen(false);
+                  if (event.key === "Escape") setShowDropdown(false);
                 }}
                 placeholder="Search snacks"
                 aria-label="Search snacks"
                 role="combobox"
                 aria-autocomplete="list"
-                aria-expanded={showDropdown}
+                aria-expanded={dropdownVisible}
                 aria-controls="shop-search-results"
                 className="h-12 w-full scroll-mt-28 rounded-full border border-[#F0E2C4] bg-white pl-11 pr-10 text-base text-[#3E2723] outline-none transition-colors placeholder:text-[#3E2723]/40 focus:border-[#2E7D32]"
               />
               {query && (
                 <button
                   type="button"
-                  onClick={() => setQuery("")}
+                  onClick={() => {
+                    setQuery("");
+                    setShowDropdown(false);
+                  }}
                   aria-label="Clear search"
                   className="absolute right-2 top-1/2 flex h-8 w-8 -translate-y-1/2 items-center justify-center rounded-full text-[#3E2723]/50 hover:bg-[#FFF3D6] hover:text-[#3E2723]"
                 >
@@ -140,7 +142,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
                 </button>
               )}
 
-              {showDropdown && (
+              {dropdownVisible && (
                 <div
                   id="shop-search-results"
                   className="absolute left-0 right-0 top-full z-30 mt-2 overflow-hidden rounded-2xl border border-[#F0E2C4] bg-white shadow-[0_12px_32px_rgba(62,39,35,0.14)]"
@@ -151,7 +153,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
                         <button
                           type="button"
                           onClick={() => {
-                            setIsSearchOpen(false);
+                            setShowDropdown(false);
                             setQuery("");
                             router.push(`/products/${productSlug(product)}`);
                           }}
@@ -184,8 +186,10 @@ export default function ProductGrid({ products }: ProductGridProps) {
                   <button
                     type="button"
                     onClick={() => {
-                      setIsSearchOpen(false);
-                      router.push("/#shop");
+                      document
+                        .getElementById("shop")
+                        ?.scrollIntoView({ behavior: "smooth" });
+                      setShowDropdown(false);
                     }}
                     className="flex w-full items-center justify-between gap-2 border-t border-[#F0E2C4] bg-[#FFF8E7] px-3 py-2.5 text-sm font-semibold text-[#2E7D32] transition-colors hover:bg-[#FFF3D6]"
                   >
