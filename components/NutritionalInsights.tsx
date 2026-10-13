@@ -3,10 +3,11 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Sparkles, Info, ShieldCheck, Heart, Check } from "lucide-react";
-import type { Product, NutrientInsight } from "@/data/products";
+import type { NutrientInsight } from "@/data/products";
+import type { SanityProduct } from "@/lib/sanity";
 
 interface NutritionalInsightsProps {
-  product: Product;
+  product: SanityProduct & { nutrients?: NutrientInsight[] };
 }
 
 const fallbackNutrients: NutrientInsight[] = [

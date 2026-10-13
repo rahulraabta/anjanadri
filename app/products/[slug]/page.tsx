@@ -4,21 +4,33 @@ import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import ProductDetailClient from "@/components/ProductDetailClient";
 import ProductCard from "@/components/ProductCard";
-import { getAllProducts, getProductBySlug } from "@/lib/products";
-import { products } from "@/data/products";
-import { urlFor, productSlug, type SanityProduct } from "@/lib/sanity";
+import {
+  client,
+  PRODUCT_BY_SLUG_QUERY,
+  PRODUCTS_QUERY,
+  productKey,
+  productSlug,
+  urlFor,
+  type SanityProduct,
+} from "@/lib/sanity";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
 }
 
-export function generateStaticParams() {
-  return products.map((p) => ({ slug: p.id }));
+export async function generateStaticParams() {
+  const slugs = await client.fetch<Array<{ slug: string }>>(
+    `*[_type == "product" && defined(slug.current)]{ "slug": slug.current }`
+  );
+  return slugs.map((s) => ({ slug: s.slug }));
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const product = await getProductBySlug(slug);
+  const product = await client.fetch<SanityProduct | null>(
+    PRODUCT_BY_SLUG_QUERY,
+    { slug }
+  );
 
   if (!product) {
     return {
@@ -28,24 +40,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
   return {
     title: `${product.name} — Anjanadri Dehydrated Fruits & Vegetables`,
-    description: product.shortDescription,
+    description: product.shortDescription ?? product.description,
   };
 }
 
 export default async function ProductDetailPage({ params }: PageProps) {
   const { slug } = await params;
-  const allProducts = await getAllProducts();
-  const product = allProducts.find((p) => p.id === slug);
+  const [product, allProducts] = await Promise.all([
+    client.fetch<SanityProduct | null>(PRODUCT_BY_SLUG_QUERY, { slug }),
+    client.fetch<SanityProduct[]>(PRODUCTS_QUERY),
+  ]);
 
   if (!product) {
     notFound();
   }
 
   const sameCategory = allProducts.filter(
-    (p) => p.id !== product.id && p.category === product.category
+    (p) => productKey(p) !== productKey(product) && p.category === product.category
   );
   const otherProducts = allProducts.filter(
-    (p) => p.id !== product.id && p.category !== product.category
+    (p) => productKey(p) !== productKey(product) && p.category !== product.category
   );
   const related = [...sameCategory, ...otherProducts].slice(0, 4);
 
@@ -58,10 +72,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
         ? `https://anjanadri.pages.dev${product.image}`
         : urlFor(product.image).width(1200).height(1200).url(),
     description: product.description,
-    sku:
-      (product as SanityProduct)._id ??
-      (product as SanityProduct).slug ??
-      product.id,
+    sku: product._id ?? product.slug ?? productSlug(product),
     brand: {
       "@type": "Brand",
       name: "Anjanadri Dehydrated Fruits & Vegetables",
@@ -94,7 +105,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
           </h2>
           <div className="grid grid-cols-2 gap-4 md:grid-cols-4 md:gap-6">
             {related.map((p, i) => (
-              <ProductCard key={p.id} product={p} index={i} />
+              <ProductCard key={productKey(p)} product={p} index={i} />
             ))}
           </div>
         </section>

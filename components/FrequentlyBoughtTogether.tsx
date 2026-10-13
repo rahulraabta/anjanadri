@@ -3,12 +3,17 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Check, ShoppingBag, Sparkles } from "lucide-react";
-import type { Product } from "@/data/products";
+import { urlFor, productKey, type SanityProduct } from "@/lib/sanity";
 import { useCart } from "@/context/CartContext";
 
+type BundleProduct = SanityProduct & { complementaryIds?: string[] };
+
+const imageSrc = (img: SanityProduct["image"]) =>
+  typeof img === "string" ? img : urlFor(img).width(224).url();
+
 interface FrequentlyBoughtTogetherProps {
-  currentProduct: Product;
-  allProducts: Product[];
+  currentProduct: BundleProduct;
+  allProducts: BundleProduct[];
 }
 
 export default function FrequentlyBoughtTogether({
@@ -20,8 +25,8 @@ export default function FrequentlyBoughtTogether({
 
   // Find 2 best complementary products
   const complementary = allProducts.filter((p) => {
-    if (p.id === currentProduct.id) return false;
-    if (currentProduct.complementaryIds && currentProduct.complementaryIds.includes(p.id)) {
+    if (productKey(p) === productKey(currentProduct)) return false;
+    if (currentProduct.complementaryIds && currentProduct.complementaryIds.includes(productKey(p))) {
       return true;
     }
     // Fallback complementary pairing: pairing fruits with veggies or berries
@@ -29,16 +34,16 @@ export default function FrequentlyBoughtTogether({
   }).slice(0, 2);
 
   const bundleItems = [currentProduct, ...complementary];
-  const [selectedIds, setSelectedIds] = useState<string[]>(bundleItems.map((b) => b.id));
+  const [selectedIds, setSelectedIds] = useState<string[]>(bundleItems.map((b) => productKey(b)));
 
   const toggleItem = (id: string) => {
-    if (id === currentProduct.id) return; // Keep primary product selected
+    if (id === productKey(currentProduct)) return; // Keep primary product selected
     setSelectedIds((prev) =>
       prev.includes(id) ? prev.filter((item) => item !== id) : [...prev, id]
     );
   };
 
-  const selectedProducts = bundleItems.filter((b) => selectedIds.includes(b.id));
+  const selectedProducts = bundleItems.filter((b) => selectedIds.includes(productKey(b)));
   const rawTotal = selectedProducts.reduce((sum, item) => sum + item.price, 0);
   // 10% bundle incentive discount if 2 or more products are bundled
   const hasBundleDiscount = selectedProducts.length >= 2;
@@ -84,13 +89,13 @@ export default function FrequentlyBoughtTogether({
         {/* Products Visual Bundle Row */}
         <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6">
           {bundleItems.map((item, idx) => {
-            const isSelected = selectedIds.includes(item.id);
-            const isMain = item.id === currentProduct.id;
+            const isSelected = selectedIds.includes(productKey(item));
+            const isMain = productKey(item) === productKey(currentProduct);
 
             return (
-              <div key={item.id} className="flex items-center gap-4 sm:gap-6">
+              <div key={productKey(item)} className="flex items-center gap-4 sm:gap-6">
                 <div
-                  onClick={() => toggleItem(item.id)}
+                  onClick={() => toggleItem(productKey(item))}
                   className={`group relative flex flex-col items-center p-3 rounded-2xl border transition-all duration-300 ${
                     isSelected
                       ? "border-[#3E2723] bg-white shadow-sm"
@@ -99,7 +104,7 @@ export default function FrequentlyBoughtTogether({
                 >
                   <div className="relative h-24 w-24 sm:h-28 sm:w-28 overflow-hidden rounded-xl bg-[#FFF3D6]">
                     <Image
-                      src={item.image}
+                      src={imageSrc(item.image)}
                       alt={item.name}
                       fill
                       sizes="112px"
@@ -124,7 +129,7 @@ export default function FrequentlyBoughtTogether({
                       type="checkbox"
                       checked={isSelected}
                       disabled={isMain}
-                      onChange={() => toggleItem(item.id)}
+                      onChange={() => toggleItem(productKey(item))}
                       className="h-3.5 w-3.5 rounded text-[#C2410C] focus:ring-[#F57C00]"
                     />
                     <span className="text-[10px] font-medium">

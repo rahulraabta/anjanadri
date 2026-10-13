@@ -5,16 +5,15 @@ import { AnimatePresence, motion } from "framer-motion";
 import Image from "next/image";
 import Link from "next/link";
 import { ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
-import type { Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
-import { urlFor } from "@/lib/sanity";
+import { urlFor, type SanityProduct } from "@/lib/sanity";
 import NutritionalInsights from "@/components/NutritionalInsights";
 import FrequentlyBoughtTogether from "@/components/FrequentlyBoughtTogether";
 
 interface ProductDetailClientProps {
-  product: Product;
-  relatedProducts?: Product[];
-  allProducts?: Product[];
+  product: SanityProduct;
+  relatedProducts?: SanityProduct[];
+  allProducts?: SanityProduct[];
 }
 
 export default function ProductDetailClient({
@@ -45,6 +44,11 @@ export default function ProductDetailClient({
     setAddedNotice(true);
     setTimeout(() => setAddedNotice(false), 2500);
   };
+
+  const imageSrc =
+    typeof product.image === "string"
+      ? product.image
+      : urlFor(product.image).width(1200).url();
 
   const thumbSrc =
     typeof product.image === "string"
@@ -78,7 +82,7 @@ export default function ProductDetailClient({
             {/* Primary Main Image */}
             <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] border border-[#F0E2C4] bg-[#FFF3D6] shadow-[0_15px_40px_rgba(62,39,35,0.06)]">
               <Image
-                src={product.image}
+                src={imageSrc}
                 alt={product.name}
                 fill
                 priority
@@ -145,7 +149,7 @@ export default function ProductDetailClient({
                 Certified Integrity
               </h3>
               <div className="flex flex-wrap gap-2">
-                {product.tags.map((tag) => (
+                {(product.tags ?? []).map((tag) => (
                   <span
                     key={tag}
                     className="inline-flex items-center gap-1.5 rounded-full border border-[#F0E2C4] bg-[#FFF3D6] px-3.5 py-1 text-xs font-medium text-[#3E2723]"
