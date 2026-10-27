@@ -36,7 +36,7 @@ export default function Navbar() {
 
   return (
     <motion.header
-      initial={{ y: -60, opacity: 0 }}
+      initial={{ y: -60, opacity: 1 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
       className={`sticky top-0 z-40 w-full transition-all duration-500 ${

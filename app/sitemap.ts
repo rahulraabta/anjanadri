@@ -1,10 +1,12 @@
 import { MetadataRoute } from "next";
-import { products } from "@/data/products";
+import { getProductSlugs } from "@/lib/sanity-products";
+import { SITE_URL } from "@/lib/seo";
 
 export const dynamic = "force-static";
 
-export default function sitemap(): MetadataRoute.Sitemap {
-  const baseUrl = "https://anjanadri.com";
+/** Builds product URLs from the same published catalog as generateStaticParams. */
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
+  const baseUrl = SITE_URL;
 
   const staticPages = [
     { url: baseUrl, lastModified: new Date(), changeFrequency: "weekly" as const, priority: 1 },
@@ -12,8 +14,8 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { url: `${baseUrl}/quiz`, lastModified: new Date(), changeFrequency: "monthly" as const, priority: 0.7 },
   ];
 
-  const productPages = products.map((p) => ({
-    url: `${baseUrl}/products/${p.id}`,
+  const productPages = (await getProductSlugs()).map(({ slug }) => ({
+    url: `${baseUrl}/products/${slug}`,
     lastModified: new Date(),
     changeFrequency: "weekly" as const,
     priority: 0.9,

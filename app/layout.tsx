@@ -70,9 +70,10 @@ export default function RootLayout({
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${playfair.variable} ${inter.variable} ${greatVibes.variable} h-full antialiased`}
     >
-      <body className="flex min-h-full flex-col bg-[#FFF8E7] font-sans text-[#3E2723]">
+      <body suppressHydrationWarning className="flex min-h-full flex-col bg-[#FFF8E7] font-sans text-[#3E2723]">
         <CartProvider>
           {children}
           <CartDrawer />

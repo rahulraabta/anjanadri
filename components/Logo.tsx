@@ -53,7 +53,7 @@ export default function Logo({
     },
   };
 
-  const { img, wrap, title, tagline } = sizeMap[size];
+  const { wrap, title, tagline } = sizeMap[size];
 
   // Footer (light) emblem needs premium scale + a subtle white disc so the
   // brown badge stays legible on the dark green footer background.
@@ -69,15 +69,16 @@ export default function Logo({
       <div className="relative flex-shrink-0 flex items-center justify-center">
         <div
           className={`relative flex items-center justify-center transition-all duration-300 ${emblemWrap} ${
-            light ? "bg-white/90 rounded-full p-1.5" : ""
+            light ? "bg-white rounded-full p-1.5" : ""
           }`}
         >
           <Image
-            src="/logo2.png"
+            src="/logo.png"
             alt="Anjanadri Logo"
-            width={img}
-            height={img}
-            className="w-full h-full object-contain drop-shadow-[0_2px_6px_rgba(62,39,35,0.15)] transition-transform duration-500 group-hover:scale-105"
+            width={434}
+            height={396}
+            unoptimized={true}
+            className="w-full h-full object-contain drop-shadow-md opacity-100 transition-transform duration-500 group-hover:scale-105"
             priority
           />
         </div>
@@ -99,7 +100,7 @@ export default function Logo({
             header row (48px hamburger + 44px emblem + 48px cart) never scrolls. */}
         <span
           className={`block font-sans uppercase tracking-[0.12em] sm:tracking-[0.18em] font-bold select-none mt-0.5 whitespace-nowrap text-[8px] sm:text-[10px] lg:text-xs ${
-            light ? "text-[#FFC107]" : "text-[#F57C00]"
+            light ? "text-[#FFF8E7]" : "text-[#9A4200]"
           }`}
         >
           Dehydrated Fruits &amp; Vegetables
@@ -109,7 +110,7 @@ export default function Logo({
         {showTagline && (
           <span
             className={`hidden lg:block font-sans font-medium tracking-wide select-none mt-0.5 ${tagline} ${
-              light ? "text-[#FFF8E7]/80" : "text-[#3E2723]/70"
+              light ? "text-[#FFF8E7]" : "text-[#3E2723]/70"
             }`}
           >
             100% Natural • No Preservatives

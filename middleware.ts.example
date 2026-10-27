@@ -1,0 +1,86 @@
+import { NextResponse, type NextRequest } from 'next/server';
+
+const WINDOW_MS = 60_000;
+const REQUEST_LIMIT = 30;
+const MAX_IPS = 10_000;
+const MAX_CLEANUP = 64;
+const BLOCKED_USER_AGENTS = /(?:^|[\s;(])(?:curl|wget|python-requests|python-urllib|scrapy|httpx|aiohttp|go-http-client|node-fetch|undici|libwww-perl|axios)(?:\/|[\s;)]|$)/i;
+
+interface Bucket {
+  timestamps: number[];
+  expiresAt: number;
+}
+
+const buckets = new Map<string, Bucket>();
+
+/** Creates an uncached rejection so one client's throttle cannot poison the CDN. */
+function blocked(status: number, message: string, retryAfter?: number) {
+  const headers: Record<string, string> = {
+    'Cache-Control': 'private, no-store',
+    'CDN-Cache-Control': 'no-store',
+  };
+  if (retryAfter !== undefined) headers['Retry-After'] = String(retryAfter);
+  return NextResponse.json({ error: message }, { status, headers });
+}
+
+/**
+ * Removes at most 64 expired buckets per call to bound request-path work.
+ * Map insertion order follows last acceptance because accepted buckets are reinserted.
+ */
+function removeExpired(now: number) {
+  let removed = 0;
+  for (const [ip, bucket] of buckets) {
+    if (bucket.expiresAt > now || removed >= MAX_CLEANUP) break;
+    buckets.delete(ip);
+    removed++;
+  }
+}
+
+/**
+ * Applies a rolling 30-request/minute budget to API traffic within this isolate.
+ * @param request A request whose CF-Connecting-IP was supplied by trusted Cloudflare ingress.
+ * @returns Pass-through for allowed traffic, or uncached 403/429/503 JSON.
+ * @remarks This is an inactive example: Next.js static export cannot execute it.
+ * Counters reset on isolate replacement and are not globally coordinated. At the
+ * 10,000-IP memory cap new IPs fail closed rather than evicting active rate limits.
+ * User-agent checks are spoofable heuristics, not bot authentication. Rejections still
+ * consume an invocation; use upstream Cloudflare rules for pre-execution protection.
+ */
+export function middleware(request: NextRequest) {
+  const userAgent = request.headers.get('user-agent') ?? '';
+  if (!userAgent.trim() || BLOCKED_USER_AGENTS.test(userAgent)) {
+    return blocked(403, 'Automated client access is not permitted.');
+  }
+
+  const ip = request.headers.get('cf-connecting-ip');
+  if (!ip || ip.length > 64 || !/^[\da-f:.]+$/i.test(ip)) {
+    return blocked(403, 'Unable to identify the client.');
+  }
+
+  const now = Date.now();
+  const bucket = buckets.get(ip);
+  const timestamps = bucket?.timestamps ?? [];
+  while (timestamps.length && timestamps[0] <= now - WINDOW_MS) timestamps.shift();
+
+  if (timestamps.length >= REQUEST_LIMIT) {
+    const retryAfter = Math.max(1, Math.ceil((timestamps[0] + WINDOW_MS - now) / 1000));
+    return blocked(429, 'Too many requests. Please try again later.', retryAfter);
+  }
+
+  if (!bucket) {
+    removeExpired(now);
+    if (buckets.size >= MAX_IPS) {
+      return blocked(503, 'Request protection is temporarily at capacity.', 60);
+    }
+  }
+
+  timestamps.push(now);
+  buckets.delete(ip);
+  buckets.set(ip, { timestamps, expiresAt: now + WINDOW_MS });
+  return NextResponse.next();
+}
+
+export const config = {
+  matcher: '/api/:path*',
+  runtime: 'edge',
+};

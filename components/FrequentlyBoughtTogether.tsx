@@ -3,7 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import { Check, ShoppingBag, Sparkles } from "lucide-react";
-import { urlFor, productKey, type SanityProduct } from "@/lib/sanity";
+import { getComplementaryProducts, urlFor, productKey, type SanityProduct } from "@/lib/sanity";
 import { useCart } from "@/context/CartContext";
 
 type BundleProduct = SanityProduct & { complementaryIds?: string[] };
@@ -23,15 +23,7 @@ export default function FrequentlyBoughtTogether({
   const { addToCart } = useCart();
   const [addedAll, setAddedAll] = useState(false);
 
-  // Find 2 best complementary products
-  const complementary = allProducts.filter((p) => {
-    if (productKey(p) === productKey(currentProduct)) return false;
-    if (currentProduct.complementaryIds && currentProduct.complementaryIds.includes(productKey(p))) {
-      return true;
-    }
-    // Fallback complementary pairing: pairing fruits with veggies or berries
-    return p.category !== currentProduct.category && p.inStock;
-  }).slice(0, 2);
+  const complementary = getComplementaryProducts(currentProduct, allProducts);
 
   const bundleItems = [currentProduct, ...complementary];
   const [selectedIds, setSelectedIds] = useState<string[]>(bundleItems.map((b) => productKey(b)));

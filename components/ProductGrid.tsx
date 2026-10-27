@@ -89,9 +89,9 @@ export default function ProductGrid({ products }: ProductGridProps) {
   }, []);
 
   return (
-    <section id="shop" className="scroll-mt-24 border-t border-[#F0E2C4] bg-[#FFF8E7] py-12 lg:py-20">
-      <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:items-end">
+    <section id="shop" className="scroll-mt-24">
+      <div className="min-w-0">
+        <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:flex-wrap lg:items-end">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#C2410C]">
               <Leaf className="h-3.5 w-3.5" />
@@ -232,7 +232,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
             No snacks match that search. Try &ldquo;banana&rdquo;, &ldquo;mango&rdquo; or clear the filters.
           </p>
         ) : (
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
             {filteredProducts.map((product, i) => (
               <ProductCard key={product._id} product={product} index={i} />
             ))}
