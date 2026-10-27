@@ -3,8 +3,9 @@ import { Playfair_Display, Inter, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
-import Toast from "@/components/Toast";
+import { Toaster } from "sonner";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
+import CommandMenu from "@/components/CommandMenu";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -75,10 +76,20 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning className="flex min-h-full flex-col bg-[#FFF8E7] font-sans text-[#3E2723]">
         <CartProvider>
-          {children}
-          <CartDrawer />
-          <Toast />
+          <CommandMenu>
+            {children}
+            <CartDrawer />
+          </CommandMenu>
         </CartProvider>
+        <Toaster
+          richColors
+          theme="light"
+          position="top-right"
+          duration={3000}
+          visibleToasts={3}
+          closeButton
+          className="brand-toaster"
+        />
         <WhatsAppFloat />
       </body>
     </html>

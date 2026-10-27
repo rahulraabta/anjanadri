@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Box, Plus, Minus, ShoppingBag, Sparkles } from "lucide-react";
-import Image from "next/image";
+import ProductImage from "@/components/ProductImage";
+import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Navbar from "@/components/Navbar";
 import Footer from "@/components/Footer";
 import { products } from "@/data/products";
@@ -119,7 +120,7 @@ export default function BuildABoxPage() {
                   } bg-white`}
                 >
                   <div className="relative aspect-square overflow-hidden bg-[#FFF3D6]">
-                    <Image src={product.image} alt={product.name} fill sizes="25vw" className="object-cover" loading="lazy" />
+                    <ProductImage src={product.image} blurDataURL={getImageBlurDataURL(product)} alt={product.name} fill sizes="25vw" className="object-cover" loading="lazy" />
                     {qty > 0 && (
                       <span className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-[#F57C00] text-xs font-bold text-white shadow">
                         {qty}

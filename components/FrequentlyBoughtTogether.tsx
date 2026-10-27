@@ -1,7 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
+import ProductImage from "@/components/ProductImage";
+import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import { Check, ShoppingBag, Sparkles } from "lucide-react";
 import { getComplementaryProducts, urlFor, productKey, type SanityProduct } from "@/lib/sanity";
 import { useCart } from "@/context/CartContext";
@@ -95,8 +96,9 @@ export default function FrequentlyBoughtTogether({
                   } ${!isMain ? "cursor-pointer" : ""}`}
                 >
                   <div className="relative h-24 w-24 sm:h-28 sm:w-28 overflow-hidden rounded-xl bg-[#FFF3D6]">
-                    <Image
+                    <ProductImage
                       src={imageSrc(item.image)}
+                      blurDataURL={getImageBlurDataURL(item)}
                       alt={item.name}
                       fill
                       sizes="112px"

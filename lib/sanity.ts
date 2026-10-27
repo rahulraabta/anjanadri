@@ -38,6 +38,8 @@ export interface SanityProduct {
   description: string;
   shortDescription?: string;
   image: SanityImageSource;
+  imageBlurDataURL?: string;
+  imageDominantColor?: string;
   category?: string;
   benefit?: string;
   badge?: string;
@@ -75,6 +77,8 @@ export function getComplementaryProducts(
 const PRODUCT_FIELDS = `
   _id, name, "slug": slug.current, price, originalPrice,
   description, shortDescription, image, category, benefit,
+  "imageBlurDataURL": image.asset->metadata.lqip,
+  "imageDominantColor": image.asset->metadata.palette.dominant.background,
   badge, weight, inStock, tags, isBestSeller, rating, reviewCount, stock
 `;
 

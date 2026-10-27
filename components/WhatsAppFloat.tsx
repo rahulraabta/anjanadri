@@ -14,7 +14,7 @@ export default function WhatsAppFloat() {
 
   // On product pages, lift above the sticky mobile add-to-cart bar.
   const bottomClass = pathname.startsWith("/products/")
-    ? "bottom-20 sm:bottom-24"
+    ? "bottom-[calc(5.5rem_+_env(safe-area-inset-bottom))] md:bottom-6"
     : "bottom-4 sm:bottom-6";
 
   const href = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(MESSAGE)}`;

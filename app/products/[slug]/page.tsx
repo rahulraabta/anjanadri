@@ -106,6 +106,7 @@ export default async function ProductDetailPage({ params }: PageProps) {
         </section>
       </main>
       <Footer />
+      <div aria-hidden="true" className="h-[calc(5rem_+_env(safe-area-inset-bottom))] md:hidden" />
     </>
   );
 }

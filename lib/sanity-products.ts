@@ -5,7 +5,7 @@ import { isSanityNetworkError } from './sanity-utils';
 
 type PublishedProduct = SanityProduct & { _id: string; slug: string };
 const REQUIRED_TEXT = ['_id', 'slug', 'name', 'description'];
-const OPTIONAL_TEXT = ['shortDescription', 'category', 'benefit', 'badge', 'weight'];
+const OPTIONAL_TEXT = ['shortDescription', 'category', 'benefit', 'badge', 'weight', 'imageBlurDataURL', 'imageDominantColor'];
 const OPTIONAL_NUMBERS = ['originalPrice', 'rating', 'reviewCount', 'stock'];
 const OPTIONAL_BOOLEANS = ['inStock', 'isBestSeller'];
 const OPTIONAL_FIELDS = [...OPTIONAL_TEXT, ...OPTIONAL_NUMBERS, ...OPTIONAL_BOOLEANS, 'tags'];

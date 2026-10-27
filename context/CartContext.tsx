@@ -1,7 +1,8 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import type { SanityProduct } from "@/lib/sanity";
+import { notifyAddedToCart, showToast } from "@/lib/toast";
 
 export interface CartItem {
   product: SanityProduct;
@@ -21,7 +22,6 @@ interface CartContextType {
   openCart: () => void;
   closeCart: () => void;
   isLoaded: boolean;
-  toastMessage: string | null;
   showToast: (message: string) => void;
 }
 
@@ -31,14 +31,6 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [toastMessage, setToastMessage] = useState<string | null>(null);
-  const [toastKey, setToastKey] = useState(0);
-
-  const showToast = useCallback((message: string) => {
-    setToastMessage(message);
-    setToastKey((k) => k + 1);
-  }, []);
-
   useEffect(() => {
     try {
       const stored = localStorage.getItem("bnatural_cart");
@@ -78,7 +70,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       }
       return [...prev, { product, quantity }];
     });
-    showToast(`Added ${product.name} to basket`);
+    notifyAddedToCart(product.name);
     setIsCartOpen(true);
   };
 
@@ -105,18 +97,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
   const subtotal = cart.reduce((sum, item) => sum + item.product.price * item.quantity, 0);
 
-  useEffect(() => {
-    if (!toastMessage) return;
-    const timer = setTimeout(() => setToastMessage(null), 3000);
-    return () => clearTimeout(timer);
-  }, [toastMessage, toastKey]);
-
   return (
     <CartContext.Provider
       value={{
         cart, addToCart, removeFromCart, updateQuantity, clearCart,
         totalItems, subtotal, isCartOpen, setIsCartOpen, openCart, closeCart,
-        isLoaded, toastMessage, showToast,
+        isLoaded, showToast,
       }}
     >
       {children}

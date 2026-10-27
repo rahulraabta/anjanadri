@@ -1,21 +1,67 @@
 "use client";
 
-import { motion, AnimatePresence } from "framer-motion";
+import { useEffect, useEffectEvent, useRef } from "react";
 import { X, Plus, Minus, Trash2, ShoppingBag, ArrowRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCart } from "@/context/CartContext";
-import { urlFor, productKey, productSlug } from "@/lib/sanity";
+import { type SanityProduct, urlFor, productKey, productSlug } from "@/lib/sanity";
 
 const FREE_SHIPPING_THRESHOLD = 499;
 
-const imgUrl = (img: any, w = 160) =>
+const imgUrl = (img: SanityProduct["image"], w = 160) =>
   typeof img === "string" ? img : urlFor(img).width(w).url();
 
 export default function CartDrawer() {
   const router = useRouter();
   const { cart, isCartOpen, closeCart, updateQuantity, removeFromCart, subtotal, totalItems } = useCart();
+  const drawerRef = useRef<HTMLDivElement>(null);
+  const dismissCart = useEffectEvent(() => closeCart());
+
+  useEffect(() => {
+    if (!isCartOpen) return;
+
+    const drawer = drawerRef.current;
+    if (!drawer) return;
+    const previousFocus = document.activeElement;
+    const previousOverflow = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    drawer.focus();
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        event.preventDefault();
+        dismissCart();
+      }
+      if (event.key !== "Tab") return;
+
+      const controls = drawer.querySelectorAll<HTMLElement>(
+        'a[href], button:not([disabled]), [tabindex="0"]'
+      );
+      const first = controls[0];
+      const last = controls[controls.length - 1];
+      if (!first || !last) {
+        event.preventDefault();
+        drawer.focus();
+      } else if (event.shiftKey && (document.activeElement === first || document.activeElement === drawer)) {
+        event.preventDefault();
+        last.focus();
+      } else if (!event.shiftKey && (document.activeElement === last || !drawer.contains(document.activeElement))) {
+        event.preventDefault();
+        first.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+      document.body.style.overflow = previousOverflow;
+      if (previousFocus instanceof HTMLElement && previousFocus.isConnected) {
+        previousFocus.focus();
+      }
+    };
+  }, [isCartOpen]);
 
   const freeShippingDiff = FREE_SHIPPING_THRESHOLD - subtotal;
   const freeShippingProgress = Math.min(100, Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100));
@@ -26,32 +72,34 @@ export default function CartDrawer() {
   };
 
   return (
-    <AnimatePresence>
-      {isCartOpen && (
-        <>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
+    <div
+      inert={!isCartOpen}
+      aria-hidden={!isCartOpen}
+      className={`fixed inset-0 z-[60] transition-[visibility] duration-0 ${isCartOpen ? "visible" : "invisible delay-300"}`}
+    >
+          <div
+            aria-hidden="true"
             onClick={closeCart}
-            className="fixed inset-0 z-50 bg-[#3E2723]/40 backdrop-blur-sm transition-opacity"
+            className={`absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300 ease-in-out motion-reduce:transition-none ${isCartOpen ? "opacity-100" : "opacity-0"}`}
           />
 
-          <motion.div
-            initial={{ x: "100%" }}
-            animate={{ x: 0 }}
-            exit={{ x: "100%" }}
-            transition={{ type: "spring", damping: 28, stiffness: 280 }}
-            className="fixed inset-y-0 right-0 z-50 flex w-full max-w-md flex-col bg-white shadow-[-20px_0_50px_rgba(62,39,35,0.15)] sm:border-l sm:border-[#F0E2C4]"
+          <div
+            ref={drawerRef}
+            id="cart-drawer"
+            role="dialog"
+            aria-modal={isCartOpen || undefined}
+            aria-labelledby="cart-drawer-title"
+            tabIndex={-1}
+            className={`fixed inset-y-0 right-0 flex w-full max-w-md flex-col bg-white shadow-[-20px_0_50px_rgba(62,39,35,0.15)] transition-transform duration-300 ease-in-out motion-reduce:transition-none sm:border-l sm:border-[#F0E2C4] ${isCartOpen ? "translate-x-0" : "translate-x-full"}`}
           >
-            <div className="flex items-center justify-between border-b border-[#F0E2C4] px-6 py-5">
+            <div className="flex shrink-0 items-center justify-between border-b border-[#F0E2C4] px-6 py-5">
               <div className="flex items-center gap-3">
                 <span className="flex h-10 w-10 items-center justify-center rounded-2xl bg-[#2E7D32]/15 text-[#2E7D32]">
                   <ShoppingBag className="h-5 w-5" strokeWidth={2} />
                 </span>
                 <div>
-                  <h2 className="font-heading text-xl font-semibold text-[#3E2723]">
-                    Artisanal Basket
+                  <h2 id="cart-drawer-title" className="font-heading text-xl font-semibold text-[#3E2723]">
+                    Your Cart
                   </h2>
                   <p className="text-xs text-[#3E2723]/55">
                     {totalItems} {totalItems === 1 ? "item" : "items"} selected
@@ -59,16 +107,17 @@ export default function CartDrawer() {
                 </div>
               </div>
               <button
+                type="button"
                 onClick={closeCart}
                 className="flex min-h-12 min-w-12 items-center justify-center rounded-full text-[#3E2723]/55 transition-colors hover:bg-[#F0E2C4] hover:text-[#3E2723]"
-                aria-label="Close basket"
+                aria-label="Close cart"
               >
                 <X className="h-5 w-5" />
               </button>
             </div>
 
             {cart.length > 0 && (
-              <div className="border-b border-[#F0E2C4] bg-[#FFF3D6] px-6 py-3.5">
+              <div className="shrink-0 border-b border-[#F0E2C4] bg-[#FFF3D6] px-6 py-3.5">
                 {freeShippingDiff > 0 ? (
                   <p className="text-xs font-semibold text-[#3E2723]">
                     Add ₹{freeShippingDiff.toFixed(0)} for free shipping
@@ -87,12 +136,12 @@ export default function CartDrawer() {
               </div>
             )}
 
-            <div className="flex-1 overflow-y-auto px-6 py-4">
+            <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-4">
               {cart.length === 0 ? (
                 <div className="flex flex-col items-center justify-center py-16 px-6">
                   <ShoppingBag size={48} color="#3E2723" className="opacity-40" />
                   <h3 className="font-heading text-xl font-bold text-[#3E2723] mt-4">
-                    Your basket is empty
+                    Your cart is empty
                   </h3>
                   <p className="text-sm text-[#3E2723]/70 mt-2 text-center">
                     Add some dehydrated goodness to get started.
@@ -127,7 +176,7 @@ export default function CartDrawer() {
                           />
                         </Link>
 
-                        <div className="flex flex-1 flex-col justify-between">
+                        <div className="flex min-w-0 flex-1 flex-col justify-between">
                           <div>
                             <div className="flex items-start justify-between gap-2">
                               <Link
@@ -182,8 +231,7 @@ export default function CartDrawer() {
               )}
             </div>
 
-            {cart.length > 0 && (
-              <div className="border-t border-[#F0E2C4] bg-[#FFF3D6] p-6 space-y-4">
+              <div className="sticky bottom-0 shrink-0 border-t border-[#F0E2C4] bg-[#FFF3D6] p-6 pb-[max(1.5rem,env(safe-area-inset-bottom))] space-y-4">
                 <div className="space-y-1.5">
                   <div className="flex justify-between text-sm text-[#3E2723]/55">
                     <span>Subtotal</span>
@@ -202,9 +250,10 @@ export default function CartDrawer() {
                 <button
                   type="button"
                   onClick={handleCheckout}
-                  className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#2E7D32] py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:bg-[#1B5E20]"
+                  disabled={cart.length === 0}
+                  className="group flex min-h-12 w-full items-center justify-center gap-2 rounded-full bg-[#2E7D32] py-3.5 text-base font-semibold text-white shadow-lg transition-all duration-300 hover:bg-[#1B5E20] active:scale-[0.98] disabled:cursor-not-allowed disabled:opacity-50 disabled:active:scale-100"
                 >
-                  <span>Proceed to Checkout</span>
+                  <span>Checkout</span>
                   <ArrowRight className="h-5 w-5 transition-transform duration-200 group-hover:translate-x-1" />
                 </button>
 
@@ -212,10 +261,7 @@ export default function CartDrawer() {
                   Enter delivery details &amp; order via WhatsApp • Free shipping over ₹499
                 </p>
               </div>
-            )}
-          </motion.div>
-        </>
-      )}
-    </AnimatePresence>
+          </div>
+    </div>
   );
 }

@@ -6,6 +6,7 @@ import { ShoppingBag, Menu, X, Search, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
+import { useCommandMenu } from "./CommandMenu";
 
 // Category anchors. The matching ids live on the filter chips inside
 // ProductGrid, so a nav click scrolls to the grid AND the grid reads the
@@ -25,7 +26,8 @@ const iconButton =
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { totalItems, openCart } = useCart();
+  const { totalItems, isCartOpen, openCart } = useCart();
+  const { isSearchOpen, openSearch } = useCommandMenu();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -99,13 +101,16 @@ export default function Navbar() {
         </ul>
 
         <div className="flex items-center gap-1.5 sm:gap-2">
-          <Link href="/#shop-search" aria-label="Search products" className={`${iconButton} hidden sm:flex`}>
+          <button type="button" onClick={openSearch} aria-label="Search products" aria-haspopup="dialog" aria-expanded={isSearchOpen} aria-keyshortcuts="Meta+K Control+K" className={iconButton}>
             <Search className="h-[18px] w-[18px]" strokeWidth={1.8} />
-          </Link>
+          </button>
           <button
             type="button"
             onClick={openCart}
             aria-label={`Open cart, ${totalItems} items`}
+            aria-haspopup="dialog"
+            aria-expanded={isCartOpen}
+            aria-controls="cart-drawer"
             className={iconButton}
           >
             <ShoppingBag className="h-[18px] w-[18px]" strokeWidth={1.8} />
@@ -146,14 +151,14 @@ export default function Navbar() {
                 </motion.li>
               ))}
               <li className="mt-1 flex flex-col gap-1 border-t border-[#F0E2C4] pt-2">
-                <Link
-                  href="/#shop-search"
-                  onClick={() => setIsOpen(false)}
+                <button
+                  type="button"
+                  onClick={() => { setIsOpen(false); openSearch(); }}
                   className="flex min-h-12 items-center gap-2.5 rounded-2xl px-4 text-base font-semibold text-[#3E2723] hover:bg-[#FFF3D6]"
                 >
                   <Search className="h-5 w-5 text-[#2E7D32]" />
                   Search Products
-                </Link>
+                </button>
                 <Link
                   href="/#contact"
                   onClick={() => setIsOpen(false)}

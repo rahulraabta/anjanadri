@@ -3,7 +3,8 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { Plus, Check } from "lucide-react";
-import Image from "next/image";
+import ProductImage from "@/components/ProductImage";
+import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { SanityProduct, urlFor, productSlug } from "@/lib/sanity";
@@ -37,18 +38,19 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: "-40px" }}
       transition={{ type: "spring", stiffness: 120, damping: 18, delay: (index % 4) * 0.06 }}
-      className="group flex flex-col overflow-hidden rounded-3xl border border-[#F0E2C4] bg-white shadow-[0_6px_24px_rgba(62,39,35,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_16px_40px_-12px_rgba(62,39,35,0.18)]"
+      className="group flex flex-col overflow-hidden rounded-2xl border border-[#F0E2C4] bg-white shadow-[0_6px_24px_rgba(62,39,35,0.08)] transition-all duration-300 hover:-translate-y-1 hover:shadow-lg"
     >
       <div className="relative aspect-square w-full overflow-hidden bg-white">
         <Link href={`/products/${slug}`} className="block h-full w-full">
-          <Image
+          <ProductImage
             src={imageSrc}
+            blurDataURL={getImageBlurDataURL(product)}
             alt={product.name}
             width={400}
             height={400}
             quality={80}
             sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 25vw"
-            className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-105"
+            className="h-full w-full object-cover group-hover:scale-105"
             loading="lazy"
             unoptimized
           />
@@ -63,10 +65,11 @@ export default function ProductCard({ product, index }: ProductCardProps) {
         <button
           type="button"
           onClick={handleAdd}
-          aria-label={`Add ${product.name} to cart`}
-          className="absolute bottom-3 right-3 flex h-12 w-12 items-center justify-center rounded-full text-white shadow-[0_8px_20px_-4px_rgba(62,39,35,0.35)] transition-all duration-300 lg:opacity-0 lg:group-hover:opacity-100 lg:focus-visible:opacity-100 bg-[#F57C00] hover:bg-[#E65100]"
+          aria-label={`Quick add ${product.name} to cart`}
+          className="absolute inset-x-0 bottom-0 flex h-12 w-full translate-y-full items-center justify-center gap-2 bg-[#2E7D32] text-sm font-semibold text-white transition-transform duration-300 group-hover:translate-y-0 group-focus-within:translate-y-0 [@media(hover:none)]:translate-y-0 hover:bg-[#256329] focus-visible:outline-2 focus-visible:-outline-offset-4 focus-visible:outline-white"
         >
-          {justAdded ? <Check className="h-5 w-5" /> : <Plus className="h-5 w-5" />}
+          {justAdded ? <Check aria-hidden="true" className="h-5 w-5" /> : <Plus aria-hidden="true" className="h-5 w-5" />}
+          <span aria-live="polite">{justAdded ? "Added" : "Quick Add"}</span>
         </button>
       </div>
 

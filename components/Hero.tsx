@@ -3,14 +3,16 @@
 import { useState } from "react";
 import { motion } from "framer-motion";
 import { ShoppingBag, Check, Leaf, Sun, ShieldCheck } from "lucide-react";
-import Image from "next/image";
+import ProductImage from "@/components/ProductImage";
+import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { SanityProduct, urlFor } from "@/lib/sanity";
+import styles from "./Hero.module.css";
 
 const MotionLink = motion(Link);
 
-const imgUrl = (img: any, w = 1600) =>
+const imgUrl = (img: SanityProduct["image"], w = 1600) =>
   typeof img === "string" ? img : urlFor(img).width(w).url();
 
 interface HeroProps {
@@ -35,7 +37,7 @@ export default function Hero({ products }: HeroProps) {
   };
 
   return (
-    <section className="relative overflow-hidden bg-[#FFF8E7]">
+    <section className="relative overflow-hidden bg-gradient-to-b from-[#fdfbf7] to-white">
       <div
         aria-hidden
         className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full bg-[#FFC107]/15 blur-3xl"
@@ -54,20 +56,26 @@ export default function Hero({ products }: HeroProps) {
             className="relative order-1 -mx-4 sm:mx-0 lg:order-2"
           >
             <div className="relative overflow-hidden bg-white lg:rounded-[2rem] lg:border lg:border-[#F0E2C4] lg:shadow-[0_24px_60px_-20px_rgba(62,39,35,0.25)]">
-              <Image
+              <ProductImage
                 src={imgUrl(stickyBanana.image, 1600)}
+                blurDataURL={getImageBlurDataURL(stickyBanana)}
                 alt={`Anjanadri ${stickyBanana.name} — dehydrated banana with nuts and seeds`}
                 width={1600}
                 height={873}
                 quality={80}
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="h-auto w-full object-cover"
-                priority
+                preload
                 unoptimized
               />
 
               <span className="absolute left-4 top-4 rounded-full bg-[#FFC107] px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-[#3E2723] shadow-md sm:left-6 sm:top-6">
                 &#9733; Best Seller
+              </span>
+
+              <span className={`${styles.naturalBadge} pointer-events-none absolute right-4 top-4 inline-flex items-center gap-2 rounded-2xl border border-white/80 bg-[#F1F8E9]/95 px-3 py-2 text-xs font-semibold text-[#2E7D32] shadow-lg sm:right-6 sm:top-6`}>
+                <Leaf className="h-4 w-4" aria-hidden="true" />
+                100% Natural
               </span>
 
               <div className="absolute bottom-4 right-4 rounded-2xl bg-white/95 px-4 py-2.5 shadow-lg backdrop-blur-md sm:bottom-6 sm:right-6">
@@ -82,21 +90,16 @@ export default function Hero({ products }: HeroProps) {
             </div>
           </motion.div>
 
-          <motion.div
-            initial={{ opacity: 0, y: 12 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut", delay: 0.1 }}
-            className="order-2 flex w-full flex-col items-start lg:order-1"
-          >
+          <div className="order-2 flex w-full flex-col items-start lg:order-1">
             <span className="inline-flex items-center gap-2 rounded-full border border-[#2E7D32]/20 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#2E7D32]">
               <Leaf className="h-3.5 w-3.5" />
               Flagship Product
             </span>
 
-            <h1 className="font-heading mt-4 text-3xl font-bold leading-[1.15] tracking-tight text-[#2E7D32] sm:text-5xl sm:leading-tight">
+            <h1 className={`${styles.headline} font-heading mt-4 text-3xl font-bold leading-[1.15] tracking-tight text-[#2E7D32] sm:text-5xl sm:leading-tight`}>
               Our Best-Selling Sticky Banana
             </h1>
-            <p className="mt-3 text-lg font-semibold text-[#C2410C] sm:text-xl">
+            <p className={`${styles.subheadline} mt-3 text-lg font-semibold text-[#C2410C] sm:text-xl`}>
               100% Natural, No Preservatives, Dehydrated &amp; Natural
             </p>
             <p className="mt-3 max-w-lg text-base leading-relaxed text-[#3E2723]/80 line-clamp-2 sm:line-clamp-none">
@@ -155,7 +158,7 @@ export default function Hero({ products }: HeroProps) {
                 <Leaf className="h-4 w-4 text-[#2E7D32]" /> 100% Vegan
               </span>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>

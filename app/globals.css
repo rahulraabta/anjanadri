@@ -50,6 +50,16 @@ body {
   -webkit-tap-highlight-color: transparent;
 }
 
+[data-sonner-toaster].brand-toaster[data-sonner-theme] {
+  font-family: var(--font-sans);
+  --normal-bg: var(--anj-cream);
+  --normal-text: var(--anj-brown);
+  --normal-border: var(--anj-gold);
+  --success-bg: var(--anj-green);
+  --success-text: var(--anj-cream);
+  --success-border: var(--anj-green);
+}
+
 * {
   -webkit-tap-highlight-color: transparent;
 }

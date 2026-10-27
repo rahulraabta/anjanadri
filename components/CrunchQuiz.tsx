@@ -11,7 +11,8 @@ import {
   ShoppingBag, 
   Leaf, 
 } from "lucide-react";
-import Image from "next/image";
+import ProductImage from "@/components/ProductImage";
+import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Link from "next/link";
 import { products as fallbackProducts, type Product } from "@/data/products";
 import { useCart } from "@/context/CartContext";
@@ -379,12 +380,13 @@ export default function CrunchQuiz() {
 
                     {/* Image */}
                     <div className="relative aspect-square w-full overflow-hidden rounded-2xl bg-[#FFF3D6] mb-4">
-                      <Image
+                      <ProductImage
                         src={product.image}
+                        blurDataURL={getImageBlurDataURL(product)}
                         alt={product.name}
                         fill
                         sizes="(max-width: 768px) 100vw, 30vw"
-                        className="object-cover transition-transform duration-500 group-hover:scale-105"
+                        className="object-cover group-hover:scale-105"
                       />
                     </div>
 

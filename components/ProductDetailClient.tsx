@@ -1,14 +1,15 @@
 "use client";
 
-import { useEffect, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import Image from "next/image";
+import { useState } from "react";
+import ProductImage from "@/components/ProductImage";
+import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Link from "next/link";
 import { ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { urlFor, type SanityProduct } from "@/lib/sanity";
 import NutritionalInsights from "@/components/NutritionalInsights";
 import FrequentlyBoughtTogether from "@/components/FrequentlyBoughtTogether";
+import MobileStickyCart from "@/components/MobileStickyCart";
 
 interface ProductDetailClientProps {
   product: SanityProduct;
@@ -24,20 +25,6 @@ export default function ProductDetailClient({
   const { addToCart } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [addedNotice, setAddedNotice] = useState(false);
-  const [showSticky, setShowSticky] = useState(false);
-
-  useEffect(() => {
-    const handleScroll = () => {
-      const past = window.scrollY > 400;
-      const nearBottom =
-        window.scrollY + window.innerHeight >
-        document.documentElement.scrollHeight - 200;
-      setShowSticky(past && !nearBottom);
-    };
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const handleAddToCart = () => {
     addToCart(product, quantity);
@@ -49,11 +36,6 @@ export default function ProductDetailClient({
     typeof product.image === "string"
       ? product.image
       : urlFor(product.image).width(1200).url();
-
-  const thumbSrc =
-    typeof product.image === "string"
-      ? product.image
-      : urlFor(product.image).width(96).url();
 
   const discount = product.originalPrice
     ? Math.round(((product.originalPrice - product.price) / product.originalPrice) * 100)
@@ -81,13 +63,14 @@ export default function ProductDetailClient({
           <div className="lg:col-span-7 flex flex-col gap-4">
             {/* Primary Main Image */}
             <div className="relative aspect-square sm:aspect-[4/3] w-full overflow-hidden rounded-[2.5rem] border border-[#F0E2C4] bg-[#FFF3D6] shadow-[0_15px_40px_rgba(62,39,35,0.06)]">
-              <Image
+              <ProductImage
                 src={imageSrc}
+                blurDataURL={getImageBlurDataURL(product)}
                 alt={product.name}
                 fill
-                priority
+                preload
                 sizes="(max-width: 1024px) 100vw, 55vw"
-                className="object-cover transition-all duration-700 hover:scale-105"
+                className="object-cover hover:scale-105"
               />
 
               <div className="absolute left-6 top-6 flex flex-col gap-2">
@@ -209,7 +192,7 @@ export default function ProductDetailClient({
 
               <button
                 onClick={handleAddToCart}
-                disabled={!product.inStock}
+                disabled={product.inStock === false}
                 className="flex w-full items-center justify-center gap-2.5 rounded-full bg-[#3E2723] py-4 text-base font-semibold text-[#FFF8E7] shadow-[0_12px_28px_-8px_rgba(62,39,35,0.35)] transition-all duration-300 hover:bg-[#F57C00] disabled:cursor-not-allowed disabled:bg-[#F0E2C4] disabled:text-[#3E2723]/55"
               >
                 {addedNotice ? (
@@ -219,7 +202,7 @@ export default function ProductDetailClient({
                 ) : (
                   <>
                     <ShoppingBag className="h-5 w-5" />
-                    {product.inStock ? `Add to Basket • ₹${(product.price * quantity).toFixed(0)}` : "Currently Unavailable"}
+                    {product.inStock !== false ? `Add to Basket • ₹${(product.price * quantity).toFixed(0)}` : "Currently Unavailable"}
                   </>
                 )}
               </button>
@@ -259,51 +242,7 @@ export default function ProductDetailClient({
         />
       </div>
 
-      {/* Sticky Mobile Add-to-Cart Bar */}
-      <AnimatePresence>
-        {showSticky && (
-          <motion.div
-            initial={{ y: 100, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 100, opacity: 0 }}
-            transition={{ duration: 0.25, ease: "easeOut" }}
-            className="fixed bottom-0 left-0 right-0 z-40 border-t border-[#F0E2C4] bg-white shadow-[0_-4px_20px_rgba(62,39,35,0.08)] lg:hidden"
-          >
-            <div className="mx-auto flex max-w-7xl items-center gap-3 px-4 py-3">
-              <Image
-                src={thumbSrc}
-                alt={product.name}
-                width={48}
-                height={48}
-                unoptimized
-                className="h-12 w-12 shrink-0 rounded-xl bg-[#FFF3D6] object-cover"
-              />
-              <div className="min-w-0 flex-1">
-                <p className="truncate text-sm font-semibold text-[#3E2723]">
-                  {product.name}
-                </p>
-                <p className="flex items-baseline gap-1.5 text-sm font-bold text-[#F57C00]">
-                  &#8377;{product.price.toFixed(0)}
-                  {product.originalPrice && (
-                    <span className="text-xs font-normal text-[#3E2723]/50 line-through">
-                      &#8377;{product.originalPrice.toFixed(0)}
-                    </span>
-                  )}
-                </p>
-              </div>
-              <button
-                onClick={() => addToCart(product, 1)}
-                disabled={!product.inStock}
-                aria-label="Add to basket"
-                className="flex shrink-0 items-center justify-center gap-2 rounded-full bg-[#2E7D32] px-5 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-[#256428] disabled:cursor-not-allowed disabled:bg-[#F0E2C4] disabled:text-[#3E2723]/55"
-              >
-                <ShoppingBag className="h-5 w-5" />
-                Add
-              </button>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      <MobileStickyCart product={product} quantity={quantity} onAddToCart={handleAddToCart} added={addedNotice} />
     </div>
   );
 }
