@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   Leaf,
   ShieldCheck,
@@ -42,7 +42,7 @@ export default function WhyChooseUs() {
       />
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -59,11 +59,11 @@ export default function WhyChooseUs() {
             We obsess over every harvest—from fertile orchard soil to sealed craft pouch—so you
             experience the unmistakable crunch of nature at its absolute finest.
           </p>
-        </motion.div>
+        </m.div>
 
         <div className="mt-16 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3">
           {reasons.map((reason, i) => (
-            <motion.div
+            <m.div
               key={reason.title}
               initial={{ opacity: 0, y: 30 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -84,7 +84,7 @@ export default function WhyChooseUs() {
               <p className="mt-2.5 text-sm leading-relaxed text-[#3E2723]/70">
                 {reason.description}
               </p>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

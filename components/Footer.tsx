@@ -8,13 +8,13 @@ export default function Footer() {
         <div className="flex flex-col items-start justify-between gap-6 md:flex-row md:items-center">
           <div>
             <Logo size="sm" light={true} showTagline={true} />
-            <p className="mt-3 max-w-md text-sm leading-relaxed text-white/85">
+            <p className="mt-3 max-w-md text-sm leading-relaxed text-white">
               100% Natural • No Preservatives • Dehydrated & Natural
             </p>
           </div>
           <a
             href="#shop"
-            className="inline-flex min-h-[48px] items-center rounded-full bg-[#F57C00] px-7 font-bold text-white shadow-md transition-all hover:bg-[#E65100]"
+            className="inline-flex min-h-[48px] items-center rounded-full bg-[#C2410C] px-7 font-bold text-white shadow-md transition-all hover:bg-[#9A3412]"
           >
             Shop Best Sellers
           </a>
@@ -31,11 +31,11 @@ export default function Footer() {
           </p>
         </div>
 
-        <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-white/20 pt-6 text-xs text-white/70 md:flex-row">
+        <div className="mt-6 flex flex-col items-center justify-between gap-2 border-t border-white/20 pt-6 text-xs text-white md:flex-row">
           <p>&copy; {new Date().getFullYear()} Anjanadri Dehydrated Fruits &amp; Vegetables. All rights reserved.</p>
           <p>100% Natural • Dehydrated in Mysore</p>
         </div>
-        <p className="mt-4 text-center text-[11px] leading-relaxed text-white/50">
+        <p className="mt-4 text-center text-[11px] leading-relaxed text-white">
           This product is not intended to diagnose, treat, cure, or prevent any disease.
         </p>
       </div>

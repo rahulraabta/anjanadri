@@ -4,6 +4,7 @@ import Hero from "@/components/Hero";
 import ProductGrid from "@/components/ProductGrid";
 import PartnerDashboard from "@/components/PartnerDashboard";
 import Footer from "@/components/Footer";
+import ScrollReveal from "@/components/ScrollReveal";
 
 export const dynamic = "force-static";
 
@@ -21,12 +22,16 @@ export default async function Home() {
           </div>
           <div className="min-w-0 break-words lg:col-span-1">
             <div className="sticky top-24">
-              <PartnerDashboard />
+              <ScrollReveal>
+                <PartnerDashboard />
+              </ScrollReveal>
             </div>
           </div>
         </div>
       </main>
-      <Footer />
+      <ScrollReveal>
+        <Footer />
+      </ScrollReveal>
     </>
   );
 }

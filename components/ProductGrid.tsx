@@ -1,10 +1,13 @@
 "use client";
 
 import { useState, useEffect, useMemo, useRef } from "react";
+import { m, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Leaf, Search, X, ChevronRight } from "lucide-react";
 import ProductCard from "./ProductCard";
+import ScrollReveal from "./ScrollReveal";
+import MotionProvider from "./MotionProvider";
 import { SanityProduct, productKey, productSlug, urlFor } from "@/lib/sanity";
 
 const imgUrl = (img: SanityProduct["image"], w = 96) =>
@@ -91,7 +94,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
   return (
     <section id="shop" className="scroll-mt-24">
       <div className="min-w-0">
-        <div className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:flex-wrap lg:items-end">
+        <ScrollReveal className="flex flex-col items-start justify-between gap-4 lg:flex-row lg:flex-wrap lg:items-end">
           <div>
             <div className="inline-flex items-center gap-1.5 text-xs font-bold uppercase tracking-[0.2em] text-[#C2410C]">
               <Leaf className="h-3.5 w-3.5" />
@@ -164,6 +167,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
                             alt={product.name}
                             width={48}
                             height={48}
+                            loading="lazy"
                             unoptimized
                             className="h-12 w-12 shrink-0 rounded-xl bg-[#FFF3D6] object-cover"
                           />
@@ -203,7 +207,7 @@ export default function ProductGrid({ products }: ProductGridProps) {
               Showing {filteredProducts.length} varieties
             </span>
           </div>
-        </div>
+        </ScrollReveal>
 
         <div className="mt-6 flex flex-wrap gap-2">
           {categories.map((category) => (
@@ -227,17 +231,34 @@ export default function ProductGrid({ products }: ProductGridProps) {
           ))}
         </div>
 
-        {filteredProducts.length === 0 ? (
-          <p className="mt-12 rounded-3xl border border-[#F0E2C4] bg-white px-6 py-16 text-center text-base text-[#3E2723]/70">
-            No snacks match that search. Try &ldquo;banana&rdquo;, &ldquo;mango&rdquo; or clear the filters.
-          </p>
-        ) : (
-          <div className="mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3">
-            {filteredProducts.map((product, i) => (
-              <ProductCard key={product._id} product={product} index={i} />
-            ))}
-          </div>
-        )}
+        <MotionProvider extended>
+          <m.div
+            layout
+            transition={{ type: "spring", stiffness: 300, damping: 30 }}
+            className="relative mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
+          >
+            <AnimatePresence mode="popLayout">
+              {filteredProducts.map((product, i) => (
+                <m.div
+                  key={productKey(product)}
+                  layout
+                  initial={{ opacity: 0, scale: 0.9 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.9 }}
+                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                  className="grid"
+                >
+                  <ProductCard product={product} index={i} />
+                </m.div>
+              ))}
+            </AnimatePresence>
+            {filteredProducts.length === 0 && (
+              <p className="col-span-full mt-4 rounded-3xl border border-[#F0E2C4] bg-white px-6 py-16 text-center text-base text-[#3E2723]/70">
+                No snacks match that search. Try &ldquo;banana&rdquo;, &ldquo;mango&rdquo; or clear the filters.
+              </p>
+            )}
+          </m.div>
+        </MotionProvider>
       </div>
     </section>
   );

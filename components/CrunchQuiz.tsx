@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { 
   Sparkles, 
   ArrowRight, 
@@ -236,7 +236,7 @@ export default function CrunchQuiz() {
                   </span>
                 </div>
                 <div className="h-2 w-full rounded-full bg-[#F0E2C4] overflow-hidden">
-                  <motion.div
+                  <m.div
                     className="h-full bg-[#F57C00] rounded-full"
                     initial={{ width: 0 }}
                     animate={{ width: `${((currentStep + 1) / quizSteps.length) * 100}%` }}
@@ -247,7 +247,7 @@ export default function CrunchQuiz() {
 
               {/* Step Question */}
               <AnimatePresence mode="wait">
-                <motion.div
+                <m.div
                   key={currentStep}
                   initial={{ opacity: 0, x: 20 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -324,12 +324,12 @@ export default function CrunchQuiz() {
                       <ArrowRight className="h-3.5 w-3.5" />
                     </button>
                   </div>
-                </motion.div>
+                </m.div>
               </AnimatePresence>
             </div>
           ) : (
             /* Results Screen */
-            <motion.div
+            <m.div
               initial={{ opacity: 0, scale: 0.96 }}
               animate={{ opacity: 1, scale: 1 }}
               transition={{ type: "spring", stiffness: 100, damping: 20 }}
@@ -443,7 +443,7 @@ export default function CrunchQuiz() {
                   Explore All 12 Artisanal Varieties in The Pantry &rarr;
                 </a>
               </div>
-            </motion.div>
+            </m.div>
           )}
         </div>
       </div>

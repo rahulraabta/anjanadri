@@ -1,6 +1,6 @@
 "use client";
 
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useState, useEffect, useCallback } from "react";
 import type { SanityProduct } from "@/lib/sanity";
 import { notifyAddedToCart, showToast } from "@/lib/toast";
 
@@ -11,7 +11,10 @@ export interface CartItem {
 
 interface CartContextType {
   cart: CartItem[];
-  addToCart: (product: SanityProduct, quantity?: number) => void;
+  addToCart: (product: SanityProduct, quantity?: number, openDrawer?: boolean) => void;
+  flyingImage: string;
+  flyingImageId: number;
+  setFlyingImage: (image: string) => void;
   removeFromCart: (productId: string) => void;
   updateQuantity: (productId: string, quantity: number) => void;
   clearCart: () => void;
@@ -31,6 +34,12 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
   const [cart, setCart] = useState<CartItem[]>([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
+  const [flyingImage, updateFlyingImage] = useState("");
+  const [flyingImageId, setFlyingImageId] = useState(0);
+  const setFlyingImage = useCallback((image: string) => {
+    updateFlyingImage(image);
+    if (image) setFlyingImageId((id) => id + 1);
+  }, []);
   useEffect(() => {
     try {
       const stored = localStorage.getItem("bnatural_cart");
@@ -58,7 +67,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
     }
   }, [cart, isLoaded]);
 
-  const addToCart = (product: SanityProduct, quantity = 1) => {
+  const addToCart = (product: SanityProduct, quantity = 1, openDrawer = true) => {
     setCart((prev) => {
       const existing = prev.find((item) => item.product._id === product._id);
       if (existing) {
@@ -71,7 +80,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       return [...prev, { product, quantity }];
     });
     notifyAddedToCart(product.name);
-    setIsCartOpen(true);
+    if (openDrawer) setIsCartOpen(true);
   };
 
   const removeFromCart = (productId: string) => {
@@ -102,7 +111,7 @@ export function CartProvider({ children }: { children: React.ReactNode }) {
       value={{
         cart, addToCart, removeFromCart, updateQuantity, clearCart,
         totalItems, subtotal, isCartOpen, setIsCartOpen, openCart, closeCart,
-        isLoaded, showToast,
+        isLoaded, showToast, flyingImage, flyingImageId, setFlyingImage,
       }}
     >
       {children}

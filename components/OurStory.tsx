@@ -1,6 +1,6 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
+import { m, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import Image from "next/image";
 import { Leaf, Sun, Droplets, Heart } from "lucide-react";
@@ -50,7 +50,7 @@ export default function OurStory() {
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 28 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -68,12 +68,12 @@ export default function OurStory() {
             Anjanadri isn&apos;t a factory — it&apos;s a philosophy. We believe the best snack is the simplest one:
             real fruit, nothing else. Here&apos;s how we got here and why it matters.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Two-column layout: image + milestones */}
         <div className="mt-16 grid items-start gap-12 lg:grid-cols-2 lg:gap-16">
           {/* Left: parallax image panel */}
-          <motion.div
+          <m.div
             style={{ y: imageY }}
             className="relative hidden lg:block"
           >
@@ -98,12 +98,12 @@ export default function OurStory() {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </m.div>
 
           {/* Right: milestone cards */}
           <div className="space-y-6">
             {milestones.map((item, i) => (
-              <motion.div
+              <m.div
                 key={item.title}
                 initial={{ opacity: 0, x: 30 }}
                 whileInView={{ opacity: 1, x: 0 }}
@@ -126,7 +126,7 @@ export default function OurStory() {
                     {item.text}
                   </p>
                 </div>
-              </motion.div>
+              </m.div>
             ))}
           </div>
         </div>

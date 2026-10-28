@@ -23,7 +23,7 @@ export default function Logo({
   const sizeMap = {
     sm: {
       img: 56,
-      wrap: "h-12 w-12 md:h-14 md:w-14",
+      wrap: "h-10 md:h-12",
       title: "text-xl sm:text-2xl",
       descriptor: "text-[10px]",
       tagline: "text-[10px]",
@@ -32,21 +32,21 @@ export default function Logo({
       // Single responsive instance: compact below md,
       // full md presence on desktop. No display-toggle classes needed.
       img: 64,
-      wrap: "h-14 w-14 md:h-16 md:w-16",
+      wrap: "h-10 md:h-12",
       title: "text-xl sm:text-2xl lg:text-3xl",
       descriptor: "text-[11px] sm:text-xs",
       tagline: "text-xs",
     },
     lg: {
       img: 80,
-      wrap: "h-20 w-20",
+      wrap: "h-20",
       title: "text-3xl sm:text-4xl",
       descriptor: "text-xs sm:text-sm",
       tagline: "text-sm",
     },
     xl: {
       img: 112,
-      wrap: "h-28 w-28",
+      wrap: "h-28",
       title: "text-4xl sm:text-6xl",
       descriptor: "text-sm sm:text-base",
       tagline: "text-base",
@@ -55,34 +55,24 @@ export default function Logo({
 
   const { wrap, title, tagline } = sizeMap[size];
 
-  // Footer (light) emblem needs premium scale + a subtle white disc so the
-  // brown badge stays legible on the dark green footer background.
-  const emblemWrap = light ? "h-16 w-16 md:h-20 md:w-20" : wrap;
+  const emblemHeight = light ? "h-16 md:h-20" : wrap;
 
   const content = (
     <div
-      className={`group inline-flex items-center cursor-pointer transition-transform duration-300 hover:scale-[1.01] ${
+      className={`group inline-flex items-center bg-transparent cursor-pointer ${
         layout === "stacked" ? "flex-col text-center" : "flex-row gap-2.5 md:gap-3 text-left"
       } ${className}`}
     >
       {/* Brand emblem — transparent badge, no container ring/background needed */}
-      <div className="relative flex-shrink-0 flex items-center justify-center">
-        <div
-          className={`relative flex items-center justify-center transition-all duration-300 ${emblemWrap} ${
-            light ? "bg-white rounded-full p-1.5" : ""
-          }`}
-        >
-          <Image
-            src="/logo.png"
-            alt="Anjanadri Logo"
-            width={434}
-            height={396}
-            unoptimized={true}
-            className="w-full h-full object-contain drop-shadow-md opacity-100 transition-transform duration-500 group-hover:scale-105"
-            priority
-          />
-        </div>
-      </div>
+      <Image
+        src="/logo.png"
+        alt="Anjanadri Logo"
+        width={434}
+        height={396}
+        unoptimized={true}
+        className={`${emblemHeight} w-auto shrink-0 object-contain brightness-110 contrast-125 drop-shadow-md ${light ? "" : "mix-blend-multiply"} opacity-100 transition-transform duration-500 group-hover:scale-105`}
+        priority
+      />
 
       {/* Typography Hierarchy */}
       <div className={`flex flex-col ${layout === "stacked" ? "items-center mt-2" : "items-start justify-center"}`}>
@@ -124,8 +114,7 @@ export default function Logo({
     return (
       <Link
         href={href}
-        aria-label="Anjanadri - Nature's Crunch, Preserved"
-        className={`inline-block ${className}`}
+        className={`inline-flex items-center bg-transparent ${className}`}
       >
         {content}
       </Link>

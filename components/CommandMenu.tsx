@@ -161,7 +161,7 @@ export default function CommandMenu({ children }: { children: ReactNode }) {
               <Command.Group heading="Suggested Products" className={groupClassName}>
                 {suggestedProducts.map((product) => (
                   <Command.Item key={product.id} value={`product:${product.slug}`} keywords={[product.name, product.category, product.description, ...product.tags]} onSelect={() => selectProduct(product)} className={itemClassName}>
-                    <Image src={product.imageUrl} alt="" width={48} height={48} unoptimized className="h-12 w-12 shrink-0 rounded-xl bg-gray-100 object-cover" />
+                    <Image src={product.imageUrl} alt="" width={48} height={48} loading="lazy" unoptimized className="h-12 w-12 shrink-0 rounded-xl bg-gray-100 object-cover" />
                     <span className="min-w-0 flex-1">
                       <span className="block truncate text-sm font-semibold">{product.name}</span>
                       <span className="block text-xs text-[#3E2723]/50">{product.category}</span>

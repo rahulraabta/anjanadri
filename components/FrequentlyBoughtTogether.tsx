@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ProductImage from "@/components/ProductImage";
+import ScrollReveal from "@/components/ScrollReveal";
 import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import { Check, ShoppingBag, Sparkles } from "lucide-react";
 import { getComplementaryProducts, urlFor, productKey, type SanityProduct } from "@/lib/sanity";
@@ -55,7 +56,7 @@ export default function FrequentlyBoughtTogether({
   if (complementary.length === 0) return null;
 
   return (
-    <div className="mt-16 rounded-[2.5rem] border border-[#F0E2C4] bg-[#FFF3D6]/80 p-6 sm:p-10 shadow-xs">
+    <ScrollReveal className="mt-16 rounded-[2.5rem] border border-[#F0E2C4] bg-[#FFF3D6]/80 p-6 sm:p-10 shadow-xs">
       <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 border-b border-[#F0E2C4] pb-5">
         <div>
           <div className="flex items-center gap-2">
@@ -114,11 +115,11 @@ export default function FrequentlyBoughtTogether({
                   <p className="mt-2 text-xs font-bold text-[#3E2723] max-w-[110px] text-center truncate">
                     {item.name}
                   </p>
-                  <p className="text-xs font-semibold text-[#F57C00] mt-0.5">
+                  <p className="text-xs font-semibold text-[#C2410C] mt-0.5">
                     ₹{item.price.toFixed(0)}
                   </p>
 
-                  <div className="mt-2 flex items-center gap-1.5 text-[11px] text-[#3E2723]/70">
+                  <label onClick={(event) => event.stopPropagation()} className="mt-2 flex items-center gap-1.5 text-[11px] text-[#3E2723]/70">
                     <input
                       type="checkbox"
                       checked={isSelected}
@@ -128,8 +129,9 @@ export default function FrequentlyBoughtTogether({
                     />
                     <span className="text-[10px] font-medium">
                       {isMain ? "Required" : isSelected ? "Included" : "Add item"}
+                      <span className="sr-only">: {item.name} in bundle</span>
                     </span>
-                  </div>
+                  </label>
                 </div>
 
                 {idx < bundleItems.length - 1 && (
@@ -144,7 +146,7 @@ export default function FrequentlyBoughtTogether({
 
         {/* Pricing & Add Bundle Action */}
         <div className="flex flex-col items-center lg:items-end rounded-2xl border border-[#F0E2C4] bg-white p-6 text-center lg:text-right min-w-[240px] shadow-sm">
-          <span className="text-xs text-[#3E2723]/55">
+          <span className="text-xs text-[#3E2723]/75">
             Bundle Total ({selectedProducts.length} items):
           </span>
 
@@ -153,7 +155,7 @@ export default function FrequentlyBoughtTogether({
               ₹{finalTotal.toFixed(0)}
             </span>
             {hasBundleDiscount && (
-              <span className="text-sm text-[#3E2723]/55 line-through">
+              <span className="text-sm text-[#3E2723]/75 line-through">
                 ₹{rawTotal.toFixed(0)}
               </span>
             )}
@@ -185,6 +187,6 @@ export default function FrequentlyBoughtTogether({
           </button>
         </div>
       </div>
-    </div>
+    </ScrollReveal>
   );
 }

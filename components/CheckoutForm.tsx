@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import {
   ArrowLeft,
   ShoppingBag,
@@ -199,7 +199,7 @@ export default function CheckoutForm() {
   if (orderSubmitted && lastOrderDetails) {
     return (
       <div className="mx-auto max-w-xl px-4 py-16 sm:px-6">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, scale: 0.95, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 260, damping: 25 }}
@@ -253,7 +253,7 @@ export default function CheckoutForm() {
               <span>Continue Shopping</span>
             </Link>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     );
   }
@@ -310,7 +310,7 @@ export default function CheckoutForm() {
       </div>
 
       <div className="grid grid-cols-1 gap-8 lg:grid-cols-12 lg:items-start">
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 15 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 220, damping: 24 }}
@@ -501,9 +501,9 @@ export default function CheckoutForm() {
               </button>
             </div>
           </form>
-        </motion.div>
+        </m.div>
 
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ type: "spring", stiffness: 220, damping: 24, delay: 0.05 }}
@@ -558,6 +558,7 @@ export default function CheckoutForm() {
                         alt={product.name}
                         fill
                         sizes="56px"
+                        loading="lazy"
                         className="object-cover"
                         unoptimized
                       />
@@ -670,7 +671,7 @@ export default function CheckoutForm() {
               </li>
             </ul>
           </div>
-        </motion.div>
+        </m.div>
       </div>
     </div>
   );

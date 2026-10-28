@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Box, Plus, Minus, ShoppingBag, Sparkles } from "lucide-react";
 import ProductImage from "@/components/ProductImage";
 import { getImageBlurDataURL } from "@/lib/image-placeholder";
@@ -59,7 +59,7 @@ export default function BuildABoxPage() {
       <Navbar />
       <main className="flex-1 bg-white py-16">
         <div className="mx-auto max-w-7xl px-6 lg:px-8">
-          <motion.div
+          <m.div
             initial={{ opacity: 0, y: 24 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.7, ease: [0.16, 1, 0.3, 1] }}
@@ -74,7 +74,7 @@ export default function BuildABoxPage() {
             <p className="mt-4 mx-auto max-w-xl text-base text-[#3E2723]/70">
               Select up to 12 items from our pantry. Each slot is ${BOX_PRICE_PER_ITEM.toFixed(2)} — mix fruits, vegetables, and crisps freely.
             </p>
-          </motion.div>
+          </m.div>
 
           <div className="sticky top-24 z-30 mx-auto mb-10 max-w-2xl rounded-2xl border border-[#F0E2C4] bg-white/95 p-5 shadow-lg backdrop-blur-md">
             <div className="flex items-center justify-between">
@@ -110,7 +110,7 @@ export default function BuildABoxPage() {
             {products.filter((p) => p.inStock).map((product, i) => {
               const qty = selections[product.id] || 0;
               return (
-                <motion.div
+                <m.div
                   key={product.id}
                   initial={{ opacity: 0, y: 20 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -151,7 +151,7 @@ export default function BuildABoxPage() {
                       </div>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               );
             })}
           </div>

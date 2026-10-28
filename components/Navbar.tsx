@@ -1,12 +1,13 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence, useAnimationControls, useReducedMotion } from "framer-motion";
 import { ShoppingBag, Menu, X, Search, Sparkles } from "lucide-react";
 import Link from "next/link";
 import Logo from "./Logo";
 import { useCart } from "@/context/CartContext";
 import { useCommandMenu } from "./CommandMenu";
+import { CART_FLIGHT_DURATION, CART_LANDING_DURATION } from "./FlyToCart";
 
 // Category anchors. The matching ids live on the filter chips inside
 // ProductGrid, so a nav click scrolls to the grid AND the grid reads the
@@ -26,8 +27,26 @@ const iconButton =
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { totalItems, isCartOpen, openCart } = useCart();
+  const { totalItems, isCartOpen, openCart, flyingImage, flyingImageId } = useCart();
+  const cartAnimation = useAnimationControls();
+  const reducedMotion = useReducedMotion();
   const { isSearchOpen, openSearch } = useCommandMenu();
+
+  useEffect(() => {
+    if (!flyingImage || reducedMotion) return;
+    void cartAnimation.start({
+      scale: [1, 1.12, 1],
+      transition: {
+        delay: CART_FLIGHT_DURATION,
+        duration: CART_LANDING_DURATION,
+        ease: "easeOut",
+      },
+    });
+    return () => {
+      cartAnimation.stop();
+      cartAnimation.set({ scale: 1 });
+    };
+  }, [flyingImage, flyingImageId, cartAnimation, reducedMotion]);
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -37,7 +56,7 @@ export default function Navbar() {
   }, []);
 
   return (
-    <motion.header
+    <m.header
       initial={{ y: -60, opacity: 1 }}
       animate={{ y: 0, opacity: 1 }}
       transition={{ type: "spring", stiffness: 120, damping: 20 }}
@@ -50,14 +69,14 @@ export default function Navbar() {
       {/* Brand promise bar */}
       <div className="hidden border-b border-white/15 bg-[#2E7D32] px-6 py-1.5 text-[11px] font-medium text-white sm:block">
         <div className="mx-auto flex max-w-7xl items-center justify-between">
-          <span className="flex items-center gap-1.5 text-white/90">
+          <span className="flex items-center gap-1.5 text-white">
             <Sparkles className="h-3 w-3 text-[#FFC107]" />
             100% Natural &bull; No Preservatives &bull; Dehydrated &amp; Natural
           </span>
           <div className="flex items-center gap-4">
-            <span className="text-white/80">Free shipping on orders over &#8377;499</span>
+            <span className="text-white">Free shipping on orders over &#8377;499</span>
             <span className="text-white/40">&bull;</span>
-            <Link href="/quiz" className="font-semibold text-[#FFC107] hover:underline">
+            <Link href="/quiz" className="font-semibold text-white hover:underline">
               Take the Crunch Quiz
             </Link>
           </div>
@@ -93,7 +112,7 @@ export default function Navbar() {
           <li className="ml-1 border-l border-[#F0E2C4] pl-2">
             <Link
               href="/#contact"
-              className="flex min-h-12 items-center rounded-full px-3 text-sm font-semibold text-[#3E2723]/60 transition-colors hover:bg-[#FFF3D6] hover:text-[#2E7D32]"
+              className="flex min-h-12 items-center rounded-full px-3 text-sm font-semibold text-[#3E2723]/75 transition-colors hover:bg-[#FFF3D6] hover:text-[#2E7D32]"
             >
               Contact
             </Link>
@@ -104,9 +123,12 @@ export default function Navbar() {
           <button type="button" onClick={openSearch} aria-label="Search products" aria-haspopup="dialog" aria-expanded={isSearchOpen} aria-keyshortcuts="Meta+K Control+K" className={iconButton}>
             <Search className="h-[18px] w-[18px]" strokeWidth={1.8} />
           </button>
-          <button
+          <m.button
+            id="cart-icon"
             type="button"
             onClick={openCart}
+            animate={cartAnimation}
+            whileTap={{ scale: 0.9 }}
             aria-label={`Open cart, ${totalItems} items`}
             aria-haspopup="dialog"
             aria-expanded={isCartOpen}
@@ -119,14 +141,14 @@ export default function Navbar() {
                 {totalItems}
               </span>
             )}
-          </button>
+          </m.button>
         </div>
       </nav>
 
       {/* Mobile category sheet */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div
+          <m.div
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "auto", opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
@@ -135,7 +157,7 @@ export default function Navbar() {
           >
             <ul className="flex flex-col gap-1 px-4 py-4">
               {categories.map((category, i) => (
-                <motion.li
+                <m.li
                   key={category.label}
                   initial={{ opacity: 0, x: -12 }}
                   animate={{ opacity: 1, x: 0 }}
@@ -148,7 +170,7 @@ export default function Navbar() {
                   >
                     {category.label}
                   </Link>
-                </motion.li>
+                </m.li>
               ))}
               <li className="mt-1 flex flex-col gap-1 border-t border-[#F0E2C4] pt-2">
                 <button
@@ -168,9 +190,9 @@ export default function Navbar() {
                 </Link>
               </li>
             </ul>
-          </motion.div>
+          </m.div>
         )}
       </AnimatePresence>
-    </motion.header>
+    </m.header>
   );
 }

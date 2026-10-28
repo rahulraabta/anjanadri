@@ -1,16 +1,38 @@
 "use client";
 
 import { useState } from "react";
-import { motion } from "framer-motion";
+import { m, useReducedMotion } from "framer-motion";
 import { ShoppingBag, Check, Leaf, Sun, ShieldCheck } from "lucide-react";
 import ProductImage from "@/components/ProductImage";
+import ScrollReveal from "@/components/ScrollReveal";
+import MagneticButton from "@/components/MagneticButton";
 import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Link from "next/link";
 import { useCart } from "@/context/CartContext";
 import { SanityProduct, urlFor } from "@/lib/sanity";
 import styles from "./Hero.module.css";
 
-const MotionLink = motion(Link);
+const MotionLink = m.create(Link);
+const meshLayers = [
+  {
+    className: "-left-1/4 -top-1/4 bg-[radial-gradient(ellipse_at_center,#DDECD5_0%,transparent_70%)]",
+    x: [0, 35, -20, 0],
+    y: [0, -20, 25, 0],
+    scale: [1, 1.15, 0.95, 1],
+  },
+  {
+    className: "-right-1/4 top-1/4 bg-[radial-gradient(ellipse_at_center,#FFE3CA_0%,transparent_70%)]",
+    x: [0, -30, 20, 0],
+    y: [0, 25, -20, 0],
+    scale: [1, 0.95, 1.2, 1],
+  },
+  {
+    className: "-bottom-1/4 left-1/4 bg-[radial-gradient(ellipse_at_center,#FFF3D6_0%,transparent_70%)]",
+    x: [0, 25, -30, 0],
+    y: [0, -30, 15, 0],
+    scale: [1, 1.2, 1.05, 1],
+  },
+];
 
 const imgUrl = (img: SanityProduct["image"], w = 1600) =>
   typeof img === "string" ? img : urlFor(img).width(w).url();
@@ -22,6 +44,7 @@ interface HeroProps {
 export default function Hero({ products }: HeroProps) {
   const { addToCart } = useCart();
   const [justAdded, setJustAdded] = useState(false);
+  const reducedMotion = useReducedMotion();
 
   const stickyBanana =
     products.find((p) => p.badge === "Best Seller") ??
@@ -38,21 +61,9 @@ export default function Hero({ products }: HeroProps) {
 
   return (
     <section className="relative overflow-hidden bg-gradient-to-b from-[#fdfbf7] to-white">
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -right-24 -top-24 h-[420px] w-[420px] rounded-full bg-[#FFC107]/15 blur-3xl"
-      />
-      <div
-        aria-hidden
-        className="pointer-events-none absolute -bottom-28 -left-24 h-[380px] w-[380px] rounded-full bg-[#2E7D32]/10 blur-3xl"
-      />
-
       <div className="relative mx-auto w-full max-w-7xl px-5 py-10 sm:px-6 sm:py-12 lg:px-8 lg:py-16">
         <div className="grid items-center gap-8 lg:grid-cols-2 lg:gap-12">
-          <motion.div
-            initial={{ opacity: 0, scale: 0.96 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+          <ScrollReveal
             className="relative order-1 -mx-4 sm:mx-0 lg:order-2"
           >
             <div className="relative overflow-hidden bg-white lg:rounded-[2rem] lg:border lg:border-[#F0E2C4] lg:shadow-[0_24px_60px_-20px_rgba(62,39,35,0.25)]">
@@ -63,10 +74,9 @@ export default function Hero({ products }: HeroProps) {
                 width={1600}
                 height={873}
                 quality={80}
-                sizes="(max-width: 1024px) 100vw, 50vw"
+                sizes="(max-width: 1023px) 100vw, (max-width: 1280px) 50vw, 584px"
                 className="h-auto w-full object-cover"
-                preload
-                unoptimized
+                priority
               />
 
               <span className="absolute left-4 top-4 rounded-full bg-[#FFC107] px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-[#3E2723] shadow-md sm:left-6 sm:top-6">
@@ -88,9 +98,24 @@ export default function Hero({ products }: HeroProps) {
                 </p>
               </div>
             </div>
-          </motion.div>
+          </ScrollReveal>
 
-          <div className="order-2 flex w-full flex-col items-start lg:order-1">
+          <ScrollReveal className="relative isolate order-2 flex w-full flex-col items-start lg:order-1">
+            <div
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-0 -z-10 overflow-hidden rounded-3xl bg-gradient-to-br from-[#FFF8E7] via-[#F1F8E9] to-[#FFF1E6]"
+            >
+              {meshLayers.map(({ className, x, y, scale }) => (
+                <m.div
+                  key={className}
+                  className={`absolute h-3/4 w-3/4 blur-3xl ${className}`}
+                  initial={{ x: 0, y: 0, scale: 1 }}
+                  animate={reducedMotion ? { x: 0, y: 0, scale: 1 } : { x, y, scale }}
+                  transition={{ duration: reducedMotion ? 0 : 20, repeat: reducedMotion ? 0 : Infinity, ease: "easeInOut" }}
+                />
+              ))}
+              <div className="absolute inset-0 bg-[#FFF8E7]/60" />
+            </div>
             <span className="inline-flex items-center gap-2 rounded-full border border-[#2E7D32]/20 bg-white px-4 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#2E7D32]">
               <Leaf className="h-3.5 w-3.5" />
               Flagship Product
@@ -132,11 +157,11 @@ export default function Hero({ products }: HeroProps) {
               >
                 Shop Now
               </MotionLink>
-              <motion.button
+              <MagneticButton
                 type="button"
                 onClick={handleAdd}
                 whileTap={{ scale: 0.97 }}
-                className={`inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border-2 px-7 py-3.5 text-base font-bold transition-all active:scale-[0.98] sm:w-auto ${
+                className={`inline-flex h-14 w-full items-center justify-center gap-2 rounded-full border-2 px-7 py-3.5 text-base font-bold transition-colors active:scale-[0.98] sm:w-auto ${
                   justAdded
                     ? "border-[#2E7D32] bg-[#2E7D32] text-white"
                     : "border-[#2E7D32] text-[#2E7D32] hover:bg-[#2E7D32] hover:text-white"
@@ -144,7 +169,7 @@ export default function Hero({ products }: HeroProps) {
               >
                 {justAdded ? <Check className="h-5 w-5" /> : <ShoppingBag className="h-5 w-5" />}
                 {justAdded ? "Added to Cart" : "Add to Cart"}
-              </motion.button>
+              </MagneticButton>
             </div>
 
             <div className="mt-6 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 px-4 pt-6 text-xs font-semibold text-[#3E2723]/70 lg:justify-start lg:px-0">
@@ -158,7 +183,7 @@ export default function Hero({ products }: HeroProps) {
                 <Leaf className="h-4 w-4 text-[#2E7D32]" /> 100% Vegan
               </span>
             </div>
-          </div>
+          </ScrollReveal>
         </div>
       </div>
     </section>

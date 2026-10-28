@@ -34,7 +34,7 @@ export const rithvikFoodsData: PartnerData = {
     {
       id: 'rithvik-product-3',
       name: 'Masala Powder',
-      imageUrl: 'https://raw.githubusercontent.com/rahulraabta/Rithvik-Foods/main/vangi_bath.webp',
+      imageUrl: 'https://raw.githubusercontent.com/rahulraabta/Rithvik-Foods/main/cat_masala.webp',
       productLink: websiteUrl,
     },
   ],

@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import { m, AnimatePresence } from "framer-motion";
 import { Sparkles, Info, ShieldCheck, Heart, Check } from "lucide-react";
 import type { NutrientInsight } from "@/data/products";
 import type { SanityProduct } from "@/lib/sanity";
@@ -57,7 +57,7 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
               Intelligent Health Insights
             </h3>
           </div>
-          <p className="text-xs text-[#3E2723]/55 mt-1">
+          <p className="text-xs text-[#3E2723]/75 mt-1">
             Tap or hover any nutrient tile to explore how slow dehydration preserves the goodness of whole fruit
           </p>
         </div>
@@ -88,7 +88,7 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
                       : "border-[#F0E2C4] bg-white/90 hover:border-[#2E7D32] hover:bg-white hover:shadow-xs"
                   }`}
                 >
-                  <div className="flex items-center justify-between text-[11px] text-[#3E2723]/55 mb-1">
+                  <div className="flex items-center justify-between text-[11px] text-[#3E2723]/75 mb-1">
                     <span className="font-medium truncate">{item.name}</span>
                     <Info className={`h-3 w-3 flex-shrink-0 transition-colors ${
                       isSelected ? "text-[#C2410C]" : "text-[#3E2723]/55 group-hover:text-[#3E2723]"
@@ -109,7 +109,7 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
           <div className="mt-5 min-h-[76px]">
             <AnimatePresence mode="wait">
               {activeNutrient ? (
-                <motion.div
+                <m.div
                   key={activeNutrient.name}
                   initial={{ opacity: 0, y: 8 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -135,9 +135,9 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
                       </p>
                     </div>
                   </div>
-                </motion.div>
+                </m.div>
               ) : (
-                <div className="flex items-center gap-2 rounded-2xl border border-dashed border-[#F0E2C4] p-4 text-xs text-[#3E2723]/55 bg-white/60">
+                <div className="flex items-center gap-2 rounded-2xl border border-dashed border-[#F0E2C4] p-4 text-xs text-[#3E2723]/75 bg-white/60">
                   <Info className="h-4 w-4 text-[#C2410C] flex-shrink-0" />
                   <span>
                     Hover or click any metric above to see clear explanations of why this whole food ingredient supports everyday vitality.
@@ -150,7 +150,7 @@ export default function NutritionalInsights({ product }: NutritionalInsightsProp
       )}
 
       {/* Footer Promise Note */}
-      <div className="mt-4 flex items-center gap-2 text-[11px] text-[#3E2723]/55">
+      <div className="mt-4 flex items-center gap-2 text-[11px] text-[#3E2723]/75">
         <ShieldCheck className="h-3.5 w-3.5 text-[#2E7D32] flex-shrink-0" />
         <span>
           Cold-crafted at low temperatures to protect enzymes and antioxidants from heat damage.

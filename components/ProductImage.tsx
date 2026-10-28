@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Image, { type ImageProps } from "next/image";
+import { canOptimizeImage } from "@/lib/image-loader";
 
 type ProductImageProps = Omit<ImageProps, "placeholder" | "blurDataURL"> & {
   blurDataURL: string;
@@ -15,11 +16,16 @@ export default function ProductImage({
   style,
   fill,
   onLoad,
+  loading,
+  priority,
+  preload,
+  unoptimized,
   ...props
 }: ProductImageProps) {
   const source = typeof src === "string" ? src : "default" in src ? src.default.src : src.src;
   const [loadedSource, setLoadedSource] = useState<string | null>(null);
   const loaded = loadedSource === source;
+  const visible = loaded || priority || preload;
 
   return (
     <>
@@ -34,9 +40,13 @@ export default function ProductImage({
         src={src}
         alt={alt}
         fill={fill}
+        priority={priority}
+        preload={preload}
+        loading={priority || preload ? loading : loading ?? "lazy"}
+        unoptimized={unoptimized ?? (!props.loader && !canOptimizeImage(source))}
         placeholder="blur"
         blurDataURL={blurDataURL}
-        className={`${className ?? ""} transition-opacity duration-500 motion-reduce:duration-0 ${loaded ? "opacity-100" : "opacity-0"}`}
+        className={`${className ?? ""} transition-opacity duration-500 motion-reduce:duration-0 ${visible ? "opacity-100" : "opacity-0"}`}
         style={{ ...style, position: fill ? style?.position : "relative", transitionProperty: "opacity, transform" }}
         onLoad={(event) => {
           setLoadedSource(source);

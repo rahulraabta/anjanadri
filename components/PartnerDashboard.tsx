@@ -11,7 +11,7 @@ export default function PartnerDashboard(): ReactElement {
       aria-label={`Featured from ${partner.partnerName}`}
       className="bg-gradient-to-br from-white to-gray-50 border border-gray-200 rounded-2xl shadow-sm hover:shadow-md transition-shadow duration-300 overflow-hidden p-1"
     >
-      <div className="p-4 md:p-6">
+      <div className="p-4 md:p-5">
         <header className="p-4 pb-2">
           <span className="inline-flex rounded-full bg-green-100 text-green-800 border border-green-200 px-2.5 py-0.5 text-xs font-semibold">
             {partner.badge}

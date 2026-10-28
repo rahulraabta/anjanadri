@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import ProductImage from "@/components/ProductImage";
+import MagneticButton from "@/components/MagneticButton";
 import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Link from "next/link";
 import { ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
@@ -22,12 +23,13 @@ export default function ProductDetailClient({
   allProducts = [],
 }: ProductDetailClientProps) {
 
-  const { addToCart } = useCart();
+  const { addToCart, setFlyingImage } = useCart();
   const [quantity, setQuantity] = useState(1);
   const [addedNotice, setAddedNotice] = useState(false);
 
   const handleAddToCart = () => {
-    addToCart(product, quantity);
+    addToCart(product, quantity, false);
+    setFlyingImage(imageSrc);
     setAddedNotice(true);
     setTimeout(() => setAddedNotice(false), 2500);
   };
@@ -45,7 +47,7 @@ export default function ProductDetailClient({
     <div className="min-h-screen bg-white pt-10 pb-24 lg:pb-0 lg:pt-16">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         {/* Breadcrumb Navigation */}
-        <nav className="mb-8 flex items-center gap-2 text-sm text-[#3E2723]/55">
+        <nav className="mb-8 flex items-center gap-2 text-sm text-[#3E2723]/75">
           <Link href="/" className="hover:text-[#3E2723] transition-colors flex items-center gap-1">
             <ArrowLeft className="h-4 w-4" /> Home
           </Link>
@@ -100,7 +102,7 @@ export default function ProductDetailClient({
             </h1>
 
             {/* Product truth badge */}
-            <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#2E7D32]/10 px-3.5 py-1.5 text-sm font-bold text-[#2E7D32]">
+            <p className="mt-3 inline-flex items-center gap-1.5 rounded-full bg-[#2E7D32]/10 px-3.5 py-1.5 text-sm font-bold text-[#1B5E20]">
               <Leaf className="h-4 w-4" aria-hidden />
               {product.benefit}
             </p>
@@ -111,16 +113,16 @@ export default function ProductDetailClient({
                 ₹{product.price.toFixed(0)}
               </span>
               {product.originalPrice && (
-                <span className="text-lg text-[#3E2723]/55 line-through">
+                <span className="text-lg text-[#3E2723]/75 line-through">
                   ₹{product.originalPrice.toFixed(0)}
                 </span>
               )}
-              <span className="text-xs text-[#3E2723]/55">Net Wt: {product.weight}</span>
+              <span className="text-xs text-[#3E2723]/75">Net Wt: {product.weight}</span>
             </div>
 
             {/* Full Artisanal Description */}
             <div className="mt-6 space-y-3">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#3E2723]/55">Description</h3>
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#3E2723]/75">Description</h3>
               <p className="text-base leading-relaxed text-[#3E2723]/70">
                 {product.description}
               </p>
@@ -128,7 +130,7 @@ export default function ProductDetailClient({
 
             {/* Dietary Tags */}
             <div className="mt-6">
-              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#3E2723]/55 mb-2.5">
+              <h3 className="text-xs font-semibold uppercase tracking-wider text-[#3E2723]/75 mb-2.5">
                 Certified Integrity
               </h3>
               <div className="flex flex-wrap gap-2">
@@ -190,10 +192,10 @@ export default function ProductDetailClient({
                 </li>
               </ul>
 
-              <button
+              <MagneticButton
                 onClick={handleAddToCart}
                 disabled={product.inStock === false}
-                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-[#3E2723] py-4 text-base font-semibold text-[#FFF8E7] shadow-[0_12px_28px_-8px_rgba(62,39,35,0.35)] transition-all duration-300 hover:bg-[#F57C00] disabled:cursor-not-allowed disabled:bg-[#F0E2C4] disabled:text-[#3E2723]/55"
+                className="flex w-full items-center justify-center gap-2.5 rounded-full bg-[#3E2723] py-4 text-base font-semibold text-[#FFF8E7] shadow-[0_12px_28px_-8px_rgba(62,39,35,0.35)] transition-colors duration-300 hover:bg-[#F57C00] disabled:cursor-not-allowed disabled:bg-[#F0E2C4] disabled:text-[#3E2723]/55"
               >
                 {addedNotice ? (
                   <>
@@ -205,7 +207,7 @@ export default function ProductDetailClient({
                     {product.inStock !== false ? `Add to Basket • ₹${(product.price * quantity).toFixed(0)}` : "Currently Unavailable"}
                   </>
                 )}
-              </button>
+              </MagneticButton>
 
               <div className="pt-2 text-center">
                 <p
@@ -218,7 +220,7 @@ export default function ProductDetailClient({
             </div>
 
             {/* Reassurances list */}
-            <div className="mt-8 space-y-3.5 border-t border-[#F0E2C4] pt-6 text-xs text-[#3E2723]/55">
+            <div className="mt-8 space-y-3.5 border-t border-[#F0E2C4] pt-6 text-xs text-[#3E2723]/75">
               <div className="flex items-center gap-3">
                 <Truck className="h-4 w-4 text-[#2E7D32]" />
                 <span>Free delivery on orders over ₹499 • Mysore</span>

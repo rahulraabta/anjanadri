@@ -3,9 +3,12 @@ import { Playfair_Display, Inter, Great_Vibes } from "next/font/google";
 import "./globals.css";
 import { CartProvider } from "@/context/CartContext";
 import CartDrawer from "@/components/CartDrawer";
+import FlyToCart from "@/components/FlyToCart";
 import { Toaster } from "sonner";
 import WhatsAppFloat from "@/components/WhatsAppFloat";
 import CommandMenu from "@/components/CommandMenu";
+import PageTransition from "@/components/PageTransition";
+import MotionProvider from "@/components/MotionProvider";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -75,22 +78,25 @@ export default function RootLayout({
       className={`${playfair.variable} ${inter.variable} ${greatVibes.variable} h-full antialiased`}
     >
       <body suppressHydrationWarning className="flex min-h-full flex-col bg-[#FFF8E7] font-sans text-[#3E2723]">
-        <CartProvider>
-          <CommandMenu>
-            {children}
-            <CartDrawer />
-          </CommandMenu>
-        </CartProvider>
-        <Toaster
-          richColors
-          theme="light"
-          position="top-right"
-          duration={3000}
-          visibleToasts={3}
-          closeButton
-          className="brand-toaster"
-        />
-        <WhatsAppFloat />
+        <MotionProvider>
+          <CartProvider>
+            <CommandMenu>
+              <PageTransition>{children}</PageTransition>
+              <CartDrawer />
+              <FlyToCart />
+            </CommandMenu>
+          </CartProvider>
+          <Toaster
+            richColors
+            theme="light"
+            position="top-right"
+            duration={3000}
+            visibleToasts={3}
+            closeButton
+            className="brand-toaster"
+          />
+          <WhatsAppFloat />
+        </MotionProvider>
       </body>
     </html>
   );

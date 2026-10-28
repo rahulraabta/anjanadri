@@ -1,6 +1,6 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { m } from "framer-motion";
 import { Thermometer, Timer, Zap, Droplets } from "lucide-react";
 
 const insights = [
@@ -36,7 +36,7 @@ export default function DehydrationScience() {
 
       <div className="relative mx-auto max-w-7xl px-6 lg:px-8">
         {/* Header */}
-        <motion.div
+        <m.div
           initial={{ opacity: 0, y: 24 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
@@ -53,12 +53,12 @@ export default function DehydrationScience() {
             Not all dried snacks are equal. Here&apos;s the nutritional science behind why low-temperature
             dehydration is the gold standard — and why frying destroys what matters most.
           </p>
-        </motion.div>
+        </m.div>
 
         {/* Educational insight cards */}
         <div className="mt-16 grid grid-cols-1 gap-6 sm:grid-cols-2">
           {insights.map((item, i) => (
-            <motion.div
+            <m.div
               key={item.title}
               initial={{ opacity: 0, y: 24 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -81,7 +81,7 @@ export default function DehydrationScience() {
                   {item.text}
                 </p>
               </div>
-            </motion.div>
+            </m.div>
           ))}
         </div>
       </div>

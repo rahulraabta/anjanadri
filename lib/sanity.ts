@@ -20,7 +20,7 @@ const builder = createImageUrlBuilder(client);
  * @returns A chainable builder for sizing, cropping, and format selection.
  */
 export function urlFor(source: SanityImageSource) {
-  return builder.image(source);
+  return builder.image(source).format('webp');
 }
 
 export interface SanityProduct {
