@@ -5,7 +5,7 @@ import ProductImage from "@/components/ProductImage";
 import MagneticButton from "@/components/MagneticButton";
 import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Link from "next/link";
-import { ShoppingBag, Plus, Minus, ShieldCheck, Truck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
+import { ShoppingBag, Plus, Minus, ShieldCheck, Sparkles, ArrowLeft, Check, Leaf } from "lucide-react";
 import { useCart } from "@/context/CartContext";
 import { urlFor, type SanityProduct } from "@/lib/sanity";
 import NutritionalInsights from "@/components/NutritionalInsights";
@@ -221,10 +221,6 @@ export default function ProductDetailClient({
 
             {/* Reassurances list */}
             <div className="mt-8 space-y-3.5 border-t border-[#F0E2C4] pt-6 text-xs text-[#3E2723]/75">
-              <div className="flex items-center gap-3">
-                <Truck className="h-4 w-4 text-[#2E7D32]" />
-                <span>Free delivery on orders over ₹499 • Mysore</span>
-              </div>
               <div className="flex items-center gap-3">
                 <ShieldCheck className="h-4 w-4 text-[#2E7D32]" />
                 <span>Handcrafted in small batches — naturally sweet, no added sugar</span>

@@ -9,6 +9,7 @@ import WhatsAppFloat from "@/components/WhatsAppFloat";
 import CommandMenu from "@/components/CommandMenu";
 import PageTransition from "@/components/PageTransition";
 import MotionProvider from "@/components/MotionProvider";
+import CustomCursor from "@/components/CustomCursor";
 
 const playfair = Playfair_Display({
   variable: "--font-playfair",
@@ -33,12 +34,17 @@ const greatVibes = Great_Vibes({
 const BRAND = "Anjanadri Dehydrated Fruits & Vegetables";
 
 export const metadata: Metadata = {
+  icons: {
+    icon: { url: "/images/logo3.png?v=2", type: "image/png" },
+    shortcut: "/images/logo3.png?v=2",
+    apple: "/images/logo3.png?v=2",
+  },
   title: {
     default: `${BRAND} — 100% Natural, Dehydrated & Natural`,
     template: `%s | ${BRAND}`,
   },
   description:
-    "Anjanadri Dehydrated Fruits & Vegetables from Mysore. 100% Natural, No Preservatives, Dehydrated & Natural. Sticky Banana best-seller at ₹190. Free shipping over ₹499.",
+    "Anjanadri Dehydrated Fruits & Vegetables from Mysore. 100% Natural, No Preservatives, Dehydrated & Natural. Sticky Banana best-seller at ₹190.",
   keywords: [
     "dehydrated fruits",
     "dried vegetables",
@@ -79,6 +85,7 @@ export default function RootLayout({
     >
       <body suppressHydrationWarning className="flex min-h-full flex-col bg-[#FFF8E7] font-sans text-[#3E2723]">
         <MotionProvider>
+          <CustomCursor />
           <CartProvider>
             <CommandMenu>
               <PageTransition>{children}</PageTransition>

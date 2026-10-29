@@ -11,7 +11,6 @@ import MagneticButton from "@/components/MagneticButton";
 import MotionProvider from "@/components/MotionProvider";
 import { type SanityProduct, urlFor, productKey, productSlug } from "@/lib/sanity";
 
-const FREE_SHIPPING_THRESHOLD = 499;
 const DESKTOP_QUERY = "(min-width: 48rem)";
 
 const subscribeToDesktop = (callback: () => void) => {
@@ -79,9 +78,6 @@ export default function CartDrawer() {
       }
     };
   }, [isCartOpen]);
-
-  const freeShippingDiff = FREE_SHIPPING_THRESHOLD - subtotal;
-  const freeShippingProgress = Math.min(100, Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
   const handleCheckout = () => {
     closeCart();
@@ -159,26 +155,6 @@ export default function CartDrawer() {
                   <X className="h-5 w-5" />
                 </button>
               </div>
-
-              {cart.length > 0 && (
-                <div className="shrink-0 border-b border-[#F0E2C4] bg-[#FFF3D6] px-6 py-3.5">
-                  {freeShippingDiff > 0 ? (
-                    <p className="text-xs font-semibold text-[#3E2723]">
-                      Add ₹{freeShippingDiff.toFixed(0)} for free shipping
-                    </p>
-                  ) : (
-                    <p className="text-xs font-semibold text-[#2E7D32]">
-                      ✓ You&apos;ve unlocked free shipping!
-                    </p>
-                  )}
-                  <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#F0E2C4]">
-                    <div
-                      className={`h-full rounded-full transition-[width] duration-300 ease-out ${freeShippingDiff > 0 ? "bg-[#2E7D32]" : "bg-[#F57C00]"}`}
-                      style={{ width: `${freeShippingProgress}%` }}
-                    />
-                  </div>
-                </div>
-              )}
 
               <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain px-6 py-4">
                 {cart.length === 0 ? (
@@ -284,7 +260,7 @@ export default function CartDrawer() {
                     </div>
                     <div className="flex justify-between text-xs text-[#3E2723]/55">
                       <span>Shipping</span>
-                      <span>{freeShippingDiff <= 0 ? "FREE" : "Calculated on WhatsApp"}</span>
+                      <span>Calculated on WhatsApp</span>
                     </div>
                     <div className="flex justify-between border-t border-[#F0E2C4] pt-2 text-base font-semibold text-[#3E2723]">
                       <span>Estimated Total</span>
@@ -303,7 +279,7 @@ export default function CartDrawer() {
                   </MagneticButton>
 
                   <p className="text-center text-[11px] text-[#3E2723]/55">
-                    Enter delivery details &amp; order via WhatsApp • Free shipping over ₹499
+                    Enter delivery details &amp; order via WhatsApp
                   </p>
                 </div>
             </m.div>

@@ -53,9 +53,7 @@ export default function Logo({
     },
   };
 
-  const { wrap, title, tagline } = sizeMap[size];
-
-  const emblemHeight = light ? "h-16 md:h-20" : wrap;
+  const { title, tagline } = sizeMap[size];
 
   const content = (
     <div
@@ -65,12 +63,12 @@ export default function Logo({
     >
       {/* Brand emblem — transparent badge, no container ring/background needed */}
       <Image
-        src="/logo.png"
+        src="/images/logo3.png?v=2"
         alt="Anjanadri Logo"
-        width={434}
-        height={396}
+        width={1254}
+        height={1254}
         unoptimized={true}
-        className={`${emblemHeight} w-auto shrink-0 object-contain brightness-110 contrast-125 drop-shadow-md ${light ? "" : "mix-blend-multiply"} opacity-100 transition-transform duration-500 group-hover:scale-105`}
+        className="h-10 md:h-12 w-auto shrink-0 bg-transparent object-contain brightness-110 contrast-125 drop-shadow-md opacity-100 transition-transform duration-500 group-hover:scale-105"
         priority
       />
 

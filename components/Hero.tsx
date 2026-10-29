@@ -1,10 +1,11 @@
 "use client";
 
 import { useState } from "react";
-import { m, useReducedMotion } from "framer-motion";
+import { m, useReducedMotion, useScroll, useTransform, useMotionTemplate } from "framer-motion";
 import { ShoppingBag, Check, Leaf, Sun, ShieldCheck } from "lucide-react";
 import ProductImage from "@/components/ProductImage";
 import ScrollReveal from "@/components/ScrollReveal";
+import AnimatedText from "@/components/AnimatedText";
 import MagneticButton from "@/components/MagneticButton";
 import { getImageBlurDataURL } from "@/lib/image-placeholder";
 import Link from "next/link";
@@ -45,6 +46,14 @@ export default function Hero({ products }: HeroProps) {
   const { addToCart } = useCart();
   const [justAdded, setJustAdded] = useState(false);
   const reducedMotion = useReducedMotion();
+  const { scrollYProgress } = useScroll();
+  const imageY = useTransform(scrollYProgress, [0, 1], [0, 100]);
+  const imageTransform = useMotionTemplate`translate3d(0, ${imageY}px, 0)`;
+  const imageClip = useTransform(
+    scrollYProgress,
+    [0, 0.12],
+    ["inset(6% 4% 6% 4% round 2rem)", "inset(0% 0% 0% 0% round 2rem)"],
+  );
 
   const stickyBanana =
     products.find((p) => p.badge === "Best Seller") ??
@@ -66,18 +75,27 @@ export default function Hero({ products }: HeroProps) {
           <ScrollReveal
             className="relative order-1 -mx-4 sm:mx-0 lg:order-2"
           >
-            <div className="relative overflow-hidden bg-white lg:rounded-[2rem] lg:border lg:border-[#F0E2C4] lg:shadow-[0_24px_60px_-20px_rgba(62,39,35,0.25)]">
-              <ProductImage
-                src={imgUrl(stickyBanana.image, 1600)}
-                blurDataURL={getImageBlurDataURL(stickyBanana)}
-                alt={`Anjanadri ${stickyBanana.name} — dehydrated banana with nuts and seeds`}
-                width={1600}
-                height={873}
-                quality={80}
-                sizes="(max-width: 1023px) 100vw, (max-width: 1280px) 50vw, 584px"
-                className="h-auto w-full object-cover"
-                priority
-              />
+            <div className="relative aspect-[1600/873] overflow-hidden rounded-[2rem] border border-[#F0E2C4] bg-white lg:shadow-[0_24px_60px_-20px_rgba(62,39,35,0.25)]">
+              <m.div
+                className="absolute inset-0"
+                style={{ clipPath: reducedMotion ? "inset(0% 0% 0% 0% round 2rem)" : imageClip }}
+              >
+                <m.div
+                  className="absolute inset-x-0 -top-[100px] bottom-0"
+                  style={{ transform: reducedMotion ? "translate3d(0, 0, 0)" : imageTransform }}
+                >
+                  <ProductImage
+                    src={imgUrl(stickyBanana.image, 1600)}
+                    blurDataURL={getImageBlurDataURL(stickyBanana)}
+                    alt={`Anjanadri ${stickyBanana.name} — dehydrated banana with nuts and seeds`}
+                    fill
+                    quality={80}
+                    sizes="(max-width: 1023px) 100vw, (max-width: 1280px) 50vw, 584px"
+                    className="h-full w-full object-cover"
+                    priority
+                  />
+                </m.div>
+              </m.div>
 
               <span className="absolute left-4 top-4 rounded-full bg-[#FFC107] px-4 py-1.5 text-xs font-extrabold uppercase tracking-wider text-[#3E2723] shadow-md sm:left-6 sm:top-6">
                 &#9733; Best Seller
@@ -121,11 +139,11 @@ export default function Hero({ products }: HeroProps) {
               Flagship Product
             </span>
 
-            <h1 className={`${styles.headline} font-heading mt-4 text-3xl font-bold leading-[1.15] tracking-tight text-[#2E7D32] sm:text-5xl sm:leading-tight`}>
-              Our Best-Selling Sticky Banana
+            <h1 className="font-heading mt-4 text-3xl font-bold leading-[1.15] tracking-tight text-[#2E7D32] sm:text-5xl sm:leading-tight">
+              <AnimatedText text="Our Best-Selling Sticky Banana" />
             </h1>
-            <p className={`${styles.subheadline} mt-3 text-lg font-semibold text-[#C2410C] sm:text-xl`}>
-              100% Natural, No Preservatives, Dehydrated &amp; Natural
+            <p className="mt-3 text-lg font-semibold text-[#C2410C] sm:text-xl">
+              <AnimatedText text="100% Natural, No Preservatives, Dehydrated & Natural" delay={0.2} />
             </p>
             <p className="mt-3 max-w-lg text-base leading-relaxed text-[#3E2723]/80 line-clamp-2 sm:line-clamp-none">
               Naturally sweet Mysore bananas, slow dehydrated to a chewy golden bite and

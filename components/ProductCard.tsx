@@ -13,9 +13,13 @@ import { SanityProduct, urlFor, productSlug } from "@/lib/sanity";
 interface ProductCardProps {
   product: SanityProduct;
   index: number;
+  reveal?: boolean;
+  loading?: "eager" | "lazy";
+  tilt?: boolean;
+  sizes?: string;
 }
 
-export default function ProductCard({ product, index }: ProductCardProps) {
+export default function ProductCard({ product, index, reveal = true, loading = "lazy", tilt = true, sizes = "(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 25vw" }: ProductCardProps) {
   const { addToCart, setFlyingImage } = useCart();
   const [justAdded, setJustAdded] = useState(false);
   const mouseX = useMotionValue(0);
@@ -46,13 +50,15 @@ export default function ProductCard({ product, index }: ProductCardProps) {
 
   return (
     <m.div
+      data-product-card
       style={{
-        rotateX,
-        rotateY,
-        transformPerspective: 1000,
+        rotateX: tilt ? rotateX : 0,
+        rotateY: tilt ? rotateY : 0,
+        transformPerspective: tilt ? 1000 : 0,
         boxShadow: "0 6px 24px rgba(62,39,35,0.08)",
       }}
       onMouseMove={(event) => {
+        if (!tilt) return;
         const bounds = event.currentTarget.getBoundingClientRect();
         mouseX.set((event.clientX - bounds.left) / bounds.width - 0.5);
         mouseY.set((event.clientY - bounds.top) / bounds.height - 0.5);
@@ -66,8 +72,9 @@ export default function ProductCard({ product, index }: ProductCardProps) {
       className="h-full rounded-2xl"
     >
       <m.article
-        initial={{ opacity: 0, y: 24 }}
-        whileInView={{ opacity: 1, y: 0 }}
+        initial={reveal ? { opacity: 0, y: 24 } : false}
+        animate={reveal ? undefined : { opacity: 1, y: 0 }}
+        whileInView={reveal ? { opacity: 1, y: 0 } : undefined}
         viewport={{ once: true, margin: "-40px" }}
         transition={{ type: "spring", stiffness: 120, damping: 18, delay: (index % 4) * 0.06 }}
         className="group flex h-full flex-col overflow-hidden rounded-2xl border border-[#F0E2C4] bg-white"
@@ -81,9 +88,9 @@ export default function ProductCard({ product, index }: ProductCardProps) {
               width={400}
               height={400}
               quality={80}
-            sizes="(max-width: 639px) 100vw, (max-width: 1279px) 50vw, 25vw"
+              sizes={sizes}
               className="h-full w-full object-cover group-hover:scale-110 transition-transform duration-700"
-              loading="lazy"
+              loading={loading}
             />
           </Link>
 

@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, useMemo, useRef } from "react";
-import { m, AnimatePresence } from "framer-motion";
+import { useState, useEffect, useMemo, useRef, type ReactNode } from "react";
+import { m, AnimatePresence, useScroll, useTransform, useMotionTemplate, type MotionValue } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Leaf, Search, X, ChevronRight } from "lucide-react";
@@ -27,12 +27,30 @@ interface ProductGridProps {
   products: SanityProduct[];
 }
 
+function CarouselCard({ rotation, angle, children }: { rotation: MotionValue<number>; angle: number; children: ReactNode }) {
+  const facing = useTransform(rotation, (value) => Math.max(0, Math.cos((value + angle) * Math.PI / 180)));
+  const scale = useTransform(facing, [Math.SQRT1_2, 1], [0.8, 1]);
+  const opacity = useTransform(facing, [Math.SQRT1_2, 1], [0.5, 1]);
+  return <m.div data-carousel-facing data-product-card className="h-full" style={{ scale, opacity }}>{children}</m.div>;
+}
+
 export default function ProductGrid({ products }: ProductGridProps) {
   const [activeCategory, setActiveCategory] = useState("All");
   const [query, setQuery] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
   const router = useRouter();
   const searchContainerRef = useRef<HTMLDivElement>(null);
+  const gridRef = useRef<HTMLDivElement>(null);
+  const [desktop, setDesktop] = useState(false);
+  const { scrollYProgress } = useScroll({ target: gridRef, offset: ["start start", "end end"] });
+
+  useEffect(() => {
+    const media = window.matchMedia("(min-width: 768px) and (prefers-reduced-motion: no-preference)");
+    const update = () => setDesktop(media.matches);
+    update();
+    media.addEventListener("change", update);
+    return () => media.removeEventListener("change", update);
+  }, []);
 
   useEffect(() => {
     const syncFromHash = () => {
@@ -52,18 +70,29 @@ export default function ProductGrid({ products }: ProductGridProps) {
 
   const filteredProducts = useMemo(() => {
     const needle = query.trim().toLowerCase();
+    const category = activeCategory.trim().toLowerCase();
+    console.log("ProductGrid filtering", {
+      activeCategory,
+      categories: [...new Set(products.map((product) => product.category))],
+    });
     return products.filter((product) => {
       const inCategory =
-        activeCategory === "All" ||
-        (activeCategory === "Best Sellers"
-          ? product.badge === "Best Seller"
-          : product.category === activeCategory);
+        category === "all" ||
+        (category === "best sellers"
+          ? product.isBestSeller === true || product.badge?.trim().toLowerCase() === "best seller"
+          : product.category?.trim().toLowerCase() === category);
       if (!inCategory) return false;
       if (!needle) return true;
       const haystack = `${product.name} ${product.shortDescription ?? ""} ${product.category ?? ""} ${product.benefit ?? ""}`;
       return haystack.toLowerCase().includes(needle);
     });
   }, [products, activeCategory, query]);
+
+  const carousel = desktop && filteredProducts.length > 1;
+  const angleStep = 360 / Math.max(6, filteredProducts.length);
+  const radius = Math.max(300, 328 / (2 * Math.tan(angleStep * Math.PI / 360)));
+  const rotation = useTransform(scrollYProgress, [0, 1], [0, -(filteredProducts.length - 1) * angleStep]);
+  const cylinderTransform = useMotionTemplate`translateZ(${-radius}px) rotateY(${rotation}deg)`;
 
   const searchResults = useMemo(() => {
     const needle = query.trim().toLowerCase();
@@ -232,32 +261,58 @@ export default function ProductGrid({ products }: ProductGridProps) {
         </div>
 
         <MotionProvider extended>
-          <m.div
-            layout
-            transition={{ type: "spring", stiffness: 300, damping: 30 }}
-            className="relative mt-8 grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"
+          <div
+            ref={gridRef}
+            data-product-carousel={carousel ? "active" : "inactive"}
+            className="relative mt-8"
+            style={{ height: carousel ? Math.max(1200, (filteredProducts.length - 1) * 260 + 800) : undefined }}
           >
-            <AnimatePresence mode="popLayout">
-              {filteredProducts.map((product, i) => (
-                <m.div
-                  key={productKey(product)}
-                  layout
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.9 }}
-                  transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                  className="grid"
-                >
-                  <ProductCard product={product} index={i} />
-                </m.div>
-              ))}
-            </AnimatePresence>
-            {filteredProducts.length === 0 && (
-              <p className="col-span-full mt-4 rounded-3xl border border-[#F0E2C4] bg-white px-6 py-16 text-center text-base text-[#3E2723]/70">
-                No snacks match that search. Try &ldquo;banana&rdquo;, &ldquo;mango&rdquo; or clear the filters.
-              </p>
-            )}
-          </m.div>
+            <div
+              className={carousel ? "sticky top-24 flex h-[min(calc(100svh-6rem),680px)] items-center justify-center overflow-clip lg:top-32 lg:h-[min(calc(100svh-8rem),680px)]" : undefined}
+              style={{ perspective: carousel ? "1000px" : undefined, transformStyle: carousel ? "preserve-3d" : undefined }}
+            >
+              <m.div
+                data-product-cylinder
+                layout={!carousel}
+                transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                className={carousel ? "relative h-[500px] w-full" : "relative grid grid-cols-1 gap-6 sm:grid-cols-2 xl:grid-cols-3"}
+                style={{ transform: carousel ? cylinderTransform : "none", transformStyle: carousel ? "preserve-3d" : "flat" }}
+              >
+                <AnimatePresence mode="popLayout">
+                  {filteredProducts.map((product, i) => (
+                    <m.div
+                      key={productKey(product)}
+                      layout={!carousel}
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                      transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                      className={carousel ? "absolute left-1/2 top-0 -ml-[140px] h-full w-[280px]" : "grid"}
+                      style={carousel ? { transform: `rotateY(${i * angleStep}deg) translateZ(${radius}px)`, transformStyle: "flat", backfaceVisibility: "hidden" } : { transform: "none", transformStyle: "flat", backfaceVisibility: "visible" }}
+                      onFocusCapture={(event) => {
+                        if (!carousel || !gridRef.current || !event.target.matches(":focus-visible")) return;
+                        const grid = gridRef.current;
+                        const start = grid.getBoundingClientRect().top + window.scrollY;
+                        window.scrollTo({ top: start + (i / (filteredProducts.length - 1)) * (grid.offsetHeight - window.innerHeight), behavior: "smooth" });
+                      }}
+                    >
+                      {carousel ? (
+                        <CarouselCard rotation={rotation} angle={i * angleStep}>
+                          <ProductCard product={product} index={i} reveal={false} loading="eager" tilt={false} sizes="280px" />
+                        </CarouselCard>
+                      ) : <ProductCard product={product} index={i} />}
+                    </m.div>
+                  ))}
+                </AnimatePresence>
+                {filteredProducts.length === 0 && (
+                  <p className="col-span-full mt-4 rounded-3xl border border-[#F0E2C4] bg-white px-6 py-16 text-center text-base text-[#3E2723]/70">
+                    No snacks match that search. Try &ldquo;banana&rdquo;, &ldquo;mango&rdquo; or clear the filters.
+                  </p>
+                )}
+              </m.div>
+              {carousel && <p className="pointer-events-none absolute bottom-4 text-xs font-bold uppercase tracking-[0.2em] text-[#2E7D32]/70">Scroll to discover your favourites</p>}
+            </div>
+          </div>
         </MotionProvider>
       </div>
     </section>

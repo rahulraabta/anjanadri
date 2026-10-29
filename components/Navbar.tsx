@@ -68,18 +68,14 @@ export default function Navbar() {
     >
       {/* Brand promise bar */}
       <div className="hidden border-b border-white/15 bg-[#2E7D32] px-6 py-1.5 text-[11px] font-medium text-white sm:block">
-        <div className="mx-auto flex max-w-7xl items-center justify-between">
+        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4">
           <span className="flex items-center gap-1.5 text-white">
             <Sparkles className="h-3 w-3 text-[#FFC107]" />
             100% Natural &bull; No Preservatives &bull; Dehydrated &amp; Natural
           </span>
-          <div className="flex items-center gap-4">
-            <span className="text-white">Free shipping on orders over &#8377;499</span>
-            <span className="text-white/40">&bull;</span>
-            <Link href="/quiz" className="font-semibold text-white hover:underline">
-              Take the Crunch Quiz
-            </Link>
-          </div>
+          <Link href="/quiz" className="shrink-0 font-semibold text-white hover:underline">
+            Take the Crunch Quiz
+          </Link>
         </div>
       </div>
 
@@ -100,13 +96,13 @@ export default function Navbar() {
         <ul className="hidden items-center gap-1 lg:flex">
           {categories.map((category) => (
             <li key={category.label}>
-              <Link
+              <a
                 href={`/#${category.hash}`}
                 className="group relative flex min-h-12 items-center rounded-full px-3.5 text-sm font-semibold text-[#3E2723]/80 transition-colors hover:bg-[#FFF3D6] hover:text-[#2E7D32] xl:px-4"
               >
                 {category.label}
                 <span className="absolute inset-x-3.5 bottom-2 h-0.5 scale-x-0 rounded-full bg-[#F57C00] transition-transform duration-300 group-hover:scale-x-100" />
-              </Link>
+              </a>
             </li>
           ))}
           <li className="ml-1 border-l border-[#F0E2C4] pl-2">
@@ -163,13 +159,13 @@ export default function Navbar() {
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ delay: i * 0.04, duration: 0.25 }}
                 >
-                  <Link
+                  <a
                     href={`/#${category.hash}`}
                     onClick={() => setIsOpen(false)}
                     className="flex min-h-12 items-center rounded-2xl px-4 text-base font-semibold text-[#3E2723] transition-colors hover:bg-[#FFF3D6]"
                   >
                     {category.label}
-                  </Link>
+                  </a>
                 </m.li>
               ))}
               <li className="mt-1 flex flex-col gap-1 border-t border-[#F0E2C4] pt-2">

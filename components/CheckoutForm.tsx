@@ -27,7 +27,6 @@ import {
 import { useCart } from "@/context/CartContext";
 import { productKey, urlFor } from "@/lib/sanity";
 
-const FREE_SHIPPING_THRESHOLD = 499;
 const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "919880106885";
 const PHONE_REGEX = /^[6-9]\d{9}$/;
 const PINCODE_REGEX = /^\d{6}$/;
@@ -82,10 +81,6 @@ export default function CheckoutForm() {
       router.replace("/#shop");
     }
   }, [isLoaded, cart.length, orderSubmitted, router, showToast]);
-
-  const hasFreeShipping = subtotal >= FREE_SHIPPING_THRESHOLD;
-  const freeShippingDiff = FREE_SHIPPING_THRESHOLD - subtotal;
-  const freeShippingProgress = Math.min(100, Math.max(0, (subtotal / FREE_SHIPPING_THRESHOLD) * 100));
 
   const validate = (): boolean => {
     const newErrors: FormErrors = {};
@@ -162,7 +157,7 @@ export default function CheckoutForm() {
       "",
       "💰 *BILL SUMMARY:*",
       `• Subtotal: ₹${subtotal.toFixed(0)}`,
-      `• Delivery: ${hasFreeShipping ? "FREE (orders over ₹499)" : "Confirmed on WhatsApp"}`,
+      "• Delivery: Confirmed on WhatsApp",
       `• *TOTAL: ₹${subtotal.toFixed(0)}*`,
       "",
       "Please confirm my order and share payment details (UPI/QR). Thank you!",
@@ -522,31 +517,6 @@ export default function CheckoutForm() {
               </span>
             </div>
 
-            <div className="mt-4 rounded-2xl bg-[#FFF3D6] p-3 border border-[#F0E2C4]/60">
-              <div className="flex items-center justify-between text-xs">
-                <span className="font-medium text-[#3E2723]">
-                  {freeShippingDiff > 0 ? (
-                    <>
-                      Add <strong className="text-[#F57C00]">₹{freeShippingDiff.toFixed(0)}</strong> for free shipping
-                    </>
-                  ) : (
-                    <span className="flex items-center gap-1 font-semibold text-[#2E7D32]">
-                      <Sparkles className="h-3.5 w-3.5" /> Free shipping
-                    </span>
-                  )}
-                </span>
-                <span className="text-[11px] font-semibold text-[#3E2723]/60">
-                  ₹{subtotal.toFixed(0)} / ₹{FREE_SHIPPING_THRESHOLD}
-                </span>
-              </div>
-              <div className="mt-2 h-1.5 w-full overflow-hidden rounded-full bg-[#F0E2C4]">
-                <div
-                  className="h-full rounded-full bg-gradient-to-r from-[#2E7D32] to-[#F57C00] transition-all duration-500 ease-out"
-                  style={{ width: `${freeShippingProgress}%` }}
-                />
-              </div>
-            </div>
-
             <div className="mt-4 max-h-72 overflow-y-auto divide-y divide-[#F0E2C4]/60 pr-1">
               {cart.map(({ product, quantity }) => {
                 const key = productKey(product);
@@ -621,13 +591,7 @@ export default function CheckoutForm() {
               </div>
               <div className="flex justify-between text-[#3E2723]/70">
                 <span>Delivery</span>
-                <span>
-                  {hasFreeShipping ? (
-                    <span className="font-semibold text-[#2E7D32]">Free shipping</span>
-                  ) : (
-                    "Confirmed on WhatsApp"
-                  )}
-                </span>
+                <span>Confirmed on WhatsApp</span>
               </div>
               <div className="flex justify-between border-t border-[#F0E2C4] pt-2.5 text-sm font-bold text-[#3E2723]">
                 <span className="font-heading text-base">Total</span>
